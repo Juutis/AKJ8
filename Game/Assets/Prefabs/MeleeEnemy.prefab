@@ -76,6 +76,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0709fc820641d324cbad8e0a907f1263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 1
+  aggroRange: 5
+  desiredRange: 0.5
 --- !u!135 &5767319041802750077
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -99,7 +102,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.4, y: 0.00001, z: 0.4}
+  m_Extents: {x: 0.4, y: 0.5, z: 0.4}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
