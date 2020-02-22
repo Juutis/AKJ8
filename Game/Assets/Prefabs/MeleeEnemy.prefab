@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1005334729992805662}
   - component: {fileID: 5767319041802750077}
   - component: {fileID: 4079090255725678116}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MeleeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5731287197095626320}
   - component: {fileID: 2097276092707507497}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: aacircle
   m_TagString: Character Sprite
   m_Icon: {fileID: 0}

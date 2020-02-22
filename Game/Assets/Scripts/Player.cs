@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         character = GetComponent<Character>();
-        magicWand = GetComponentInChildren<MagicWand>();
+        EquipWand(GetComponentInChildren<MagicWand>());
         rb = GetComponent<Rigidbody>();
     }
 
@@ -38,7 +38,16 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             magicWand.SetOptions(MagicWand.GetRandomOptions(Random.Range(0.0f, 1.0f)));
+            EquipWand(magicWand);
         }
+    }
+
+    public void EquipWand(MagicWand wand)
+    {
+        magicWand = wand;
+        magicWand.options.damageLayerMask = LayerMask.GetMask("Enemy");
+        magicWand.options.ProjectileLayer = LayerMask.NameToLayer("PlayerProjectile");
+        magicWand.options.ProjectileTag = "PlayerProjectile";
     }
 
     private void FixedUpdate()
