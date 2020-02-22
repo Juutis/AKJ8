@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    GameObject sprite;
+    public GameObject sprite;
     Vector2 target;
 
     // Start is called before the first frame update

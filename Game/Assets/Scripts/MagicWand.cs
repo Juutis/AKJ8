@@ -28,6 +28,9 @@ public class MagicWand : MonoBehaviour
 
     [SerializeField]
     Transform projectileOrigin;
+
+    [SerializeField]
+    WandInfo wandInfo;
     
     public MagicWandOptions options;
 
@@ -37,6 +40,7 @@ public class MagicWand : MonoBehaviour
     void Start()
     {
         SetOptions(GetRandomOptions(0.0f));
+        wandInfo.UpdateUI(options);
     }
 
     // Update is called once per frame

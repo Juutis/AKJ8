@@ -198,7 +198,7 @@ public class Enemy : MonoBehaviour
     public void Hurt(float damage, Vector3 fromPosition)
     {
         health -= damage;
-        rb.AddForce((transform.position - fromPosition).normalized * 5.0f);
+        //rb.AddForce((transform.position - fromPosition).normalized * 5.0f);
         if (health <= 0)
         {
             Destroy(gameObject);
