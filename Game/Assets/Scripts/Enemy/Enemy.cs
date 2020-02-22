@@ -37,8 +37,11 @@ public class Enemy : MonoBehaviour
     private Routine routine;
     private Vector2 target;
     private Vector2 moveTargetPos;
+    private SpriteRenderer sprite;
 
     private float playerDistanceCheckTimer = 0f;
+
+    float lastHurt = 0.0f;
 
     enum Routine
     {
@@ -58,6 +61,14 @@ public class Enemy : MonoBehaviour
 
         startPos = transform.position;
         target = startPos;
+
+        foreach (var rend in GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (rend.tag == "Character Sprite")
+            {
+                sprite = rend;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -93,6 +104,19 @@ public class Enemy : MonoBehaviour
             case Routine.PATROL:
                 PatrolRoutine();
                 break;
+        }
+
+        if (lastHurt > Time.time - 0.5)
+        {
+            var color = sprite.color;
+            color.a = Mathf.Lerp(0.1f, 1.0f, (Time.time - lastHurt) / 0.5f);
+            sprite.color = color;
+        }
+        else
+        {
+            var color = sprite.color;
+            color.a = 1.0f;
+            sprite.color = color;
         }
     }
 
@@ -202,6 +226,10 @@ public class Enemy : MonoBehaviour
 
     public void Hurt(float damage, Vector3 fromPosition)
     {
+        var color = sprite.color;
+        color.a = 0.1f;
+        sprite.color = color;
+        lastHurt = Time.time;
         health -= damage;
         //rb.AddForce((transform.position - fromPosition).normalized * 5.0f);
         if (health <= 0)

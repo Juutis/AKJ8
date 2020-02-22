@@ -66,7 +66,10 @@ public class LootManager : MonoBehaviour
         var melee = gameObject.GetComponent<Meleeer>();
         if (melee != null) return EnemyType.ENEMY_MELEE;
 
-        return EnemyType.ENEMY_RANGED;
+        var ranged = gameObject.GetComponent<Ranger>();
+        if (ranged != null) return EnemyType.ENEMY_RANGED;
+
+        return EnemyType.ENEMY_MELEE;
     }
 
     public float GetPowerLevel()

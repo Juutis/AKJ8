@@ -4922,7 +4922,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5038,7 +5038,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5414,7 +5414,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 0
+    angle: 45
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0
@@ -5736,13 +5736,13 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
-          inSlope: 5.281853
-          outSlope: 5.281853
+          value: 0.55405426
+          inSlope: 1.1975032
+          outSlope: 1.1975032
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.09722221
+          outWeight: 0.13541666
         - serializedVersion: 3
           time: 1
           value: 0.040540695
@@ -9463,7 +9463,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3d0696df2a0e94b44a49dcc3a4a1de3f, type: 2}
+  - {fileID: 2100000, guid: 3ba269909b04ebe48a86be9b1212b38b, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -9484,8 +9484,8 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_RenderMode: 1
+  m_SortingOrder: 5
+  m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
   m_MaxParticleSize: 0.5
@@ -9522,9 +9522,9 @@ GameObject:
   - component: {fileID: 1005334729992805662}
   - component: {fileID: 5767319041802750077}
   - component: {fileID: 4079090255725678116}
-  - component: {fileID: 3631291927721138415}
+  - component: {fileID: 7378563284198882028}
   m_Layer: 11
-  m_Name: MeleeEnemy
+  m_Name: RangeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9587,9 +9587,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0709fc820641d324cbad8e0a907f1263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 1
   aggroRange: 8
-  desiredRange: 0.5
+  desiredRange: 5
   health: 10
   death: {fileID: 2019509925383111823}
 --- !u!135 &5767319041802750077
@@ -9603,7 +9603,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &4079090255725678116
 NavMeshObstacle:
@@ -9621,7 +9621,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &3631291927721138415
+--- !u!114 &7378563284198882028
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9630,12 +9630,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1216912707361642574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c747018a0fc17d54e94fcbb82f2199ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 1beb01dfc815e8e48baee6eb65eb233f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 0.5
-  damage: 5
-  attackRate: 0.5
+  attackRange: 5
+  damage: 10
+  attackRate: 1.5
   attackEffect: {fileID: 8026926619807001351}
 --- !u!1 &1370174609400674476
 GameObject:
@@ -9708,8 +9708,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2b1d91f52b574a44ea1f04c3bb37278e, type: 3}
-  m_Color: {r: 0.64627093, g: 0.895127, b: 0.9716981, a: 1}
+  m_Sprite: {fileID: 21300000, guid: c44947f345b0d334da650f64de9cd001, type: 3}
+  m_Color: {r: 0.64705884, g: 0.972549, b: 0.77635723, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
