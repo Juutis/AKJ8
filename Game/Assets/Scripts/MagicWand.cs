@@ -9,7 +9,8 @@ public struct MagicWandOptions
     public float fireRate;
 
     public string ProjectileTag;
-    public string ProjectileLayer;
+    public int ProjectileLayer;
+    public int damageLayerMask;
 
     public float ProjectileLifeTime;
     public float ProjectileSpeed;
@@ -48,7 +49,6 @@ public class MagicWand : MonoBehaviour
     {
         if (readyToShoot)
         {
-            Debug.Log(options.fireRate + ", " + options.projectilesPerCast);
             readyToShoot = false;
             Invoke("ResetCooldown", 1 / options.fireRate);
             if (ProjectileManager.main == null)

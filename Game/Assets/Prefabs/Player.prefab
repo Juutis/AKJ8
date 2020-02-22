@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1311811561875442906}
   - component: {fileID: 1311811561875442907}
   - component: {fileID: 1311811561875442908}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e765f2cd7c76e4391c724ba2f68892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  magicWand: {fileID: 0}
 --- !u!1 &1311811561937535372
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1311811561937535409}
   - component: {fileID: 1311811561937535374}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Zarguuf
   m_TagString: Character Sprite
   m_Icon: {fileID: 0}
@@ -222,6 +223,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MagicWand
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722175995610658314, guid: a5c79d2ff2d36ce459104aac87bbaafe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7075289412576298277, guid: a5c79d2ff2d36ce459104aac87bbaafe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5c79d2ff2d36ce459104aac87bbaafe, type: 3}

@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     private float lifeTimer = 0f;
 
     private Rigidbody rb;
+    private Collider collider;
 
     SpriteRenderer rend;
 
@@ -40,6 +41,10 @@ public class Projectile : MonoBehaviour
         {
             rend = GetComponentInChildren<SpriteRenderer>();
         }
+        if (collider == null)
+        {
+            collider = GetComponentInChildren<Collider>();
+        }
     }
 
     public void Explode()
@@ -48,10 +53,21 @@ public class Projectile : MonoBehaviour
         explosion.Play();
         proj.SetActive(false);
         Invoke("Sleep", 1.0f);
+
+        foreach (var collider in Physics.OverlapSphere(transform.position, options.ProjectileBlastAoE, options.damageLayerMask))
+        {
+            Enemy enemy = collider.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.Hurt(options.ProjectileDamage, transform.position);
+            }
+        }
+        /*
         Debug.DrawLine(transform.position, transform.position + Vector3.up * options.ProjectileBlastAoE, Color.white, 1.0f);
         Debug.DrawLine(transform.position, transform.position + Vector3.down * options.ProjectileBlastAoE, Color.white, 1.0f);
         Debug.DrawLine(transform.position, transform.position + Vector3.left * options.ProjectileBlastAoE, Color.white, 1.0f);
         Debug.DrawLine(transform.position, transform.position + Vector3.right * options.ProjectileBlastAoE, Color.white, 1.0f);
+        */
     }
 
     public void Sleep() {
@@ -70,8 +86,9 @@ public class Projectile : MonoBehaviour
         transform.position = position;
         this.lifeTime = options.ProjectileLifeTime;
         rb.velocity = direction.normalized * options.ProjectileSpeed;
-        //gameObject.tag = options.ProjectileTag;
-        //gameObject.layer = LayerMask.NameToLayer(options.ProjectileLayer);
+        gameObject.tag = options.ProjectileTag;
+        gameObject.layer = options.ProjectileLayer;
+        collider.gameObject.layer = options.ProjectileLayer;
         rend.color = options.color;
         var main = explosion.main;
         main.startColor = options.color;
@@ -101,7 +118,6 @@ public class Projectile : MonoBehaviour
             var dir = direction.normalized;
             var perpendicular = Vector2.Perpendicular(dir);
             rb.velocity = options.ProjectileSpeed * (dir + dir * variance * options.ProjectileVarianceY + perpendicular * variance * options.ProjectileVarianceX);
-            Debug.Log(options.ProjectileSpeed);
         }
         else
         {
@@ -113,8 +129,8 @@ public class Projectile : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collider2d)
+    void OnTriggerEnter(Collider collider)
     {
-        //Explode();
+        Explode();
     }
 }

@@ -27,6 +27,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float desiredRange = 1.0f;
 
+    [SerializeField]
+    float health = 10.0f;
+
     private Routine routine;
     private Vector2 target;
     private Vector2 moveTargetPos;
@@ -190,5 +193,15 @@ public class Enemy : MonoBehaviour
             prevPos = navMeshPath.corners[i];
         }
         return sum;
+    }
+
+    public void Hurt(float damage, Vector3 fromPosition)
+    {
+        health -= damage;
+        rb.AddForce((transform.position - fromPosition).normalized * 5.0f);
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

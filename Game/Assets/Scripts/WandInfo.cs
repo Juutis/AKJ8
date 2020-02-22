@@ -15,14 +15,12 @@ public class WandInfo : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        wandOptions = player.magicWand.options;
-        UpdateUI();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!wandOptions.Equals(player.magicWand.options))
+        if (player.magicWand != null && !wandOptions.Equals(player.magicWand.options))
         {
             wandOptions = player.magicWand.options;
             UpdateUI();
