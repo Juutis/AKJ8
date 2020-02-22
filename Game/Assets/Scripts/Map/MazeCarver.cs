@@ -25,6 +25,12 @@ public class MazeCarver : MonoBehaviour
 
     private int scale = 2;
 
+    private enum FloorType {
+        None,
+        Path,
+        Room
+    }
+
     private Dictionary<MazeNode, List<MazeNode>> neighborLists = new Dictionary<MazeNode, List<MazeNode>>();
 
     private List<Vector2> positions = new List<Vector2>()
@@ -90,14 +96,14 @@ public class MazeCarver : MonoBehaviour
         node.IsCornerWall = isCorner;
         node.Room = room;
         node.WallPosition = wallPosition;
-        node.Image = CreateRectSprite(node.Rect, Color.blue);
+        node.Image = CreateRectSprite(node.Rect, Color.white, FloorType.Room);
     }
 
     public void AddOpenNode(int x, int y, MazeRoom room)
     {
         MazeNode node = GetOrCreateNode(x, y);
         node.IsOpen = true;
-        node.Image = CreateRectSprite(node.Rect, Color.yellow);
+        node.Image = CreateRectSprite(node.Rect, Color.yellow, FloorType.Room);
         node.IsRoom = true;
         node.Room = room;
     }
@@ -211,10 +217,15 @@ public class MazeCarver : MonoBehaviour
                 MazeNode node = GetOrCreateNode(x, y);
                 if (node != null && node.IsWall && !node.IsOpen)
                 {
-                    node.Image.color = Color.yellow;
+                    //node.Image.color = Color.yellow;
                     node.IsWall = false;
                     node.IsOpen = true;
                     node.IsRoom = true;
+                    if (node.Image != null)
+                    {
+                        node.Image.color = mapGenerator.RoomFloorSpriteColor;
+                        node.Image.sprite = mapGenerator.RoomFloorSprite;
+                    }
                 }
             }
         }
@@ -315,7 +326,7 @@ public class MazeCarver : MonoBehaviour
     {
         node.IsOpen = true;
         carvedNodes.Add(node);
-        node.Image = CreateRectSprite(node.Rect, Color.red);
+        node.Image = CreateRectSprite(node.Rect, Color.red, FloorType.Path);
     }
 
     private void CarveBetween(MazeNode dirNode, MazeNode node)
@@ -344,12 +355,13 @@ public class MazeCarver : MonoBehaviour
             newY = dirY - 1;
         }
         MazeNode betweenNode = GetOrCreateNode(newX, newY);
-        betweenNode.Image = CreateRectSprite(betweenNode.Rect, Color.yellow);
+        FloorType floorType = (node.IsWall || node.IsRoom) ? FloorType.Room : FloorType.Path;
+        betweenNode.Image = CreateRectSprite(betweenNode.Rect, Color.white, floorType);
         betweenNode.IsOpen = true;
 
         node.IsOpen = true;
         carvedNodes.Add(node);
-        node.Image = CreateRectSprite(node.Rect, Color.yellow);
+        node.Image = CreateRectSprite(node.Rect, Color.white, floorType);
     }
 
     private void Traverse()
@@ -398,7 +410,7 @@ public class MazeCarver : MonoBehaviour
             {
                 node.IsOpen = true;
                 node.IsWall = false;
-                node.Image.color = Color.white;
+                //node.Image.color = Color.white;
                 CarveBetween(dirNode, node);
                 someDoorsWereCreated = true;
             }
@@ -419,19 +431,31 @@ public class MazeCarver : MonoBehaviour
         }*/
     }
 
-    private SpriteRenderer CreateRectSprite(Rect rect, Color color)
+    private SpriteRenderer CreateRectSprite(Rect rect, Color color, FloorType floorType)
     {
         if (spritePrefab == null)
         {
-            spritePrefab = Resources.Load<SpriteRenderer>("RoomSprite");
+            spritePrefab = Resources.Load<SpriteRenderer>("NodeSprite");
         }
         SpriteRenderer spriteRenderer = Instantiate(spritePrefab, Vector2.zero, Quaternion.identity);
         spriteRenderer.transform.parent = transform;
-        spriteRenderer.transform.localScale = mapGenerator.GetScaled(new Vector2(rect.width, rect.height));
+        Vector3 scale = mapGenerator.GetScaled(new Vector2(rect.width, rect.height));
+        scale.z = 1f;
+        spriteRenderer.transform.localScale = scale;
         spriteRenderer.transform.position = mapGenerator.GetScaled(rect.position);
         spriteRenderer.gameObject.SetActive(true);
         spriteRenderer.color = color;
         spriteRenderer.name = string.Format("x:{0} y:{1}", rect.x, rect.y);
+        if (floorType == FloorType.Path) {
+            spriteRenderer.color = mapGenerator.FloorSpriteColor;
+            spriteRenderer.sprite = mapGenerator.FloorSprite;
+            spriteRenderer.sortingOrder = 20;
+        }
+        if (floorType == FloorType.Room) {
+            spriteRenderer.color = mapGenerator.RoomFloorSpriteColor;
+            spriteRenderer.sprite = mapGenerator.RoomFloorSprite;
+            spriteRenderer.sortingOrder = 30;
+        }
         return spriteRenderer;
     }
     private MazeNode GetOrCreateNode(int x, int y)
@@ -508,6 +532,7 @@ public class MazeNode
     public MazeRoom Room = null;
 
     public SpriteRenderer Image;
+
 
     public override bool Equals(System.Object obj)
     {

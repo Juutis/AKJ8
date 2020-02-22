@@ -48,12 +48,28 @@ public class MapGenerator : MonoBehaviour
     private List<RoomType> tinyRooms;
 
     private SpriteRenderer spritePrefab;
+    private SpriteRenderer worldSprite;
     private MazeCarver mazeCarverPrefab;
     private MapPopulator mapPopulatorPrefab;
 
     private List<MazeRoom> rooms;
     public List<MazeRoom> Rooms { get { return rooms; } }
     private Rect world;
+
+    [SerializeField]
+    [ShowAssetPreview]
+    private Sprite floorSprite;
+    [SerializeField]
+    public Color FloorSpriteColor;
+
+    [SerializeField]
+    [ShowAssetPreview]
+    private Sprite roomFloorSprite;
+    [SerializeField]
+    public Color RoomFloorSpriteColor;
+
+    public Sprite FloorSprite { get { return floorSprite; } }
+    public Sprite RoomFloorSprite { get { return roomFloorSprite; } }
 
     private MazeCarver mazeCarver;
 
@@ -93,10 +109,12 @@ public class MapGenerator : MonoBehaviour
         return coordinate * scale;
     }
 
-    public MazeRoom GetStartRoom() {
+    public MazeRoom GetStartRoom()
+    {
         return rooms.Find(room => room.IsStart);
     }
-    public MazeRoom GetEndRoom() {
+    public MazeRoom GetEndRoom()
+    {
         return rooms.Find(room => room.IsEnd);
     }
 
@@ -104,28 +122,37 @@ public class MapGenerator : MonoBehaviour
     {
         List<MazeNode> emptyNodes = mazeCarver
             .GetAllNodes()
-            .FindAll(node => node != null && !node.IsWall && node.IsOpen && node.IsRoom  && node.Room != null && node.Room.Equals(room));
+            .FindAll(node => node != null && !node.IsWall && node.IsOpen && node.IsRoom && node.Room != null && node.Room.Equals(room));
         return emptyNodes;
     }
 
-    public MazeNode GetRandomEmptyNode(MazeRoom room) {
+    public MazeNode GetRandomEmptyNode(MazeRoom room)
+    {
         List<MazeNode> emptyNodes = GetEmptyRoomNodes(room);
         int randomIndex = Random.Range(0, emptyNodes.Count);
         Debug.Log(string.Format("Randomly getting node #{0} from {1} with {2} nodes.", randomIndex, room, emptyNodes.Count));
         return emptyNodes[randomIndex];
     }
 
-    public MazeNode GetRandomEmptyNodeCloseToCenter(MazeRoom room) {
+    public MazeNode GetRandomEmptyNodeCloseToCenter(MazeRoom room)
+    {
         List<MazeNode> emptyNodes = GetEmptyRoomNodes(room);
         int min = 0;
         int max = emptyNodes.Count;
-        if (emptyNodes.Count > 2) {
+        if (emptyNodes.Count > 2)
+        {
             min += emptyNodes.Count / 2;
             max -= emptyNodes.Count / 2;
         }
         int randomIndex = Random.Range(min, max);
         Debug.Log(string.Format("Randomly getting node #{0} from {1} with {2} nodes.", randomIndex, room, emptyNodes.Count));
         return emptyNodes[randomIndex];
+    }
+
+    public void HideWorldSprite() {
+        if (worldSprite != null) {
+            worldSprite.enabled = false;
+        }
     }
 
     private void RemoveOldWorld()
@@ -139,6 +166,9 @@ public class MapGenerator : MonoBehaviour
             Destroy(mazeCarver.gameObject);
         }
         rooms = new List<MazeRoom>();
+        if (worldSprite != null) {
+            Destroy(worldSprite.gameObject);
+        }
     }
 
     private void CreateWorld()
@@ -154,7 +184,7 @@ public class MapGenerator : MonoBehaviour
             return;
         }
         worldCreateAttempts += 1;
-        CreateRoomSprite(world, Color.gray);
+        worldSprite = CreateRoomSprite(world, Color.gray);
 
         mazeCarver = InitializeCarver();
 
@@ -176,6 +206,8 @@ public class MapGenerator : MonoBehaviour
         endRoom.Image.color = Color.white;
 
     }
+
+
     private void PlaceRooms(List<RoomType> roomTypes, int attempts)
     {
         for (int attemptNumber = 1; attemptNumber <= attempts; attemptNumber += 1)
@@ -206,7 +238,7 @@ public class MapGenerator : MonoBehaviour
         );
         rooms.Add(roomWithPadding);
         roomWithPadding.Image = CreateRoomSprite(roomWithPadding.Rect, Color.gray);
-        CreateRoomSprite(actualRoom, Color.blue);
+        roomWithPadding.ActualImage = CreateRoomSprite(actualRoom, Color.blue);
         PlaceRoomNodes(roomWithPadding, actualRoom);
     }
 
@@ -328,6 +360,7 @@ public class MazeRoom
     public Rect Rect;
 
     public SpriteRenderer Image;
+    public SpriteRenderer ActualImage;
 
     private List<MazeNode> doors;
 
@@ -335,6 +368,11 @@ public class MazeRoom
     private int maxDoors = 3;
 
     public bool HasAtLeastOneDoor { get { return numberOfDoors > 0; } }
+
+    public void HideImage() {
+        Image.enabled = false;
+        ActualImage.enabled = false;
+    }
 
     public float Distance(MazeRoom otherRoom)
     {
