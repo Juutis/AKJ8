@@ -14,13 +14,22 @@ public class RoomType
     public int Height = 3;
 }
 
+public enum OrthogonalDirection
+{
+    None,
+    North,
+    East,
+    South,
+    West
+}
+
 public class MapGenerator : MonoBehaviour
 {
 
-    [MinValue(50)]
+    [MinValue(10)]
     [SerializeField]
     private int worldWidth = 2000;
-    [MinValue(50)]
+    [MinValue(10)]
     [SerializeField]
     private int worldHeight = 2000;
 
@@ -42,55 +51,158 @@ public class MapGenerator : MonoBehaviour
     private MazeCarver mazeCarverPrefab;
 
 
-    private List<Rect> rooms;
+    private List<MazeRoom> rooms;
     private Rect world;
 
     private MazeCarver mazeCarver;
+
+    private int worldCreateAttempts = 0;
+    private int maxWorldCreateAttempts = 5;
+    private int minRoomCount = 3;
+
     void Start()
     {
         world = new Rect(0, 0, worldWidth, worldHeight);
+        CreateWorld();
+    }
+
+    private void RemoveOldWorld() {
+        foreach(Transform child in transform) {
+            Destroy(child.gameObject);
+        }
+        if (mazeCarver != null) {
+            Destroy(mazeCarver);
+        }
+    }
+
+    private void CreateWorld()
+    {
+        if (worldCreateAttempts >= maxWorldCreateAttempts) {
+            Debug.Log("we tried but no dice");
+            return;
+        }
+        worldCreateAttempts += 1;
+        RemoveOldWorld();
         CreateRoomSprite(world, Color.gray);
-        rooms = new List<Rect>();
+        rooms = new List<MazeRoom>();
         mazeCarver = InitializeCarver();
+
         PlaceRooms(bigRooms, bigRoomPlacementAttempts);
         PlaceRooms(smallRooms, smallRoomPlacementAttempts);
         PlaceRooms(tinyRooms, tinyRoomPlacementAttempts);
         mazeCarver.CarveFirstNode();
+        mazeCarver.StartCarving();
+        mazeCarver.FindDeadEnds();
+
+        List<MazeRoom> roomsWithDoors = rooms.FindAll(room => room.HasAtLeastOneDoor);
+        if (roomsWithDoors.Count < minRoomCount) {
+            CreateWorld();
+        } else {
+            SelectStartAndEndRooms(roomsWithDoors);
+        }
+
     }
 
+    private void SelectStartAndEndRooms(List<MazeRoom> roomsWithDoors)
+    {
+        int startRoomIndex = Random.Range(0, roomsWithDoors.Count);
+        MazeRoom startRoom = roomsWithDoors[startRoomIndex];
+        startRoom.IsStart = true;
+        startRoom.Image.color = Color.green;
+        roomsWithDoors.RemoveAt(startRoomIndex);
+        MazeRoom endRoom = roomsWithDoors.OrderByDescending(room => room.Distance(startRoom)).First();
+        endRoom.IsEnd = true;
+        endRoom.Image.color = Color.white;
+
+    }
     private void PlaceRooms(List<RoomType> roomTypes, int attempts)
     {
         for (int attemptNumber = 1; attemptNumber <= attempts; attemptNumber += 1)
         {
-            Rect room = GenerateRoom(roomTypes);
+            MazeRoom room = GenerateRoom(roomTypes);
             AttemptToPlaceARoom(room);
         }
     }
 
-    private void AttemptToPlaceARoom(Rect room) {
-        bool outOfBounds = room.xMax > worldWidth || room.yMax > worldHeight;
-        bool overlaps = rooms.Any(existingRoom => room.Overlaps(existingRoom));
+    private void AttemptToPlaceARoom(MazeRoom room)
+    {
+        bool outOfBounds = room.Rect.xMax > worldWidth || room.Rect.yMax > worldHeight;
+        bool overlaps = rooms.Any(existingRoom => room.Rect.Overlaps(existingRoom.Rect));
         if (!overlaps && !outOfBounds)
         {
             PlaceRoom(room);
         }
     }
 
-    private void PlaceRoom(Rect roomWithPadding)
+    private void PlaceRoom(MazeRoom roomWithPadding)
     {
-        Rect actualRoom = new Rect(roomWithPadding.x + 1, roomWithPadding.y + 1, roomWithPadding.width - 2, roomWithPadding.height - 2);
+        Rect actualRoom = new Rect(
+            roomWithPadding.Rect.x + 1,
+            roomWithPadding.Rect.y + 1,
+            roomWithPadding.Rect.width - 2,
+            roomWithPadding.Rect.height - 2
+        );
         rooms.Add(roomWithPadding);
-        CreateRoomSprite(roomWithPadding, Color.green);
+        roomWithPadding.Image = CreateRoomSprite(roomWithPadding.Rect, Color.gray);
         CreateRoomSprite(actualRoom, Color.blue);
-        for (int y = (int)roomWithPadding.y; y < (int)roomWithPadding.yMax; y += 1)
+        PlaceRoomNodes(roomWithPadding, actualRoom);
+    }
+
+    private void PlaceRoomNodes(MazeRoom room, Rect actualRoom)
+    {
+        int roomY = (int)actualRoom.y;
+        int roomYMax = (int)actualRoom.yMax;
+        int roomX = (int)actualRoom.x;
+        int roomXMax = (int)actualRoom.xMax;
+        for (int y = roomY; y < roomYMax; y += 1)
         {
-            for (int x = (int)roomWithPadding.x; x < (int)roomWithPadding.xMax; x += 1)
+            for (int x = roomX; x < roomXMax; x += 1)
             {
-                mazeCarver.AddWall(x, y);
+                bool isWall = (
+                    x == roomX ||
+                    x == roomXMax - 1 ||
+                    y == roomY ||
+                    y == roomYMax - 1
+                );
+
+                if (isWall)
+                {
+                    bool isCorner = (
+                        (x == roomX && y == roomY) ||
+                        (x == roomX && y == roomYMax - 1) ||
+                        (x == roomXMax - 1 && y == roomY) ||
+                        (x == roomXMax - 1 && y == roomYMax - 1)
+                    );
+                    mazeCarver.AddWall(x, y, isCorner, room, GetWallPosition(x, y, roomY, roomYMax, roomX, roomXMax));
+                }
+                else
+                {
+                    mazeCarver.AddOpenNode(x, y);
+                }
             }
         }
     }
 
+    private OrthogonalDirection GetWallPosition(int x, int y, int yMin, int yMax, int xMin, int xMax)
+    {
+        if (x == xMin)
+        {
+            return OrthogonalDirection.West;
+        }
+        if (x == xMax)
+        {
+            return OrthogonalDirection.East;
+        }
+        if (y == yMin)
+        {
+            return OrthogonalDirection.South;
+        }
+        if (y == yMax)
+        {
+            return OrthogonalDirection.North;
+        }
+        return OrthogonalDirection.None;
+    }
     void Update()
     {
         /*if (Input.GetKeyDown(KeyCode.Space)) {
@@ -125,18 +237,65 @@ public class MapGenerator : MonoBehaviour
         return spriteRenderer;
     }
 
-    private int NearestEven(int number) {
+    private int NearestEven(int number)
+    {
         return number += (number % 2);
     }
 
-    private Rect GenerateRoom(List<RoomType> roomTypes)
+    private MazeRoom GenerateRoom(List<RoomType> roomTypes)
     {
         RoomType roomType = roomTypes[Random.Range(0, roomTypes.Count)];
         int x = Random.Range((int)world.xMin, (int)world.xMax);
         int y = Random.Range((int)world.yMin, (int)world.yMax);
 
-        Rect room = new Rect(NearestEven(x), NearestEven(y), roomType.Width, roomType.Height);
-
+        MazeRoom room = new MazeRoom(new Rect(NearestEven(x), NearestEven(y), roomType.Width, roomType.Height));
         return room;
+    }
+}
+
+public class MazeRoom
+{
+    public MazeRoom(Rect rect)
+    {
+        Rect = rect;
+    }
+
+    public bool IsStart = false;
+    public bool IsEnd = false;
+
+    public Rect Rect;
+
+    public SpriteRenderer Image;
+
+    private List<MazeNode> doors;
+
+    private int numberOfDoors = 0;
+    private int maxDoors = 3;
+
+    public bool HasAtLeastOneDoor { get { return numberOfDoors > 0; } }
+
+    public float Distance(MazeRoom otherRoom) {
+        return Vector2.Distance(Rect.position, otherRoom.Rect.position);
+    }
+
+    public bool AttemptToCreateADoor(MazeNode node)
+    {
+        if (doors == null)
+        {
+            doors = new List<MazeNode>();
+        }
+        if (numberOfDoors > maxDoors)
+        {
+            Debug.Log(string.Format("Too many doors ({0} / {1})!", numberOfDoors, maxDoors));
+            return false;
+        }
+        bool alreadyHaveDoorThere = doors.Any(door => door.WallPosition == node.WallPosition);
+        if (!alreadyHaveDoorThere)
+        {
+            doors.Add(node);
+            numberOfDoors += 1;
+            return true;
+        }
+        return false;
     }
 }
