@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Equipable : MonoBehaviour
 {
@@ -10,6 +11,15 @@ public class Equipable : MonoBehaviour
 
     [SerializeField]
     Transform sprite;
+
+    [SerializeField]
+    Image notificationBackground;
+
+    [SerializeField]
+    Color colorTooFar;
+
+    [SerializeField]
+    Color colorCloseEnough;
 
     // Start is called before the first frame update
     void Start()
@@ -29,9 +39,17 @@ public class Equipable : MonoBehaviour
         
     }
 
-    public void Hover()
+    public void Hover(bool closeEnough)
     {
         infoCanvas.gameObject.SetActive(true);
+        if (closeEnough)
+        {
+            notificationBackground.color = colorCloseEnough;
+        }
+        else
+        {
+            notificationBackground.color = colorTooFar;
+        }
     }
     
     public void UnHover()

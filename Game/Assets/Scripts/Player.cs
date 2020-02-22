@@ -71,16 +71,14 @@ public class Player : MonoBehaviour
             {
                 lastHovered.UnHover();
             }
-            if (equipable != null)
-            {
-                equipable.Hover();
-            }
             lastHovered = equipable;
         }
 
-        if (Input.GetButtonDown("Pick Up"))
+        if (equipable != null)
         {
-            if (equipable != null && Vector2.Distance(transform.position, equipable.transform.position) < UseRange)
+            var closeEnough = Vector2.Distance(transform.position, equipable.transform.position) < UseRange;
+            equipable.Hover(closeEnough);
+            if (Input.GetButtonDown("Pick Up") && closeEnough)
             {
                 equipable.Equip();
                 MagicWand wand = equipable.GetComponent<MagicWand>();
