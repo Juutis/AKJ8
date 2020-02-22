@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     Character character;
     public MagicWand magicWand;
     Rigidbody rb;
+    private SpriteRenderer sprite;
 
     Vector2 moveInput;
 
@@ -21,6 +22,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     float health = 100.0f;
 
+    bool invincible = false, wasInvincible = false;
+    float lastHurt = 0.0f;
+
+    Color origColor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +34,15 @@ public class Player : MonoBehaviour
         EquipWand(GetComponentInChildren<MagicWand>());
         rb = GetComponent<Rigidbody>();
         equipableMask = LayerMask.GetMask("Equipable");
+
+        foreach (var rend in GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (rend.tag == "Character Sprite")
+            {
+                sprite = rend;
+            }
+        }
+        origColor = sprite.color;
     }
 
     // Update is called once per frame
@@ -91,6 +106,19 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+        if (invincible)
+        {
+            var color = Color.red;
+            color.a = 0.75f + 0.25f * Mathf.Cos((Time.time - lastHurt)*5.0f);
+            sprite.color = color;
+        }
+
+        if (wasInvincible && !invincible)
+        {
+            sprite.color = origColor;
+        }
+        wasInvincible = invincible;
     }
 
     public void EquipWand(MagicWand wand)
@@ -122,10 +150,21 @@ public class Player : MonoBehaviour
 
     public void Hurt(float damage, Vector3 fromPosition)
     {
-        health -= damage;
-        if (health <= 0)
+        if (!invincible)
         {
-            Debug.Log("PLAYER DEAD");
+            health -= damage;
+            if (health <= 0)
+            {
+                Debug.Log("PLAYER DEAD");
+            }
+            invincible = true;
+            lastHurt = Time.time;
+            Invoke("ResetInvincibility", 0.5f);
         }
+    }
+
+    public void ResetInvincibility()
+    {
+        invincible = false;
     }
 }
