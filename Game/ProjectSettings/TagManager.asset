@@ -7,6 +7,7 @@ TagManager:
   - Character Sprite
   - PlayerProjectile
   - UI
+  - ClampedArea
   layers:
   - Default
   - TransparentFX
