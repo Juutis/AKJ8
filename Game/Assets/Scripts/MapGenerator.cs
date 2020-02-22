@@ -66,41 +66,45 @@ public class MapGenerator : MonoBehaviour
         CreateWorld();
     }
 
+    public void MazeCarverFinished() {
+        List<MazeRoom> roomsWithDoors = rooms.FindAll(room => room.HasAtLeastOneDoor);
+        if (roomsWithDoors.Count < minRoomCount) {
+            Debug.Log(string.Format("Only {0} rooms found. {1} required!", roomsWithDoors.Count, minRoomCount));
+            CreateWorld();
+        } else {
+            SelectStartAndEndRooms(roomsWithDoors);
+        }
+    }
+
     private void RemoveOldWorld() {
         foreach(Transform child in transform) {
             Destroy(child.gameObject);
         }
         if (mazeCarver != null) {
-            Destroy(mazeCarver);
+            Destroy(mazeCarver.gameObject);
         }
+        rooms = new List<MazeRoom>();
     }
 
     private void CreateWorld()
     {
+        RemoveOldWorld();
         if (worldCreateAttempts >= maxWorldCreateAttempts) {
-            Debug.Log("we tried but no dice");
+            Debug.Log(string.Format(
+                "Mapgen couldn't create a world with at least {0} rooms with doors. Tried {1} times. Please re-evaluate your configuration.",
+                minRoomCount,
+                worldCreateAttempts
+            ));
             return;
         }
         worldCreateAttempts += 1;
-        RemoveOldWorld();
         CreateRoomSprite(world, Color.gray);
-        rooms = new List<MazeRoom>();
         mazeCarver = InitializeCarver();
 
         PlaceRooms(bigRooms, bigRoomPlacementAttempts);
         PlaceRooms(smallRooms, smallRoomPlacementAttempts);
         PlaceRooms(tinyRooms, tinyRoomPlacementAttempts);
-        mazeCarver.CarveFirstNode();
         mazeCarver.StartCarving();
-        mazeCarver.FindDeadEnds();
-
-        List<MazeRoom> roomsWithDoors = rooms.FindAll(room => room.HasAtLeastOneDoor);
-        if (roomsWithDoors.Count < minRoomCount) {
-            CreateWorld();
-        } else {
-            SelectStartAndEndRooms(roomsWithDoors);
-        }
-
     }
 
     private void SelectStartAndEndRooms(List<MazeRoom> roomsWithDoors)
@@ -123,6 +127,7 @@ public class MapGenerator : MonoBehaviour
             AttemptToPlaceARoom(room);
         }
     }
+
 
     private void AttemptToPlaceARoom(MazeRoom room)
     {
@@ -218,7 +223,7 @@ public class MapGenerator : MonoBehaviour
             mazeCarverPrefab = Resources.Load<MazeCarver>("MazeCarver");
         }
         MazeCarver carver = Instantiate(mazeCarverPrefab, Vector2.zero, Quaternion.identity);
-        carver.Initialize(world);
+        carver.Initialize(world, this);
         return carver;
     }
 

@@ -15,10 +15,11 @@ public class MazeCarver : MonoBehaviour
     private int width;
     private int height;
 
+    private bool animate = true;
+    private float animateInterval = 0.03f;
+
     private int maxDeadEndSearches = 100;
     private int deadEndSearches = 0;
-
-    //private int newAttempts = 3;
 
     private Dictionary<MazeNode, List<MazeNode>> neighborLists = new Dictionary<MazeNode, List<MazeNode>>();
 
@@ -39,8 +40,11 @@ public class MazeCarver : MonoBehaviour
     };
 
     private SpriteRenderer spritePrefab;
-    public void Initialize(Rect world)
+
+    private MapGenerator mapGenerator;
+    public void Initialize(Rect world, MapGenerator mapGen)
     {
+        mapGenerator = mapGen;
         height = (int)world.height;
         width = (int)world.width;
         nodes = new MazeNode[height][];
@@ -69,10 +73,6 @@ public class MazeCarver : MonoBehaviour
         node.Room = room;
         node.WallPosition = wallPosition;
         node.Image = CreateRectSprite(node.Rect, Color.blue);
-        /*if (!isCorner)
-        {
-            Debug.Log(string.Format("Added wall: {0}, {1}, corner: {2}", x, y, isCorner));
-        }*/
     }
 
     public void AddOpenNode(int x, int y)
@@ -81,10 +81,11 @@ public class MazeCarver : MonoBehaviour
         node.IsOpen = true;
         node.Image = CreateRectSprite(node.Rect, Color.yellow);
         node.IsRoom = true;
-        //Debug.Log(string.Format("Added open: {0}, {1}", x, y));
     }
 
-    public void StartCarving () {
+    public void StartCarving()
+    {
+        CarveFirstNode();
         Traverse();
     }
     public void FindDeadEnds()
@@ -96,12 +97,14 @@ public class MazeCarver : MonoBehaviour
             for (int x = 0; x < width; x += 1)
             {
                 MazeNode node = nodes[y][x];
-                if (node != null && node.IsOpen && !node.IsRoom && !node.IsWall && !node.IsDeadEnd) {
+                if (node != null && node.IsOpen && !node.IsRoom && !node.IsWall && !node.IsDeadEnd)
+                {
                     List<MazeNode> neighbors = GetFineNeighbors(node);
                     int openNeighborCount = neighbors.FindAll(neighbor => !neighbor.IsDeadEnd && neighbor.IsOpen).Count;
 
                     bool isDeadEnd = openNeighborCount < 2;
-                    if (isDeadEnd) {
+                    if (isDeadEnd)
+                    {
                         node.Image.color = Color.magenta;
                         node.IsDeadEnd = true;
                         foundDeadEnd = true;
@@ -111,12 +114,59 @@ public class MazeCarver : MonoBehaviour
             }
         }
         deadEndSearches += 1;
-        if (foundDeadEnd && deadEndSearches < maxDeadEndSearches) {
-            FindDeadEnds();
-        } else {
+        if (foundDeadEnd && deadEndSearches < maxDeadEndSearches)
+        {
+            if (animate)
+            {
+                Invoke("FindDeadEnds", animateInterval);
+            }
+            else
+            {
+                FindDeadEnds();
+            }
+        }
+        else
+        {
             Debug.Log(string.Format("Finished dead end searching at {0}", deadEndSearches));
+            RemoveDeadEnds();
         }
     }
+
+    private MazeNode currentDeadEndNode;
+    private void RemoveDeadEnds() {
+        bool deadEndsFound = false;
+        for (int y = 0; y < height; y += 1)
+        {
+            for (int x = 0; x < width; x += 1)
+            {
+                MazeNode node = nodes[y][x];
+                if (node != null && node.IsDeadEnd)
+                {
+                    deadEndsFound = true;
+                    currentDeadEndNode = node;
+                    if (animate) {
+                        Invoke("RemoveCurrentDeadEnd", animateInterval);
+                    } else {
+                        RemoveCurrentDeadEnd();
+                    }
+                    return;
+                }
+            }
+        }
+        if (!deadEndsFound) {
+            mapGenerator.MazeCarverFinished();
+        }
+    }
+
+    private void RemoveCurrentDeadEnd() {
+        if (currentDeadEndNode != null) {
+            currentDeadEndNode.Image.color = Color.clear;
+            currentDeadEndNode.IsDeadEnd = false;
+            currentDeadEndNode = null;
+        }
+        RemoveDeadEnds();
+    }
+
     private MazeNode GetRandomNodeThatIsAvailable()
     {
         List<Vector2> positions = new List<Vector2>();
@@ -190,6 +240,7 @@ public class MazeCarver : MonoBehaviour
         if (carvedNodes.Count < 1)
         {
             Debug.Log("No more!");
+            FindDeadEnds();
             return;
         }
         MazeNode node = carvedNodes[Random.Range(0, carvedNodes.Count)];
@@ -208,7 +259,14 @@ public class MazeCarver : MonoBehaviour
         {
             CarveBetween(node, cleanNeighbors[Random.Range(0, cleanNeighbors.Count)]);
         }
-        Traverse();
+        if (animate)
+        {
+            Invoke("Traverse", animateInterval);
+        }
+        else
+        {
+            Traverse();
+        }
     }
 
     private bool CreateDoors(MazeNode dirNode, List<MazeNode> nodes)
@@ -285,7 +343,8 @@ public class MazeCarver : MonoBehaviour
         return neighbors;
     }
 
-    private List<MazeNode> FindNeighbors(MazeNode node, List<Vector2> neighborPositions) {
+    private List<MazeNode> FindNeighbors(MazeNode node, List<Vector2> neighborPositions)
+    {
         List<MazeNode> neighbors = new List<MazeNode>();
         foreach (Vector2 pos in neighborPositions)
         {
