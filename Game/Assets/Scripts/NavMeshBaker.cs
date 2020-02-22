@@ -11,5 +11,8 @@ public class NavMeshBaker : MonoBehaviour
     public void Bake() {
         surface = GetComponent<NavMeshSurface>();
         surface.BuildNavMesh();
+        foreach(Transform child in transform) {
+            Destroy(child.gameObject);
+        }
     }
 }

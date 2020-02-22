@@ -16,10 +16,12 @@ public class MazeCarver : MonoBehaviour
     private int height;
 
     private bool animate = true;
-    private float animateInterval = 0.01f;
+    private float animateInterval = 0f;
 
     private int maxDeadEndSearches = 100;
     private int deadEndSearches = 0;
+
+    private MeshCombiner meshCombinerPrefab;
 
     private int scale = 2;
 
@@ -71,6 +73,10 @@ public class MazeCarver : MonoBehaviour
         worldRect = world;
     }
 
+    public List<MazeNode> GetAllNodes () {
+        return nodes.SelectMany(T => T).ToList();
+    }
+
     public void CarveFirstNode()
     {
         MazeNode firstNode = GetRandomNodeThatIsAvailable();
@@ -87,12 +93,13 @@ public class MazeCarver : MonoBehaviour
         node.Image = CreateRectSprite(node.Rect, Color.blue);
     }
 
-    public void AddOpenNode(int x, int y)
+    public void AddOpenNode(int x, int y, MazeRoom room)
     {
         MazeNode node = GetOrCreateNode(x, y);
         node.IsOpen = true;
         node.Image = CreateRectSprite(node.Rect, Color.yellow);
         node.IsRoom = true;
+        node.Room = room;
     }
 
     public void StartCarving()
@@ -207,6 +214,7 @@ public class MazeCarver : MonoBehaviour
                     node.Image.color = Color.yellow;
                     node.IsWall = false;
                     node.IsOpen = true;
+                    node.IsRoom = true;
                 }
             }
         }
@@ -223,14 +231,13 @@ public class MazeCarver : MonoBehaviour
                 if (node != null && node.IsOpen && !node.IsWall && !node.IsDeadEnd && !node.IsHidden)
                 {
                     GameObject navMeshPlane = CreateNavMeshPlane(navMeshBaker.transform);
-                    //navMeshPlane.transform.position = new Vector2(node.Rect.x + 0.5f, node.Rect.y + 0.5f);
                     Vector2 newPos = mapGenerator.GetScaled(node.Rect.position);
-                    newPos += mapGenerator.GetScaled(new Vector2(0.5f, 0.5f));
                     navMeshPlane.transform.position = newPos;
                 }
             }
         }
-        Invoke("Bake", 0.5f);
+        //Invoke("Bake", 0.5f);
+        Bake();
     }
 
     private void Bake()
@@ -240,33 +247,30 @@ public class MazeCarver : MonoBehaviour
 
     private void Create3DWalls()
     {
+        if (meshCombinerPrefab == null) {
+            meshCombinerPrefab = Resources.Load<MeshCombiner>("MeshCombiner");
+        }
+        MeshCombiner meshCombiner = Instantiate(meshCombinerPrefab);
         for (int y = -1; y <= height; y += 1)
         {
             for (int x = -1; x <= width; x += 1)
             {
                 MazeNode node = GetOrCreateNode(x, y);
-                GameObject wall = Instantiate(wallPrefab, transform);
+                GameObject wall = Instantiate(wallPrefab, meshCombiner.transform);
                 
                 if (node == null)
                 {
                     Vector2 newPos = mapGenerator.GetScaled(new Vector2(x, y));
-
-                    newPos += mapGenerator.GetScaled(new Vector2(0.5f, 0.5f));
-                    /*newPos.x += 0.5f;
-                    newPos.y += 0.5f;*/
                     wall.transform.position = newPos;
                 }
                 else if (node.IsWall || !node.IsOpen || node.IsDeadEnd)
                 {
                     Vector2 newPos = mapGenerator.GetScaled(node.Rect.position);
-                    newPos += mapGenerator.GetScaled(new Vector2(0.5f, 0.5f));
-                    /*newPos.x += 0.5f;
-                    newPos.y += 0.5f;*/
                     wall.transform.position = newPos;
                 }
-
             }
         }
+        meshCombiner.Combine();
     }
 
     private void RemoveCurrentDeadEnd()
