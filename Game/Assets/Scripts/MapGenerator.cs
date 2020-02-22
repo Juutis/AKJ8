@@ -50,8 +50,10 @@ public class MapGenerator : MonoBehaviour
     private SpriteRenderer spritePrefab;
     private MazeCarver mazeCarverPrefab;
 
-
+    private GameObject startPrefab;
+    private GameObject endPrefab;
     private List<MazeRoom> rooms;
+    public List<MazeRoom> Rooms { get { return rooms; } }
     private Rect world;
 
     private MazeCarver mazeCarver;
@@ -65,29 +67,86 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
+        startPrefab = Resources.Load<GameObject>("StartNode");
+        endPrefab = Resources.Load<GameObject>("EndNode");
         world = new Rect(0, 0, worldWidth, worldHeight);
         CreateWorld();
     }
 
-    public void MazeCarverFinished() {
+    public void MazeCarverFinished()
+    {
         List<MazeRoom> roomsWithDoors = rooms.FindAll(room => room.HasAtLeastOneDoor);
-        if (roomsWithDoors.Count < minRoomCount) {
+        if (roomsWithDoors.Count < minRoomCount)
+        {
             Debug.Log(string.Format("Only {0} rooms found. {1} required!", roomsWithDoors.Count, minRoomCount));
             CreateWorld();
-        } else {
+        }
+        else
+        {
             SelectStartAndEndRooms(roomsWithDoors);
+            MazeRoom startRoom = GetStartRoom();
+            MazeNode startNode = GetRandomEmptyNodeCloseToCenter(startRoom);
+            GameObject start = Instantiate(startPrefab, transform);
+            start.transform.localScale = GetScaled(Vector2.one);
+            start.transform.position = GetScaled(startNode.Rect.position);
+
+            MazeRoom endRoom = GetEndRoom();
+            MazeNode endNode = GetRandomEmptyNodeCloseToCenter(endRoom);
+            GameObject end = Instantiate(endPrefab, transform);
+            end.transform.localScale = GetScaled(Vector2.one);
+            end.transform.position = GetScaled(endNode.Rect.position);
+
         }
     }
 
-    public Vector2 GetScaled(Vector2 coordinate){
+    public Vector2 GetScaled(Vector2 coordinate)
+    {
         return coordinate * scale;
     }
 
-    private void RemoveOldWorld() {
-        foreach(Transform child in transform) {
+    public MazeRoom GetStartRoom() {
+        return rooms.Find(room => room.IsStart);
+    }
+    public MazeRoom GetEndRoom() {
+        return rooms.Find(room => room.IsEnd);
+    }
+
+    public List<MazeNode> GetEmptyRoomNodes(MazeRoom room)
+    {
+        List<MazeNode> emptyNodes = mazeCarver
+            .GetAllNodes()
+            .FindAll(node => node != null && !node.IsWall && node.IsOpen && node.IsRoom  && node.Room != null && node.Room.Equals(room));
+        return emptyNodes;
+    }
+
+    public MazeNode GetRandomEmptyNode(MazeRoom room) {
+        List<MazeNode> emptyNodes = GetEmptyRoomNodes(room);
+        int randomIndex = Random.Range(0, emptyNodes.Count);
+        Debug.Log(string.Format("Randomly getting node #{0} from {1} with {2} nodes.", randomIndex, room, emptyNodes.Count));
+        return emptyNodes[randomIndex];
+    }
+
+    public MazeNode GetRandomEmptyNodeCloseToCenter(MazeRoom room) {
+        List<MazeNode> emptyNodes = GetEmptyRoomNodes(room);
+        int min = 0;
+        int max = emptyNodes.Count;
+        if (emptyNodes.Count > 2) {
+            min += emptyNodes.Count / 2;
+            max -= emptyNodes.Count / 2;
+        }
+        int randomIndex = Random.Range(min, max);
+        Debug.Log(string.Format("Randomly getting node #{0} from {1} with {2} nodes.", randomIndex, room, emptyNodes.Count));
+        return emptyNodes[randomIndex];
+    }
+
+    private void RemoveOldWorld()
+    {
+        foreach (Transform child in transform)
+        {
             Destroy(child.gameObject);
         }
-        if (mazeCarver != null) {
+        if (mazeCarver != null)
+        {
             Destroy(mazeCarver.gameObject);
         }
         rooms = new List<MazeRoom>();
@@ -96,7 +155,8 @@ public class MapGenerator : MonoBehaviour
     private void CreateWorld()
     {
         RemoveOldWorld();
-        if (worldCreateAttempts >= maxWorldCreateAttempts) {
+        if (worldCreateAttempts >= maxWorldCreateAttempts)
+        {
             Debug.Log(string.Format(
                 "Mapgen couldn't create a world with at least {0} rooms with doors. Tried {1} times. Please re-evaluate your configuration.",
                 minRoomCount,
@@ -189,7 +249,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 else
                 {
-                    mazeCarver.AddOpenNode(x, y);
+                    mazeCarver.AddOpenNode(x, y, room);
                 }
             }
         }
@@ -243,7 +303,7 @@ public class MapGenerator : MonoBehaviour
         SpriteRenderer spriteRenderer = Instantiate(spritePrefab, Vector2.zero, Quaternion.identity);
         spriteRenderer.transform.parent = transform;
         spriteRenderer.transform.localScale = GetScaled(new Vector2(rect.width, rect.height));
-        spriteRenderer.transform.position = GetScaled(rect.position);
+        spriteRenderer.transform.position = GetScaled(rect.center) - Vector2.one;
         spriteRenderer.gameObject.SetActive(true);
         spriteRenderer.color = color;
         return spriteRenderer;
@@ -286,7 +346,8 @@ public class MazeRoom
 
     public bool HasAtLeastOneDoor { get { return numberOfDoors > 0; } }
 
-    public float Distance(MazeRoom otherRoom) {
+    public float Distance(MazeRoom otherRoom)
+    {
         return Vector2.Distance(Rect.position, otherRoom.Rect.position);
     }
 
