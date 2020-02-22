@@ -17,10 +17,16 @@ public class MapPopulator : MonoBehaviour
 
         CreateStartAndEnd();
         SpawnPlayer();
+        SetUpCamera();
         GameObject ui = GameObject.FindGameObjectWithTag("UI");
         //ui.SetActive(true);
     }
     
+    private void SetUpCamera() {
+        FollowerCamera followerCamera = Camera.main.GetComponent<FollowerCamera>();
+        followerCamera.StartFollowing();
+    }
+
     private void SpawnPlayer() {
         playerPrefab = Resources.Load<Player>("Player");
         Player player = Instantiate(playerPrefab, transform);

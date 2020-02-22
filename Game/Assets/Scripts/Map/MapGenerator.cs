@@ -85,7 +85,6 @@ public class MapGenerator : MonoBehaviour
             SelectStartAndEndRooms(roomsWithDoors);
             MapPopulator mapPopulator = Instantiate(mapPopulatorPrefab);
             mapPopulator.Initialize(this);
-
         }
     }
 
@@ -156,6 +155,7 @@ public class MapGenerator : MonoBehaviour
         }
         worldCreateAttempts += 1;
         CreateRoomSprite(world, Color.gray);
+
         mazeCarver = InitializeCarver();
 
         PlaceRooms(bigRooms, bigRoomPlacementAttempts);
