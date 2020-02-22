@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     float desiredRange = 1.0f;
 
     [SerializeField]
-    float health = 10.0f;
+    public float health = 10.0f;
 
     [SerializeField]
     ParticleSystem death;
