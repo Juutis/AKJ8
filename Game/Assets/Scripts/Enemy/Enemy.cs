@@ -212,11 +212,21 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
+        DropLoot();
         coll.enabled = false;
         rb.velocity = Vector3.zero;
         death.Play();
         character.sprite.SetActive(false);
         this.enabled = false;
         Destroy(gameObject, 0.5f);
+    }
+
+    public void DropLoot()
+    {
+        var loot = LootManager.main.GetLoot(gameObject);
+        foreach (var go in loot) {
+            Debug.Log("LOOT");
+            go.transform.position = transform.position;
+        }
     }
 }
