@@ -27,6 +27,10 @@ public class Player : MonoBehaviour
 
     Color origColor;
 
+
+    [SerializeField]
+    Transform keyParent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -96,7 +100,7 @@ public class Player : MonoBehaviour
         {
             var closeEnough = Vector2.Distance(transform.position, equipable.transform.position) < UseRange;
             equipable.Hover(closeEnough);
-            if (Input.GetButtonDown("Pick Up") && closeEnough)
+            if (Input.GetButtonDown("Pick Up") && closeEnough && !equipable.blocked)
             {
                 equipable.Equip();
                 MagicWand wand = equipable.GetComponent<MagicWand>();
@@ -109,6 +113,15 @@ public class Player : MonoBehaviour
                 if (exit != null)
                 {
                     exit.Exit();
+                }
+
+                Key key = equipable.GetComponent<Key>();
+                if (key != null)
+                {
+                    key.PickUp();
+                    key.transform.position = keyParent.position;
+                    key.transform.rotation = keyParent.rotation;
+                    key.transform.parent = keyParent;
                 }
             }
         }

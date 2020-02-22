@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Equipable : MonoBehaviour
 {
     public bool readyToPickUp = true;
+    public bool blocked = false;
 
     private Canvas infoCanvas;
 
@@ -42,7 +43,7 @@ public class Equipable : MonoBehaviour
     public void Hover(bool closeEnough)
     {
         infoCanvas.gameObject.SetActive(true);
-        if (closeEnough)
+        if (!blocked && closeEnough)
         {
             notificationBackground.color = colorCloseEnough;
         }
