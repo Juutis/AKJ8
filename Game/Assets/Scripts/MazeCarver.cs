@@ -49,6 +49,8 @@ public class MazeCarver : MonoBehaviour
     private int width;
     private int height;
 
+    private int newAttempts = 3;
+
     private Dictionary<MazeNode, List<MazeNode>> neighborLists = new Dictionary<MazeNode, List<MazeNode>>();
 
     private List<Vector2> positions = new List<Vector2>()
@@ -92,18 +94,22 @@ public class MazeCarver : MonoBehaviour
         List<Vector2> positions = new List<Vector2>();
         for (int y = 0; y < height; y += 1) {
             for (int x = 0; x < width; x += 1) {
-                MazeNode node = nodes[y][x];
-                if (node == null || !node.IsOpen && !node.IsWall) {
-                    positions.Add(new Vector2(x, y));
+                int evenX = NearestOdd(x);
+                int evenY = NearestOdd(y);
+                MazeNode node = nodes[evenY][evenX];
+                    if (node == null || !node.IsOpen && !node.IsWall) {
+                    positions.Add(new Vector2(evenX, evenY));
                 }
             }
         }
-
-        Vector2 randomPosition = positions[Random.Range(0, positions.Count)];
-        return GetOrCreateNode(
-            (int)randomPosition.x,
-            (int)randomPosition.y
-        );
+        if (positions.Count > 0) {
+            Vector2 randomPosition = positions[Random.Range(0, positions.Count)];
+            return GetOrCreateNode(
+                (int)randomPosition.x,
+                (int)randomPosition.y
+            );
+        }
+        return null;
     }
 
     private void Carve(MazeNode node)
@@ -146,6 +152,11 @@ public class MazeCarver : MonoBehaviour
     {
         if (carvedNodes.Count < 1)
         {
+            /*newAttempts -= 1;
+            if (newAttempts > 0) {
+                CarveFirstNode();
+            } else {
+            }*/
             Debug.Log("No more!");
             return;
         }
@@ -159,6 +170,9 @@ public class MazeCarver : MonoBehaviour
             CarveBetween(node, cleanNeighbors[Random.Range(0, cleanNeighbors.Count)]);
         }
         //Traverse();
+    }
+    private int NearestOdd(int number) {
+        return (number % 2 == 0) ? number + 1 : number;
     }
 
     private void Update() {
