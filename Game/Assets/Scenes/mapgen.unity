@@ -171,7 +171,7 @@ PrefabInstance:
     - target: {fileID: 1240797348158031958, guid: 748cc3abee743d74fa2cae3361415c5c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1240797348158031958, guid: 748cc3abee743d74fa2cae3361415c5c,
         type: 3}
@@ -343,7 +343,7 @@ PrefabInstance:
     - target: {fileID: 2514162460285613110, guid: 556cd7ba06e81aa438aabb6246042f06,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2514162460285613110, guid: 556cd7ba06e81aa438aabb6246042f06,
         type: 3}
@@ -412,79 +412,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 556cd7ba06e81aa438aabb6246042f06, type: 3}
---- !u!1 &1127635216
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1127635217}
-  - component: {fileID: 1127635218}
-  m_Layer: 0
-  m_Name: MapGenerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1127635217
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1127635216}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1127635218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1127635216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c07f2744acfa2d418d23a192b2c47ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worldWidth: 30
-  worldHeight: 30
-  bigRoomPlacementAttempts: 20
-  smallRoomPlacementAttempts: 20
-  tinyRoomPlacementAttempts: 1000
-  bigRooms:
-  - Width: 15
-    Height: 13
-  - Width: 15
-    Height: 9
-  - Width: 7
-    Height: 15
-  smallRooms:
-  - Width: 11
-    Height: 11
-  - Width: 13
-    Height: 7
-  - Width: 9
-    Height: 11
-  tinyRooms:
-  - Width: 7
-    Height: 7
-  - Width: 9
-    Height: 7
-  - Width: 7
-    Height: 9
-  floorSprite: {fileID: 21300000, guid: 7d447833533d17a4b8b5b19d3373a2bb, type: 3}
-  FloorSpriteColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
-  roomFloorSprite: {fileID: 21300000, guid: e853c298f0665654db6c7f42250ef089, type: 3}
-  RoomFloorSpriteColor: {r: 0.7924528, g: 0.46886793, b: 0, a: 1}
 --- !u!1 &1553502031
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +502,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
 --- !u!1001 &2133362921
 PrefabInstance:
@@ -622,7 +549,7 @@ PrefabInstance:
     - target: {fileID: 895934163412015627, guid: 64b327f41dadb65418a92fb108275f7c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 895934163412015627, guid: 64b327f41dadb65418a92fb108275f7c,
         type: 3}
@@ -638,6 +565,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2008245719174443083, guid: 64b327f41dadb65418a92fb108275f7c,
+        type: 3}
+      propertyPath: levelNumber
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2218109168171335396, guid: 64b327f41dadb65418a92fb108275f7c,
         type: 3}

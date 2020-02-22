@@ -9,6 +9,7 @@ TagManager:
   - UI
   - ClampedArea
   - LevelExit
+  - LevelManager
   layers:
   - Default
   - TransparentFX
