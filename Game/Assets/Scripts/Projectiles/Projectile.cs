@@ -12,9 +12,27 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody rb;
 
+    SpriteRenderer rend;
+
+    MagicWandOptions options;
+    float startTime;
+    Vector2 direction;
+
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        InitComponents();
+    }
+
+    public void InitComponents()
+    {
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+        if (rend == null)
+        {
+            rend = GetComponentInChildren<SpriteRenderer>();
+        }
     }
 
     public void Sleep() {
@@ -26,12 +44,18 @@ public class Projectile : MonoBehaviour
         lifeTimer = 0f;
     }
 
-    public void Initialize(ProjectileOptions options) {
-        transform.position = options.Position;
-        this.lifeTime = options.LifeTime;
-        rb.velocity = options.Direction.normalized * options.Speed;
-        gameObject.tag = options.Tag;
-        gameObject.layer = LayerMask.NameToLayer(options.Layer);
+    public void Initialize(MagicWandOptions options, Vector2 position, Vector2 direction)
+    {
+        InitComponents();
+        transform.position = position;
+        this.lifeTime = options.ProjectileLifeTime;
+        rb.velocity = direction.normalized * options.ProjectileSpeed;
+        //gameObject.tag = options.ProjectileTag;
+        //gameObject.layer = LayerMask.NameToLayer(options.ProjectileLayer);
+        rend.color = options.color;
+        this.options = options;
+        this.direction = direction;
+        startTime = Time.time;
     }
 
     void Update()
@@ -40,6 +64,14 @@ public class Projectile : MonoBehaviour
         if (lifeTimer > lifeTime) {
             Sleep();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        var variance = Mathf.Sin((Time.time - startTime) * options.ProjectileVarianceFrequency);
+        var dir = direction.normalized;
+        var perpendicular = Vector2.Perpendicular(dir);
+        rb.velocity = options.ProjectileSpeed * (dir + dir * variance * options.ProjectileVarianceY + perpendicular * variance * options.ProjectileVarianceX);
     }
 
     public void Activate() {

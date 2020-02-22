@@ -2,20 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct ProjectileOptions
-{
-    public Vector2 Direction;
-    public Vector2 Position;
-
-    public string Tag;
-    public string Layer;
-
-    public float LifeTime;
-    public float Speed;
-    public float BlastAoE;
-    public float Damage;
-}
-
 [RequireComponent(typeof(ProjectilePool))]
 public class ProjectileManager : MonoBehaviour
 {
@@ -35,9 +21,9 @@ public class ProjectileManager : MonoBehaviour
         }
     }
 
-    public Projectile SpawnProjectile(ProjectileOptions projectileOptions) {
+    public Projectile SpawnProjectile(MagicWandOptions options, Vector3 position, Vector3 direction) {
         Projectile newProjectile = pool.GetProjectile();
-        newProjectile.Initialize(projectileOptions);
+        newProjectile.Initialize(options, position, direction);
         return newProjectile;
     }
 

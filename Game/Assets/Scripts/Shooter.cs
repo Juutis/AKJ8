@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    ProjectileOptions projectileOptions;
+
+    MagicWand magicWand;
 
     // Start is called before the first frame update
     void Start()
@@ -18,19 +19,8 @@ public class Shooter : MonoBehaviour
         
     }
 
-    public void Shoot(Vector2 target)
+    public void Shoot()
     {
-        if (ProjectileManager.main == null)
-        {
-            Debug.LogWarning("Your scene does not have a ProjectileManager!");
-        }
-        projectileOptions.Position = transform.position;
-        projectileOptions.Direction = target - (Vector2)transform.position;
-        ProjectileManager.main.SpawnProjectile(projectileOptions);
-    }
-
-    public void SetProjectileConfig(ProjectileOptions projectileOptions)
-    {
-        this.projectileOptions = projectileOptions;
+        magicWand.Shoot();
     }
 }

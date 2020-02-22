@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Character character;
-    Shooter shooter;
+    MagicWand magicWand;
     Rigidbody rb;
 
     Vector2 moveInput;
@@ -16,18 +16,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         character = GetComponent<Character>();
-        shooter = GetComponent<Shooter>();
+        magicWand = GetComponentInChildren<MagicWand>();
         rb = GetComponent<Rigidbody>();
-
-        shooter.SetProjectileConfig(new ProjectileOptions()
-        {
-            LifeTime = 5f,
-            Speed = 20f,
-            BlastAoE = 5f,
-            Damage = 15f,
-            Tag = "PlayerProjectile",
-            Layer = "PlayerProjectile"
-        });
     }
 
     // Update is called once per frame
@@ -40,9 +30,14 @@ public class Player : MonoBehaviour
 
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        if (Input.GetButtonDown("Shoot"))
+        if (Input.GetButton("Shoot"))
         {
-            shooter.Shoot(mousePos);
+            magicWand.Shoot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            magicWand.SetOptions(MagicWand.GetRandomOptions(Random.Range(0.0f, 1.0f)));
         }
     }
 
