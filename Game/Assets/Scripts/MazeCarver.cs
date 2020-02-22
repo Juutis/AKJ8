@@ -16,10 +16,12 @@ public class MazeCarver : MonoBehaviour
     private int height;
 
     private bool animate = true;
-    private float animateInterval = 0.01f;
+    private float animateInterval = 0f;
 
     private int maxDeadEndSearches = 100;
     private int deadEndSearches = 0;
+
+    private MeshCombiner meshCombinerPrefab;
 
     private int scale = 2;
 
@@ -234,7 +236,8 @@ public class MazeCarver : MonoBehaviour
                 }
             }
         }
-        Invoke("Bake", 0.5f);
+        //Invoke("Bake", 0.5f);
+        Bake();
     }
 
     private void Bake()
@@ -244,12 +247,16 @@ public class MazeCarver : MonoBehaviour
 
     private void Create3DWalls()
     {
+        if (meshCombinerPrefab == null) {
+            meshCombinerPrefab = Resources.Load<MeshCombiner>("MeshCombiner");
+        }
+        MeshCombiner meshCombiner = Instantiate(meshCombinerPrefab);
         for (int y = -1; y <= height; y += 1)
         {
             for (int x = -1; x <= width; x += 1)
             {
                 MazeNode node = GetOrCreateNode(x, y);
-                GameObject wall = Instantiate(wallPrefab, transform);
+                GameObject wall = Instantiate(wallPrefab, meshCombiner.transform);
                 
                 if (node == null)
                 {
@@ -261,9 +268,9 @@ public class MazeCarver : MonoBehaviour
                     Vector2 newPos = mapGenerator.GetScaled(node.Rect.position);
                     wall.transform.position = newPos;
                 }
-
             }
         }
+        meshCombiner.Combine();
     }
 
     private void RemoveCurrentDeadEnd()

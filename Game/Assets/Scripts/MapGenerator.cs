@@ -51,8 +51,6 @@ public class MapGenerator : MonoBehaviour
     private MazeCarver mazeCarverPrefab;
     private MapPopulator mapPopulatorPrefab;
 
-    private GameObject startPrefab;
-    private GameObject endPrefab;
     private List<MazeRoom> rooms;
     public List<MazeRoom> Rooms { get { return rooms; } }
     private Rect world;
@@ -68,8 +66,7 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
-        startPrefab = Resources.Load<GameObject>("StartNode");
-        endPrefab = Resources.Load<GameObject>("EndNode");
+
         mapPopulatorPrefab = Resources.Load<MapPopulator>("MapPopulator");
         world = new Rect(0, 0, worldWidth, worldHeight);
         CreateWorld();
