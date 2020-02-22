@@ -247,17 +247,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c07f2744acfa2d418d23a192b2c47ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldWidth: 200
-  worldHeight: 200
-  numberOfRounds: 200
-  roomTypes:
-  - Width: 20
-    Height: 20
-  - Width: 10
-    Height: 20
-  - Width: 20
-    Height: 10
-  - Width: 16
-    Height: 20
-  - Width: 20
-    Height: 16
+  worldWidth: 50
+  worldHeight: 50
+  bigRoomPlacementAttempts: 1000
+  smallRoomPlacementAttempts: 1000
+  tinyRoomPlacementAttempts: 1000
+  bigRooms:
+  - Width: 21
+    Height: 21
+  - Width: 21
+    Height: 11
+  - Width: 11
+    Height: 21
+  smallRooms:
+  - Width: 11
+    Height: 11
+  - Width: 11
+    Height: 5
+  - Width: 5
+    Height: 11
+  tinyRooms:
+  - Width: 5
+    Height: 5
+  - Width: 5
+    Height: 3
+  - Width: 3
+    Height: 5

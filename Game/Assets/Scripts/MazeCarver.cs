@@ -44,6 +44,13 @@ public class MazeCarver : MonoBehaviour
 
     private List<MazeNode> carvedNodes = new List<MazeNode>();
 
+    private Rect worldRect;
+
+    private int width;
+    private int height;
+
+    private Dictionary<MazeNode, List<MazeNode>> neighborLists = new Dictionary<MazeNode, List<MazeNode>>();
+
     private List<Vector2> positions = new List<Vector2>()
     {
         new Vector2(0, -2),
@@ -55,28 +62,55 @@ public class MazeCarver : MonoBehaviour
     private SpriteRenderer spritePrefab;
     public void Initialize(Rect world)
     {
-        nodes = new MazeNode[(int)world.height][];
-        for (int verticalIndex = 0; verticalIndex < nodes.Length; verticalIndex += 1)
+        height = (int)world.height;
+        width = (int)world.width;
+        nodes = new MazeNode[height][];
+        for (int y = 0; y < height; y += 1)
         {
-            nodes[verticalIndex] = new MazeNode[(int)world.width];
-            /*for (int horizontalIndex = 0; horizontalIndex < nodes[verticalIndex].Length; horizontalIndex += 1)
+            nodes[y] = new MazeNode[width];
+            for (int x = 0; x < width; x += 1)
             {
-                nodes[verticalIndex][horizontalIndex] = CreateNode(horizontalIndex, verticalIndex);
-            }*/
+                nodes[y][x] = null;
+            }
         }
-        MazeNode firstNode = GetOrCreateNode(
-            (int)Random.Range(world.xMin, world.xMax),
-            (int)Random.Range(world.yMin, world.yMax)
-        );
+        worldRect = world;
+    }
+
+    public void CarveFirstNode()
+    {
+        MazeNode firstNode = GetRandomNodeThatIsAvailable();
         Carve(firstNode);
-        Traverse();
+    }
+
+    public void AddWall(int x, int y) {
+        MazeNode node = GetOrCreateNode(x, y);
+        node.IsWall = true;
+        CreateRectSprite(node.Rect, Color.yellow);
+    }
+
+    private MazeNode GetRandomNodeThatIsAvailable() {
+        List<Vector2> positions = new List<Vector2>();
+        for (int y = 0; y < height; y += 1) {
+            for (int x = 0; x < width; x += 1) {
+                MazeNode node = nodes[y][x];
+                if (node == null || !node.IsOpen && !node.IsWall) {
+                    positions.Add(new Vector2(x, y));
+                }
+            }
+        }
+
+        Vector2 randomPosition = positions[Random.Range(0, positions.Count)];
+        return GetOrCreateNode(
+            (int)randomPosition.x,
+            (int)randomPosition.y
+        );
     }
 
     private void Carve(MazeNode node)
     {
         node.IsOpen = true;
         carvedNodes.Add(node);
-        CreateRectSprite(node.Rect, Color.yellow);
+        CreateRectSprite(node.Rect, Color.red);
     }
 
     private void CarveBetween(MazeNode dirNode, MazeNode node)
@@ -100,52 +134,12 @@ public class MazeCarver : MonoBehaviour
         if (dirY > targetY) {
             newY = dirY - 1;
         }
-        Debug.Log(dirNode.Rect);
-        Debug.Log(node.Rect);
-        Debug.Log(newX + " - " + newY);
         MazeNode betweenNode = GetOrCreateNode(newX, newY);
-        CreateRectSprite(betweenNode.Rect, Color.magenta);
+        CreateRectSprite(betweenNode.Rect, Color.yellow);
 
         node.IsOpen = true;
         carvedNodes.Add(node);
         CreateRectSprite(node.Rect, Color.yellow);
-    }
-
-
-    private bool AttemptToCarve(MazeNode dirNode, MazeNode targetNode)
-    {
-        if (targetNode.IsOpen) {
-            return false;
-        }
-        List<MazeNode> neighbors = GetNeighbors(targetNode);
-        bool carvingIsPossible = neighbors
-            .Where(neighbor => !neighbor.Equals(dirNode))
-            .All(neighbor => !neighbor.IsOpen);
-
-        /*Debug.Log("\nneighbors: ");
-        foreach(MazeNode neighbor in neighbors) {
-            Debug.Log(string.Format("({2}, {3})Open: {0}, equals: {1}" ,
-                neighbor.IsOpen,
-                neighbor.Equals(dirNode),
-                neighbor.Rect.x,
-                neighbor.Rect.y
-            ));
-        }
-        Debug.Log("end neighbors \n");*/
-
-        /*Debug.Log(string.Format("Carving from {0}, {1} to {2}, {3} is: {4}",
-            dirNode.Rect.x,
-            dirNode.Rect.y,
-            targetNode.Rect.x,
-            targetNode.Rect.y,
-            carvingIsPossible ? "Possible" : "NOT POSSIBLE"
-        ));*/
-
-        if (carvingIsPossible)
-        {
-            Carve(targetNode);
-        }
-        return carvingIsPossible;
     }
 
     private void Traverse()
@@ -157,37 +151,17 @@ public class MazeCarver : MonoBehaviour
         }
         MazeNode node = carvedNodes[Random.Range(0, carvedNodes.Count)];
         List<MazeNode> neighbors = GetNeighbors(node);
-        //MazeNode neighbor = neighbors[Random.Range(0, neighbors.Count)];
-        //if (neighbor)
-        //Debug.Log(string.Format("Finding neighbors for {0}, {1}", node.Rect.x, node.Rect.y));
-        bool carveSuccesful = false;
-        List<MazeNode> cleanNeighbors = neighbors.FindAll(neighbor => !neighbor.IsOpen);
-//        Debug.Log(cleanNeighbors.Count);
+
+        List<MazeNode> cleanNeighbors = neighbors.FindAll(neighbor => !neighbor.IsOpen && !neighbor.IsWall);
         if (cleanNeighbors.Count == 0) {
             carvedNodes.Remove(node);
         } else {
-            //Carve(cleanNeighbors[Random.Range(0, cleanNeighbors.Count)]);
             CarveBetween(node, cleanNeighbors[Random.Range(0, cleanNeighbors.Count)]);
         }
-        /*foreach (MazeNode neighbor in neighbors)
-        {
-            //Debug.Log(string.Format("Neighbor {0}, {1}", neighbor.Rect.x, neighbor.Rect.y));
-            if (AttemptToCarve(node, neighbor))
-            {
-                //Debug.Log(string.Format("Succesfully carved {0}, {1}", neighbor.Rect.x, neighbor.Rect.y));
-                carveSuccesful = true;
-                break;
-            }
-            //Random.Range()
-        }*/
-        /*if (!carveSuccesful)
-        {
-            carvedNodes.Remove(node);
-        }*/
         //Traverse();
     }
 
-    void Update() {
+    private void Update() {
         if (Input.GetKey(KeyCode.Space)) {
             Traverse();
         }
@@ -207,7 +181,7 @@ public class MazeCarver : MonoBehaviour
         spriteRenderer.color = color;
         return spriteRenderer;
     }
-    public MazeNode GetOrCreateNode(int x, int y)
+    private MazeNode GetOrCreateNode(int x, int y)
     {
         MazeNode node = nodes[y][x];
         if (node == null) {
@@ -217,13 +191,12 @@ public class MazeCarver : MonoBehaviour
         return node;
     }
 
-    List<MazeNode> GetNeighbors(MazeNode node)
+    private List<MazeNode> GetNeighbors(MazeNode node)
     {
+        if (neighborLists.ContainsKey(node)) {
+            return neighborLists[node];
+        }
         List<MazeNode> neighbors = new List<MazeNode>();
-        /*for (int verticalIndex = -1; verticalIndex <= 1; verticalIndex += 1)
-        {
-            for (int horizontalIndex = -1; horizontalIndex <= 1; horizontalIndex += 1)
-            {*/
         foreach (Vector2 pos in positions)
         {
             int x = (int)node.Rect.x + (int)pos.x;
@@ -235,8 +208,7 @@ public class MazeCarver : MonoBehaviour
                 neighbors.Add(foundNode);
             }
         }
-        /*}
-    }*/
+        neighborLists[node] = neighbors;
         return neighbors;
     }
 }
