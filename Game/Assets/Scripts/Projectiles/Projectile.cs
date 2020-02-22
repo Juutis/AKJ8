@@ -18,6 +18,9 @@ public class Projectile : MonoBehaviour
     float startTime;
     Vector2 direction;
 
+    [SerializeField]
+    ParticleSystem explosion;
+
     private void Start()
     {
         InitComponents();
@@ -36,6 +39,7 @@ public class Projectile : MonoBehaviour
     }
 
     public void Sleep() {
+        explosion.Play();
         ProjectileManager.main.Sleep(this);
     }
 
