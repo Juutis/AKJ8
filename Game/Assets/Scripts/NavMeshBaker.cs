@@ -6,18 +6,10 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshSurface))]
 public class NavMeshBaker : MonoBehaviour
 {
-    NavMeshSurface surface;
+    private NavMeshSurface surface;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void Bake() {
         surface = GetComponent<NavMeshSurface>();
         surface.BuildNavMesh();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
