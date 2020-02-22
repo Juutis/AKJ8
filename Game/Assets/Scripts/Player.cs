@@ -104,6 +104,12 @@ public class Player : MonoBehaviour
                 {
                     EquipWand(wand);
                 }
+
+                LevelExit exit = equipable.GetComponent<LevelExit>();
+                if (exit != null)
+                {
+                    exit.Exit();
+                }
             }
         }
 

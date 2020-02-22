@@ -54,7 +54,7 @@ public class Ranger : MonoBehaviour
         }
         var position = transform.position;
         var direction = player.transform.position - transform.position;
-        BlackProjectileManager.main.SpawnProjectile(position, direction);
+        BlackProjectileManager.main.SpawnProjectile(position, direction, damage);
 
         Invoke("ResetAttack", 1 / attackRate);
     }

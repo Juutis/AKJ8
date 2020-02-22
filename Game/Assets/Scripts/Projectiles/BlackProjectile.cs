@@ -23,8 +23,7 @@ public class BlackProjectile : MonoBehaviour
     ParticleSystem trail;
 
     bool flying = false;
-
-    [SerializeField]
+    
     float damage = 5.0f;
 
     private void Start()
@@ -72,9 +71,10 @@ public class BlackProjectile : MonoBehaviour
         lifeTimer = 0f;
     }
 
-    public void Initialize(Vector2 position, Vector2 direction)
+    public void Initialize(Vector2 position, Vector2 direction, float damage)
     {
         InitComponents();
+        this.damage = damage;
         transform.position = position;
         this.lifeTime = 5.0f;
         rb.velocity = direction.normalized * 4.0f;

@@ -21,9 +21,9 @@ public class BlackProjectileManager : MonoBehaviour
         }
     }
 
-    public BlackProjectile SpawnProjectile(Vector3 position, Vector3 direction) {
+    public BlackProjectile SpawnProjectile(Vector3 position, Vector3 direction, float damage) {
         BlackProjectile newProjectile = pool.GetProjectile();
-        newProjectile.Initialize(position, direction);
+        newProjectile.Initialize(position, direction, damage);
         return newProjectile;
     }
 
