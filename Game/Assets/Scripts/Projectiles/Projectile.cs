@@ -12,8 +12,6 @@ public class Projectile : MonoBehaviour
     private Rigidbody rb;
     private Collider collider;
 
-    SpriteRenderer rend;
-
     MagicWandOptions options;
     float startTime;
     Vector2 direction;
@@ -22,6 +20,8 @@ public class Projectile : MonoBehaviour
     ParticleSystem explosion;
     [SerializeField]
     GameObject proj;
+    [SerializeField]
+    ParticleSystem trail;
 
     bool flying = false;
 
@@ -29,6 +29,7 @@ public class Projectile : MonoBehaviour
     {
         InitComponents();
         proj.SetActive(false);
+        transform.position = new Vector3(10000, 10000, 10000);
     }
 
     public void InitComponents()
@@ -36,10 +37,6 @@ public class Projectile : MonoBehaviour
         if (rb == null)
         {
             rb = GetComponentInChildren<Rigidbody>();
-        }
-        if (rend == null)
-        {
-            rend = GetComponentInChildren<SpriteRenderer>();
         }
         if (collider == null)
         {
@@ -51,6 +48,7 @@ public class Projectile : MonoBehaviour
     {
         flying = false;
         explosion.Play();
+        trail.Stop();
         proj.SetActive(false);
         Invoke("Sleep", 1.0f);
 
@@ -75,6 +73,7 @@ public class Projectile : MonoBehaviour
     }
 
     public void Deactivate() {
+        transform.position = new Vector3(10000, 10000, 10000);
         rb.velocity = Vector3.zero;
         lifeTimer = 0f;
     }
@@ -89,9 +88,15 @@ public class Projectile : MonoBehaviour
         gameObject.tag = options.ProjectileTag;
         gameObject.layer = options.ProjectileLayer;
         collider.gameObject.layer = options.ProjectileLayer;
-        rend.color = options.color;
+
         var main = explosion.main;
         main.startColor = options.color;
+
+        var trailGradient = trail.colorOverLifetime;
+        Gradient grad = new Gradient();
+        grad.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(options.color, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) });
+        trailGradient.color = grad;
+
         this.direction = direction;
         startTime = Time.time;
         proj.SetActive(true);
@@ -99,6 +104,7 @@ public class Projectile : MonoBehaviour
 
         explosion.transform.localScale = new Vector3(6 * options.ProjectileBlastAoE, 6 * options.ProjectileBlastAoE, 1.0f);
         lifeTimer = 0.0f;
+        trail.Play();
     }
 
     void Update()
