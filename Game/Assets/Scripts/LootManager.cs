@@ -12,7 +12,7 @@ public class LootManager : MonoBehaviour
 {
     LootTable MeleeLootTable = new LootTable()
     {
-        WandChance = 1.10f,
+        WandChance = 0.10f,
         HealthPotionChance = 0.25f,
         BootsChance = 0.05f
     };
