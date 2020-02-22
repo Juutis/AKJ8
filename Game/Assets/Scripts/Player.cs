@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     float UseRange = 0.5f;
 
+    [SerializeField]
+    float health = 100.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -115,5 +118,14 @@ public class Player : MonoBehaviour
     {
         var velocityDir = moveInput.magnitude > 1.0f ? moveInput.normalized : moveInput;
         rb.velocity = velocityDir * moveSpeed;
+    }
+
+    public void Hurt(float damage, Vector3 fromPosition)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Debug.Log("PLAYER DEAD");
+        }
     }
 }

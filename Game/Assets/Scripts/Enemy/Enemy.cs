@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
 {
     private Character character;
     private Rigidbody rb;
+    private Collider coll;
 
     private NavMeshPath path;
     private int cornerIndex;
@@ -30,6 +31,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float health = 10.0f;
 
+    [SerializeField]
+    ParticleSystem death;
+
     private Routine routine;
     private Vector2 target;
     private Vector2 moveTargetPos;
@@ -47,6 +51,7 @@ public class Enemy : MonoBehaviour
     {
         character = GetComponent<Character>();
         rb = GetComponent<Rigidbody>();
+        coll = GetComponent<Collider>();
         player = GameObject.FindGameObjectWithTag("Player");
         path = new NavMeshPath();
         Invoke("UpdatePathing", pathingInterval);
@@ -201,7 +206,17 @@ public class Enemy : MonoBehaviour
         //rb.AddForce((transform.position - fromPosition).normalized * 5.0f);
         if (health <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        coll.enabled = false;
+        rb.velocity = Vector3.zero;
+        death.Play();
+        character.sprite.SetActive(false);
+        this.enabled = false;
+        Destroy(gameObject, 0.5f);
     }
 }
