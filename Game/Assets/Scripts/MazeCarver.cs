@@ -3,40 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class MazeNode
-{
-    public MazeNode(int x, int y)
-    {
-        Rect = new Rect(x, y, 1, 1);
-    }
-
-    public Rect Rect;
-
-    public bool IsOpen = false;
-
-    public bool IsWall = false;
-
-    public override bool Equals(System.Object obj)
-    {
-        if ((obj == null) || !this.GetType().Equals(obj.GetType()))
-        {
-            return false;
-        }
-        else
-        {
-            MazeNode node = (MazeNode)obj;
-            return node.Rect == this.Rect;
-        }
-    }
-
-    public override int GetHashCode()
-    {
-        return ((int)Rect.x << 2) ^ (int)Rect.y;
-    }
-
-
-}
-
 public class MazeCarver : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -49,7 +15,10 @@ public class MazeCarver : MonoBehaviour
     private int width;
     private int height;
 
-    private int newAttempts = 3;
+    private int maxDeadEndSearches = 100;
+    private int deadEndSearches = 0;
+
+    //private int newAttempts = 3;
 
     private Dictionary<MazeNode, List<MazeNode>> neighborLists = new Dictionary<MazeNode, List<MazeNode>>();
 
@@ -59,6 +28,14 @@ public class MazeCarver : MonoBehaviour
         new Vector2(2, 0),
         new Vector2(0, 2),
         new Vector2(-2, 0)
+    };
+
+    private List<Vector2> finePositions = new List<Vector2>()
+    {
+        new Vector2(0, -1),
+        new Vector2(1, 0),
+        new Vector2(0, 1),
+        new Vector2(-1, 0)
     };
 
     private SpriteRenderer spritePrefab;
@@ -84,25 +61,80 @@ public class MazeCarver : MonoBehaviour
         Carve(firstNode);
     }
 
-    public void AddWall(int x, int y) {
+    public void AddWall(int x, int y, bool isCorner, MazeRoom room, OrthogonalDirection wallPosition)
+    {
         MazeNode node = GetOrCreateNode(x, y);
         node.IsWall = true;
-        CreateRectSprite(node.Rect, Color.yellow);
+        node.IsCornerWall = isCorner;
+        node.Room = room;
+        node.WallPosition = wallPosition;
+        node.Image = CreateRectSprite(node.Rect, Color.blue);
+        /*if (!isCorner)
+        {
+            Debug.Log(string.Format("Added wall: {0}, {1}, corner: {2}", x, y, isCorner));
+        }*/
     }
 
-    private MazeNode GetRandomNodeThatIsAvailable() {
+    public void AddOpenNode(int x, int y)
+    {
+        MazeNode node = GetOrCreateNode(x, y);
+        node.IsOpen = true;
+        node.Image = CreateRectSprite(node.Rect, Color.yellow);
+        node.IsRoom = true;
+        //Debug.Log(string.Format("Added open: {0}, {1}", x, y));
+    }
+
+    public void StartCarving () {
+        Traverse();
+    }
+    public void FindDeadEnds()
+    {
+
+        bool foundDeadEnd = false;
+        for (int y = 0; y < height; y += 1)
+        {
+            for (int x = 0; x < width; x += 1)
+            {
+                MazeNode node = nodes[y][x];
+                if (node != null && node.IsOpen && !node.IsRoom && !node.IsWall && !node.IsDeadEnd) {
+                    List<MazeNode> neighbors = GetFineNeighbors(node);
+                    int openNeighborCount = neighbors.FindAll(neighbor => !neighbor.IsDeadEnd && neighbor.IsOpen).Count;
+
+                    bool isDeadEnd = openNeighborCount < 2;
+                    if (isDeadEnd) {
+                        node.Image.color = Color.magenta;
+                        node.IsDeadEnd = true;
+                        foundDeadEnd = true;
+                    }
+
+                }
+            }
+        }
+        deadEndSearches += 1;
+        if (foundDeadEnd && deadEndSearches < maxDeadEndSearches) {
+            FindDeadEnds();
+        } else {
+            Debug.Log(string.Format("Finished dead end searching at {0}", deadEndSearches));
+        }
+    }
+    private MazeNode GetRandomNodeThatIsAvailable()
+    {
         List<Vector2> positions = new List<Vector2>();
-        for (int y = 0; y < height; y += 1) {
-            for (int x = 0; x < width; x += 1) {
+        for (int y = 0; y < height; y += 1)
+        {
+            for (int x = 0; x < width; x += 1)
+            {
                 int evenX = NearestOdd(x);
                 int evenY = NearestOdd(y);
                 MazeNode node = nodes[evenY][evenX];
-                    if (node == null || !node.IsOpen && !node.IsWall) {
+                if (node == null || !node.IsOpen && !node.IsWall)
+                {
                     positions.Add(new Vector2(evenX, evenY));
                 }
             }
         }
-        if (positions.Count > 0) {
+        if (positions.Count > 0)
+        {
             Vector2 randomPosition = positions[Random.Range(0, positions.Count)];
             return GetOrCreateNode(
                 (int)randomPosition.x,
@@ -116,7 +148,7 @@ public class MazeCarver : MonoBehaviour
     {
         node.IsOpen = true;
         carvedNodes.Add(node);
-        CreateRectSprite(node.Rect, Color.red);
+        node.Image = CreateRectSprite(node.Rect, Color.red);
     }
 
     private void CarveBetween(MazeNode dirNode, MazeNode node)
@@ -128,57 +160,88 @@ public class MazeCarver : MonoBehaviour
 
         int newX = dirX;
         int newY = dirY;
-        if (dirX < targetX) {
+        if (dirX < targetX)
+        {
             newX = dirX + 1;
         }
-        if (dirX > targetX) {
+        if (dirX > targetX)
+        {
             newX = dirX - 1;
         }
-        if (dirY < targetY) {
+        if (dirY < targetY)
+        {
             newY = dirY + 1;
         }
-        if (dirY > targetY) {
+        if (dirY > targetY)
+        {
             newY = dirY - 1;
         }
         MazeNode betweenNode = GetOrCreateNode(newX, newY);
-        CreateRectSprite(betweenNode.Rect, Color.yellow);
+        betweenNode.Image = CreateRectSprite(betweenNode.Rect, Color.yellow);
+        betweenNode.IsOpen = true;
 
         node.IsOpen = true;
         carvedNodes.Add(node);
-        CreateRectSprite(node.Rect, Color.yellow);
+        node.Image = CreateRectSprite(node.Rect, Color.yellow);
     }
 
     private void Traverse()
     {
         if (carvedNodes.Count < 1)
         {
-            /*newAttempts -= 1;
-            if (newAttempts > 0) {
-                CarveFirstNode();
-            } else {
-            }*/
             Debug.Log("No more!");
             return;
         }
         MazeNode node = carvedNodes[Random.Range(0, carvedNodes.Count)];
         List<MazeNode> neighbors = GetNeighbors(node);
 
-        List<MazeNode> cleanNeighbors = neighbors.FindAll(neighbor => !neighbor.IsOpen && !neighbor.IsWall);
-        if (cleanNeighbors.Count == 0) {
+        List<MazeNode> cleanNeighbors = neighbors.FindAll(neighbor => !neighbor.IsOpen && !neighbor.IsWall && !neighbor.IsRoom);
+        if (cleanNeighbors.Count == 0)
+        {
+            List<MazeNode> walls = neighbors.FindAll(neighbor => neighbor.IsWall && !neighbor.IsCornerWall);
+            if (!CreateDoors(node, walls))
+            {
+            }
             carvedNodes.Remove(node);
-        } else {
+        }
+        else
+        {
             CarveBetween(node, cleanNeighbors[Random.Range(0, cleanNeighbors.Count)]);
         }
-        //Traverse();
+        Traverse();
     }
-    private int NearestOdd(int number) {
+
+    private bool CreateDoors(MazeNode dirNode, List<MazeNode> nodes)
+    {
+        bool someDoorsWereCreated = false;
+        while (nodes.Count > 0)
+        {
+            int nodeIndex = Random.Range(0, nodes.Count);
+            MazeNode node = nodes[nodeIndex];
+            nodes.RemoveAt(nodeIndex);
+            if (node.Room.AttemptToCreateADoor(node))
+            {
+                node.IsOpen = true;
+                node.IsWall = false;
+                node.Image.color = Color.white;
+                CarveBetween(dirNode, node);
+                someDoorsWereCreated = true;
+            }
+        }
+        return someDoorsWereCreated;
+    }
+
+    private int NearestOdd(int number)
+    {
         return (number % 2 == 0) ? number + 1 : number;
     }
 
-    private void Update() {
-        if (Input.GetKey(KeyCode.Space)) {
+    private void Update()
+    {
+        /*if (Input.GetKey(KeyCode.Space))
+        {
             Traverse();
-        }
+        }*/
     }
 
     private SpriteRenderer CreateRectSprite(Rect rect, Color color)
@@ -193,25 +256,38 @@ public class MazeCarver : MonoBehaviour
         spriteRenderer.transform.position = rect.position;
         spriteRenderer.gameObject.SetActive(true);
         spriteRenderer.color = color;
+        spriteRenderer.name = string.Format("x:{0} y:{1}", rect.x, rect.y);
         return spriteRenderer;
     }
     private MazeNode GetOrCreateNode(int x, int y)
     {
         MazeNode node = nodes[y][x];
-        if (node == null) {
+        if (node == null)
+        {
             node = new MazeNode(x, y);
             nodes[y][x] = node;
         }
         return node;
     }
 
+    private List<MazeNode> GetFineNeighbors(MazeNode node)
+    {
+        return FindNeighbors(node, finePositions);
+    }
     private List<MazeNode> GetNeighbors(MazeNode node)
     {
-        if (neighborLists.ContainsKey(node)) {
+        if (neighborLists.ContainsKey(node))
+        {
             return neighborLists[node];
         }
+        List<MazeNode> neighbors = FindNeighbors(node, positions);
+        neighborLists[node] = neighbors;
+        return neighbors;
+    }
+
+    private List<MazeNode> FindNeighbors(MazeNode node, List<Vector2> neighborPositions) {
         List<MazeNode> neighbors = new List<MazeNode>();
-        foreach (Vector2 pos in positions)
+        foreach (Vector2 pos in neighborPositions)
         {
             int x = (int)node.Rect.x + (int)pos.x;
             int y = (int)node.Rect.y + (int)pos.y;
@@ -222,7 +298,52 @@ public class MazeCarver : MonoBehaviour
                 neighbors.Add(foundNode);
             }
         }
-        neighborLists[node] = neighbors;
         return neighbors;
     }
+
+}
+
+public class MazeNode
+{
+    public MazeNode(int x, int y)
+    {
+        Rect = new Rect(x, y, 1, 1);
+    }
+
+    public Rect Rect;
+
+    public bool IsOpen = false;
+
+    public bool IsWall = false;
+
+    public bool IsRoom = false;
+
+    public bool IsCornerWall = false;
+
+    public bool IsDeadEnd = false;
+
+    public OrthogonalDirection WallPosition;
+
+    public MazeRoom Room = null;
+
+    public SpriteRenderer Image;
+
+    public override bool Equals(System.Object obj)
+    {
+        if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+        {
+            return false;
+        }
+        else
+        {
+            MazeNode node = (MazeNode)obj;
+            return node.Rect == this.Rect;
+        }
+    }
+
+    public override int GetHashCode()
+    {
+        return ((int)Rect.x << 2) ^ (int)Rect.y;
+    }
+
 }

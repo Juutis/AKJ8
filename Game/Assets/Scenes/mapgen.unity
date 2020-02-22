@@ -247,29 +247,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c07f2744acfa2d418d23a192b2c47ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldWidth: 50
-  worldHeight: 50
-  bigRoomPlacementAttempts: 1000
-  smallRoomPlacementAttempts: 1000
+  worldWidth: 30
+  worldHeight: 30
+  bigRoomPlacementAttempts: 20
+  smallRoomPlacementAttempts: 20
   tinyRoomPlacementAttempts: 1000
   bigRooms:
-  - Width: 21
-    Height: 21
-  - Width: 21
-    Height: 11
-  - Width: 11
-    Height: 21
+  - Width: 15
+    Height: 13
+  - Width: 15
+    Height: 9
+  - Width: 7
+    Height: 15
   smallRooms:
   - Width: 11
     Height: 11
-  - Width: 11
-    Height: 5
-  - Width: 5
+  - Width: 13
+    Height: 7
+  - Width: 9
     Height: 11
   tinyRooms:
-  - Width: 5
-    Height: 5
-  - Width: 5
-    Height: 3
-  - Width: 3
-    Height: 5
+  - Width: 7
+    Height: 7
+  - Width: 9
+    Height: 7
+  - Width: 7
+    Height: 9
