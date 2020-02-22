@@ -144,10 +144,7 @@ public class Player : MonoBehaviour
     {
         if (magicWand != null)
         {
-            magicWand.transform.localPosition = Vector3.zero;
-            magicWand.transform.parent = null;
             magicWand.GetComponent<Equipable>().Drop();
-            magicWand.transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
         magicWand = wand;
         if (magicWand != null)

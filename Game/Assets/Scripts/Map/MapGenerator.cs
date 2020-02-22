@@ -4,15 +4,6 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Linq;
 
-[System.Serializable]
-public class RoomType
-{
-    [MinValue(3), MaxValue(10)]
-    public int Width = 3;
-
-    [MinValue(3), MaxValue(10)]
-    public int Height = 3;
-}
 
 public enum OrthogonalDirection
 {
@@ -26,27 +17,6 @@ public enum OrthogonalDirection
 public class MapGenerator : MonoBehaviour
 {
 
-    [MinValue(10)]
-    [SerializeField]
-    private int worldWidth = 2000;
-    [MinValue(10)]
-    [SerializeField]
-    private int worldHeight = 2000;
-
-    [SerializeField]
-    private int bigRoomPlacementAttempts = 200;
-    [SerializeField]
-    private int smallRoomPlacementAttempts = 200;
-    [SerializeField]
-    private int tinyRoomPlacementAttempts = 200;
-
-    [SerializeField]
-    private List<RoomType> bigRooms;
-    [SerializeField]
-    private List<RoomType> smallRooms;
-    [SerializeField]
-    private List<RoomType> tinyRooms;
-
     private SpriteRenderer spritePrefab;
     private SpriteRenderer worldSprite;
     private MazeCarver mazeCarverPrefab;
@@ -56,44 +26,32 @@ public class MapGenerator : MonoBehaviour
     public List<MazeRoom> Rooms { get { return rooms; } }
     private Rect world;
 
-    [SerializeField]
-    [ShowAssetPreview]
-    private Sprite floorSprite;
-    [SerializeField]
-    public Color FloorSpriteColor;
-
-    [SerializeField]
-    [ShowAssetPreview]
-    private Sprite roomFloorSprite;
-    [SerializeField]
-    public Color RoomFloorSpriteColor;
-
-    public Sprite FloorSprite { get { return floorSprite; } }
-    public Sprite RoomFloorSprite { get { return roomFloorSprite; } }
-
     private MazeCarver mazeCarver;
 
     private int worldCreateAttempts = 0;
     private int maxWorldCreateAttempts = 5;
-    private int minRoomCount = 3;
 
     private int scale = 2;
 
+    private LevelConfig config;
 
-    void Start()
+    private LevelDepthConfig depthConfig;
+
+    public void Initialize(LevelConfig levelConfig, LevelDepthConfig levelDepthConfig)
     {
-
+        depthConfig = levelDepthConfig;
+        config = levelConfig;
         mapPopulatorPrefab = Resources.Load<MapPopulator>("MapPopulator");
-        world = new Rect(0, 0, worldWidth, worldHeight);
+        world = new Rect(0, 0, config.Width, config.Height);
         CreateWorld();
     }
 
     public void MazeCarverFinished()
     {
         List<MazeRoom> roomsWithDoors = rooms.FindAll(room => room.HasAtLeastOneDoor);
-        if (roomsWithDoors.Count < minRoomCount)
+        if (roomsWithDoors.Count < config.MinimumNumberOfRooms)
         {
-            Debug.Log(string.Format("Only {0} rooms found. {1} required!", roomsWithDoors.Count, minRoomCount));
+            Debug.Log(string.Format("Only {0} rooms found. {1} required!", roomsWithDoors.Count, config.MinimumNumberOfRooms));
             CreateWorld();
         }
         else
@@ -149,24 +107,34 @@ public class MapGenerator : MonoBehaviour
         return emptyNodes[randomIndex];
     }
 
-    public void HideWorldSprite() {
-        if (worldSprite != null) {
+    public void HideWorldSprite()
+    {
+        if (worldSprite != null)
+        {
             worldSprite.enabled = false;
         }
     }
 
     private void RemoveOldWorld()
     {
+
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
         if (mazeCarver != null)
         {
+            if (mazeCarver.MeshCombiner != null) {
+                Destroy(mazeCarver.MeshCombiner.gameObject);
+            }
+            if (mazeCarver.NavMeshBaker != null) {
+                Destroy(mazeCarver.NavMeshBaker.gameObject);
+            }
             Destroy(mazeCarver.gameObject);
         }
         rooms = new List<MazeRoom>();
-        if (worldSprite != null) {
+        if (worldSprite != null)
+        {
             Destroy(worldSprite.gameObject);
         }
     }
@@ -178,7 +146,7 @@ public class MapGenerator : MonoBehaviour
         {
             Debug.Log(string.Format(
                 "Mapgen couldn't create a world with at least {0} rooms with doors. Tried {1} times. Please re-evaluate your configuration.",
-                minRoomCount,
+                config.MinimumNumberOfRooms,
                 worldCreateAttempts
             ));
             return;
@@ -188,10 +156,14 @@ public class MapGenerator : MonoBehaviour
 
         mazeCarver = InitializeCarver();
 
-        PlaceRooms(bigRooms, bigRoomPlacementAttempts);
-        PlaceRooms(smallRooms, smallRoomPlacementAttempts);
-        PlaceRooms(tinyRooms, tinyRoomPlacementAttempts);
-        mazeCarver.StartCarving();
+        PlaceRooms(config.BigRooms, config.BigRoomPlacementAttempts);
+        PlaceRooms(config.MediumRooms, config.MediumRoomPlacementAttempts);
+        PlaceRooms(config.SmallRooms, config.SmallRoomPlacementAttempts);
+        if (rooms.Count < config.MinimumNumberOfRooms) {
+            CreateWorld();
+        } else {
+            mazeCarver.StartCarving();
+        }
     }
 
     private void SelectStartAndEndRooms(List<MazeRoom> roomsWithDoors)
@@ -210,17 +182,19 @@ public class MapGenerator : MonoBehaviour
 
     private void PlaceRooms(List<RoomType> roomTypes, int attempts)
     {
-        for (int attemptNumber = 1; attemptNumber <= attempts; attemptNumber += 1)
-        {
-            MazeRoom room = GenerateRoom(roomTypes);
-            AttemptToPlaceARoom(room);
+        if (roomTypes.Count > 0) {
+            for (int attemptNumber = 1; attemptNumber <= attempts; attemptNumber += 1)
+            {
+                MazeRoom room = GenerateRoom(roomTypes);
+                AttemptToPlaceARoom(room);
+            }
         }
     }
 
 
     private void AttemptToPlaceARoom(MazeRoom room)
     {
-        bool outOfBounds = room.Rect.xMax > worldWidth - 1 || room.Rect.yMax > worldHeight - 1;
+        bool outOfBounds = room.Rect.xMax > config.Width - 1 || room.Rect.yMax > config.Height - 1;
         bool overlaps = rooms.Any(existingRoom => room.Rect.Overlaps(existingRoom.Rect));
         if (!overlaps && !outOfBounds)
         {
@@ -312,7 +286,7 @@ public class MapGenerator : MonoBehaviour
             mazeCarverPrefab = Resources.Load<MazeCarver>("MazeCarver");
         }
         MazeCarver carver = Instantiate(mazeCarverPrefab, Vector2.zero, Quaternion.identity);
-        carver.Initialize(world, this);
+        carver.Initialize(world, this, config, depthConfig);
         return carver;
     }
 
@@ -338,6 +312,7 @@ public class MapGenerator : MonoBehaviour
 
     private MazeRoom GenerateRoom(List<RoomType> roomTypes)
     {
+
         RoomType roomType = roomTypes[Random.Range(0, roomTypes.Count)];
         int x = Random.Range((int)world.xMin + 1, (int)world.xMax);
         int y = Random.Range((int)world.yMin + 1, (int)world.yMax);
@@ -369,7 +344,8 @@ public class MazeRoom
 
     public bool HasAtLeastOneDoor { get { return numberOfDoors > 0; } }
 
-    public void HideImage() {
+    public void HideImage()
+    {
         Image.enabled = false;
         ActualImage.enabled = false;
     }

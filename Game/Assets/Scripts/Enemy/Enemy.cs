@@ -253,8 +253,9 @@ public class Enemy : MonoBehaviour
     {
         var loot = LootManager.main.GetLoot(gameObject);
         foreach (var go in loot) {
-            Debug.Log("LOOT");
             go.transform.position = transform.position;
+            var eq = go.GetComponent<Equipable>();
+            eq.Drop();
         }
     }
 }

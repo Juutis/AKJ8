@@ -9,6 +9,7 @@ TagManager:
   - UI
   - ClampedArea
   - LevelExit
+  - LevelManager
   - EnemyProjectile
   layers:
   - Default

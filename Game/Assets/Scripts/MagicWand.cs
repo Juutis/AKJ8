@@ -36,10 +36,16 @@ public class MagicWand : MonoBehaviour
 
     private bool readyToShoot = true;
 
+    [SerializeField]
+    bool randomize = true;
+
     // Start is called before the first frame update
     void Start()
     {
-        SetOptions(GetRandomOptions(0.0f));
+        if (randomize)
+        {
+            SetOptions(GetRandomOptions(0.0f));
+        }
         wandInfo.UpdateUI(options);
     }
 

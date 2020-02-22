@@ -11,13 +11,15 @@ public class Boss : MonoBehaviour
     float attackRange = 8.0f;
     
     [SerializeField]
-    MagicWand wand;
+    public MagicWand wand;
 
     [SerializeField]
     ParticleSystem attackEffect;
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        enemy = GetComponent<Enemy>();
         wand.SetOptions(GetWandOptions());
     }
 
@@ -35,7 +37,7 @@ public class Boss : MonoBehaviour
 
     MagicWandOptions GetWandOptions()
     {
-        var opts = MagicWand.GetRandomOptions(0.5f);
+        var opts = MagicWand.GetRandomOptions(1.0f);
 
         opts.damageLayerMask = LayerMask.GetMask("Player");
         opts.ProjectileLayer = LayerMask.NameToLayer("EnemyProjectile");

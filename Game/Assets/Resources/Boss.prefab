@@ -9634,8 +9634,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 8
-  wand: {fileID: 0}
-  attackEffect: {fileID: 0}
+  wand: {fileID: 2590810876736735416}
+  attackEffect: {fileID: 8026926619807001351}
 --- !u!1 &1370174609400674476
 GameObject:
   m_ObjectHideFlags: 0
@@ -9707,7 +9707,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 96
   m_Sprite: {fileID: 21300000, guid: d7fc37d830d48544984ccc08369f9e30, type: 3}
   m_Color: {r: 0.64705884, g: 0.972549, b: 0.77635723, a: 1}
   m_FlipX: 0
@@ -9726,15 +9726,19 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5731287197095626320}
     m_Modifications:
-    - target: {fileID: 2125593662783678457, guid: a5c79d2ff2d36ce459104aac87bbaafe,
-        type: 3}
-      propertyPath: m_LocalPosition.x
+    - target: {fileID: 1655086438, guid: a5c79d2ff2d36ce459104aac87bbaafe, type: 3}
+      propertyPath: randomize
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2125593662783678457, guid: a5c79d2ff2d36ce459104aac87bbaafe,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.038
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125593662783678457, guid: a5c79d2ff2d36ce459104aac87bbaafe,
+        type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.116
       objectReference: {fileID: 0}
     - target: {fileID: 2125593662783678457, guid: a5c79d2ff2d36ce459104aac87bbaafe,
         type: 3}
@@ -9794,17 +9798,22 @@ PrefabInstance:
     - target: {fileID: 2648666534352130015, guid: a5c79d2ff2d36ce459104aac87bbaafe,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.21
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2648666534352130015, guid: a5c79d2ff2d36ce459104aac87bbaafe,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.83
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3722175995610658314, guid: a5c79d2ff2d36ce459104aac87bbaafe,
         type: 3}
       propertyPath: m_Name
       value: MagicWand
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607105918664372802, guid: a5c79d2ff2d36ce459104aac87bbaafe,
+        type: 3}
+      propertyPath: readyToPickUp
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5c79d2ff2d36ce459104aac87bbaafe, type: 3}
@@ -9814,3 +9823,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2590810878391227870}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2590810876736735416 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1655086438, guid: a5c79d2ff2d36ce459104aac87bbaafe,
+    type: 3}
+  m_PrefabInstance: {fileID: 2590810878391227870}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b9d478eea452647b86c2568cbcf613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

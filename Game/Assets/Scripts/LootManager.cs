@@ -58,7 +58,14 @@ public class LootManager : MonoBehaviour
 
         var lootTable = GetLootTable(type);
 
-        return GetLoot(lootTable, powerLevel);
+        var loot = GetLoot(lootTable, powerLevel);
+
+        if (type == EnemyType.BOSS)
+        {
+            loot.Add(gameObject.GetComponent<Boss>().wand.gameObject);
+        }
+
+        return loot;
     }
 
     public EnemyType DetermineEnemyType(GameObject gameObject)
@@ -68,6 +75,9 @@ public class LootManager : MonoBehaviour
 
         var ranged = gameObject.GetComponent<Ranger>();
         if (ranged != null) return EnemyType.ENEMY_RANGED;
+
+        var boss = gameObject.GetComponent<Boss>();
+        if (boss != null) return EnemyType.BOSS;
 
         return EnemyType.ENEMY_MELEE;
     }
