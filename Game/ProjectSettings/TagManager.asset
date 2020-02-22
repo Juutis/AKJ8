@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Character Sprite
   - PlayerProjectile
+  - UI
   layers:
   - Default
   - TransparentFX

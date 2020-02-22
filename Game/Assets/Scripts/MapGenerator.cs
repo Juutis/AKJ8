@@ -49,6 +49,7 @@ public class MapGenerator : MonoBehaviour
 
     private SpriteRenderer spritePrefab;
     private MazeCarver mazeCarverPrefab;
+    private MapPopulator mapPopulatorPrefab;
 
     private GameObject startPrefab;
     private GameObject endPrefab;
@@ -69,6 +70,7 @@ public class MapGenerator : MonoBehaviour
     {
         startPrefab = Resources.Load<GameObject>("StartNode");
         endPrefab = Resources.Load<GameObject>("EndNode");
+        mapPopulatorPrefab = Resources.Load<MapPopulator>("MapPopulator");
         world = new Rect(0, 0, worldWidth, worldHeight);
         CreateWorld();
     }
@@ -84,17 +86,8 @@ public class MapGenerator : MonoBehaviour
         else
         {
             SelectStartAndEndRooms(roomsWithDoors);
-            MazeRoom startRoom = GetStartRoom();
-            MazeNode startNode = GetRandomEmptyNodeCloseToCenter(startRoom);
-            GameObject start = Instantiate(startPrefab, transform);
-            start.transform.localScale = GetScaled(Vector2.one);
-            start.transform.position = GetScaled(startNode.Rect.position);
-
-            MazeRoom endRoom = GetEndRoom();
-            MazeNode endNode = GetRandomEmptyNodeCloseToCenter(endRoom);
-            GameObject end = Instantiate(endPrefab, transform);
-            end.transform.localScale = GetScaled(Vector2.one);
-            end.transform.position = GetScaled(endNode.Rect.position);
+            MapPopulator mapPopulator = Instantiate(mapPopulatorPrefab);
+            mapPopulator.Initialize(this);
 
         }
     }
