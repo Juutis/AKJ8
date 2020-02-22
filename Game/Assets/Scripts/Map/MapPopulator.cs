@@ -15,9 +15,11 @@ public class MapPopulator : MonoBehaviour
     public void Initialize(MapGenerator mapGenerator) {
         this.mapGenerator = mapGenerator;
 
+        mapGenerator.HideWorldSprite();
         CreateStartAndEnd();
         SpawnPlayer();
         SetUpCamera();
+        mapGenerator.Rooms.ForEach(room => room.HideImage());
         GameObject ui = GameObject.FindGameObjectWithTag("UI");
         //ui.SetActive(true);
     }
