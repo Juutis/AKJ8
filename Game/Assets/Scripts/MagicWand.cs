@@ -28,7 +28,7 @@ public class MagicWand : MonoBehaviour
     [SerializeField]
     Transform projectileOrigin;
     
-    private MagicWandOptions options;
+    public MagicWandOptions options;
 
     private bool readyToShoot = true;
 

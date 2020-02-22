@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
 
@@ -20,17 +19,22 @@ public class Projectile : MonoBehaviour
 
     [SerializeField]
     ParticleSystem explosion;
+    [SerializeField]
+    GameObject proj;
+
+    bool flying = false;
 
     private void Start()
     {
         InitComponents();
+        proj.SetActive(false);
     }
 
     public void InitComponents()
     {
         if (rb == null)
         {
-            rb = GetComponent<Rigidbody>();
+            rb = GetComponentInChildren<Rigidbody>();
         }
         if (rend == null)
         {
@@ -38,8 +42,19 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Sleep() {
+    public void Explode()
+    {
+        flying = false;
         explosion.Play();
+        proj.SetActive(false);
+        Invoke("Sleep", 1.0f);
+        Debug.DrawLine(transform.position, transform.position + Vector3.up * options.ProjectileBlastAoE, Color.white, 1.0f);
+        Debug.DrawLine(transform.position, transform.position + Vector3.down * options.ProjectileBlastAoE, Color.white, 1.0f);
+        Debug.DrawLine(transform.position, transform.position + Vector3.left * options.ProjectileBlastAoE, Color.white, 1.0f);
+        Debug.DrawLine(transform.position, transform.position + Vector3.right * options.ProjectileBlastAoE, Color.white, 1.0f);
+    }
+
+    public void Sleep() {
         ProjectileManager.main.Sleep(this);
     }
 
@@ -51,38 +66,55 @@ public class Projectile : MonoBehaviour
     public void Initialize(MagicWandOptions options, Vector2 position, Vector2 direction)
     {
         InitComponents();
+        this.options = options;
         transform.position = position;
         this.lifeTime = options.ProjectileLifeTime;
         rb.velocity = direction.normalized * options.ProjectileSpeed;
         //gameObject.tag = options.ProjectileTag;
         //gameObject.layer = LayerMask.NameToLayer(options.ProjectileLayer);
         rend.color = options.color;
-        this.options = options;
+        var main = explosion.main;
+        main.startColor = options.color;
         this.direction = direction;
         startTime = Time.time;
+        proj.SetActive(true);
+        flying = true;
+
+        explosion.transform.localScale = new Vector3(6 * options.ProjectileBlastAoE, 6 * options.ProjectileBlastAoE, 1.0f);
+        lifeTimer = 0.0f;
     }
 
     void Update()
     {
         lifeTimer += Time.deltaTime;
-        if (lifeTimer > lifeTime) {
-            Sleep();
+        if (flying && lifeTimer > lifeTime)
+        {
+            Explode();
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        var variance = Mathf.Sin((Time.time - startTime) * options.ProjectileVarianceFrequency);
-        var dir = direction.normalized;
-        var perpendicular = Vector2.Perpendicular(dir);
-        rb.velocity = options.ProjectileSpeed * (dir + dir * variance * options.ProjectileVarianceY + perpendicular * variance * options.ProjectileVarianceX);
+        if (flying)
+        {
+            var variance = Mathf.Sin((Time.time - startTime) * options.ProjectileVarianceFrequency);
+            var dir = direction.normalized;
+            var perpendicular = Vector2.Perpendicular(dir);
+            rb.velocity = options.ProjectileSpeed * (dir + dir * variance * options.ProjectileVarianceY + perpendicular * variance * options.ProjectileVarianceX);
+            Debug.Log(options.ProjectileSpeed);
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+        }
     }
 
     public void Activate() {
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collider2d) {
-        Sleep();
+    private void OnTriggerEnter2D(Collider2D collider2d)
+    {
+        //Explode();
     }
 }

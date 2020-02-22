@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Character character;
-    MagicWand magicWand;
+    public MagicWand magicWand;
     Rigidbody rb;
 
     Vector2 moveInput;

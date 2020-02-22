@@ -9,7 +9,7 @@ public class ProjectilePool : MonoBehaviour
     private List<Projectile> backupProjectiles;
 
     [SerializeField]
-    [Range(50, 200)]
+    [Range(50, 2000)]
     private int poolSize = 50;
 
     [SerializeField]
