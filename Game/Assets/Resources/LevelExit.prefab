@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c15d425a5c9a23847be4e2a31057b023, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e28a2b05f3eb609448960d7b39b6d758, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   readyToPickUp: 1
+  blocked: 0
   sprite: {fileID: 0}
   notificationBackground: {fileID: 9054480496466168336}
   colorTooFar: {r: 0.509434, g: 0, b: 0.024673086, a: 1}
@@ -258,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e94367e88957d24086853dc0d94a395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 1
+  locked: 0
   infoText: {fileID: 9054480496010973567}
   spriteLocked: {fileID: 8465405576471833244}
   spriteOpen: {fileID: 248826728166948526}
