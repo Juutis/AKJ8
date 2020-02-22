@@ -11,6 +11,7 @@ TagManager:
   - LevelExit
   - LevelManager
   - EnemyProjectile
+  - UICamera
   layers:
   - Default
   - TransparentFX

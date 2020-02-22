@@ -58,7 +58,7 @@ public class MapGenerator : MonoBehaviour
         {
             SelectStartAndEndRooms(roomsWithDoors);
             MapPopulator mapPopulator = Instantiate(mapPopulatorPrefab);
-            mapPopulator.Initialize(this);
+            mapPopulator.Initialize(this, depthConfig);
         }
     }
 
@@ -341,6 +341,9 @@ public class MazeRoom
 
     private int numberOfDoors = 0;
     private int maxDoors = 3;
+
+    public int NumberOfMeleeCreeps = 0;
+    public int NumberOfRangedCreeps = 0;
 
     public bool HasAtLeastOneDoor { get { return numberOfDoors > 0; } }
 

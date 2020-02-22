@@ -20,7 +20,15 @@ MonoBehaviour:
     HallwaySpriteColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.74509805, g: 0.5304602, b: 0.30101964, a: 1}
+    DesiredNumberOfMeleeCreeps: 10
+    MaxMeleeCreepsPerRoom: 5
+    DesiredNumberOfRangedCreeps: 0
+    MaxRangedCreepsPerRoom: 2
   - OverrideHallwaySprite: {fileID: 0}
     HallwaySpriteColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.5294118, g: 0.3752471, b: 0.24035296, a: 1}
+    DesiredNumberOfMeleeCreeps: 10
+    MaxMeleeCreepsPerRoom: 5
+    DesiredNumberOfRangedCreeps: 10
+    MaxRangedCreepsPerRoom: 2

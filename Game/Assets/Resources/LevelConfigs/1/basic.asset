@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8f25199bc0e194e96109a12d3aba07, type: 3}
   m_Name: basic
   m_EditorClassIdentifier: 
-  widthRange: {x: 21.251778, y: 26.251778}
-  heightRange: {x: 20.796587, y: 25.796587}
-  Width: 22
-  Height: 23
+  MinimumNumberOfRooms: 3
+  widthRange: {x: 21.96156, y: 26.96156}
+  heightRange: {x: 23.872295, y: 28.872307}
+  Width: 21
+  Height: 24
   BigRooms:
-  - Width: 13
-    Height: 12
+  - Width: 11
+    Height: 9
   MediumRooms:
   - Width: 11
     Height: 7
@@ -32,7 +33,3 @@ MonoBehaviour:
   BigRoomPlacementAttempts: 2
   MediumRoomPlacementAttempts: 2
   SmallRoomPlacementAttempts: 200
-  HallwaySprite: {fileID: 21300000, guid: 7d447833533d17a4b8b5b19d3373a2bb, type: 3}
-  HallwaySpriteColor: {r: 0.7254902, g: 0.7254902, b: 0.7254902, a: 1}
-  RoomSprite: {fileID: 21300000, guid: e853c298f0665654db6c7f42250ef089, type: 3}
-  RoomSpriteColor: {r: 0.7254902, g: 0.58431375, b: 0.4431373, a: 1}

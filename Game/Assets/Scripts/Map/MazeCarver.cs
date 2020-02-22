@@ -363,7 +363,7 @@ public class MazeCarver : MonoBehaviour
         node.Image = CreateRectSprite(node.Rect, Color.red, FloorType.Path);
     }
 
-    private void CarveBetween(MazeNode dirNode, MazeNode node)
+    private void CarveBetween(MazeNode dirNode, MazeNode node, bool drawSprite)
     {
         int dirX = (int)dirNode.Rect.x;
         int dirY = (int)dirNode.Rect.y;
@@ -390,12 +390,16 @@ public class MazeCarver : MonoBehaviour
         }
         MazeNode betweenNode = GetOrCreateNode(newX, newY);
         FloorType floorType = (node.IsWall || node.IsRoom) ? FloorType.Room : FloorType.Path;
-        betweenNode.Image = CreateRectSprite(betweenNode.Rect, Color.white, floorType);
+        if (betweenNode.Image == null) {
+            betweenNode.Image = CreateRectSprite(betweenNode.Rect, Color.white, floorType);
+        }
         betweenNode.IsOpen = true;
 
         node.IsOpen = true;
         carvedNodes.Add(node);
-        node.Image = CreateRectSprite(node.Rect, Color.white, floorType);
+        if (node.Image == null) {
+            node.Image = CreateRectSprite(node.Rect, Color.white, floorType);
+        }
     }
 
     private void Traverse()
@@ -420,7 +424,7 @@ public class MazeCarver : MonoBehaviour
         }
         else
         {
-            CarveBetween(node, cleanNeighbors[Random.Range(0, cleanNeighbors.Count)]);
+            CarveBetween(node, cleanNeighbors[Random.Range(0, cleanNeighbors.Count)], true);
         }
         if (animate)
         {
@@ -445,7 +449,7 @@ public class MazeCarver : MonoBehaviour
                 node.IsOpen = true;
                 node.IsWall = false;
                 //node.Image.color = Color.white;
-                CarveBetween(dirNode, node);
+                CarveBetween(dirNode, node, false);
                 someDoorsWereCreated = true;
             }
         }
@@ -484,13 +488,11 @@ public class MazeCarver : MonoBehaviour
         {
             spriteRenderer.color = depthConfig.HallwaySpriteColor;
             spriteRenderer.sprite = depthConfig.HallwaySprite;
-            spriteRenderer.sortingOrder = 20;
         }
         if (floorType == FloorType.Room)
         {
             spriteRenderer.color = depthConfig.RoomSpriteColor;
             spriteRenderer.sprite = depthConfig.RoomSprite;
-            spriteRenderer.sortingOrder = 30;
         }
         return spriteRenderer;
     }
@@ -551,6 +553,8 @@ public class MazeNode
     }
 
     public Rect Rect;
+
+    public bool HasACreep = false;
 
     public bool IsOpen = false;
 
