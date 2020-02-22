@@ -207,7 +207,7 @@ public class Enemy : MonoBehaviour
         return newPath;
     }
 
-    private float GetSimpleDistanceToPlayer()
+    public float GetSimpleDistanceToPlayer()
     {
         return Vector2.Distance(transform.position, player.transform.position);
     }

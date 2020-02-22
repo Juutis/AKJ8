@@ -9,6 +9,7 @@ TagManager:
   - UI
   - ClampedArea
   - LevelExit
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX
