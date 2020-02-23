@@ -111,7 +111,9 @@ public class LevelManager : MonoBehaviour
         LevelConfig config = GetLevelConfig();
         if (config == null)
         {
-            Debug.Log("The End!");
+            GetMenu().ShowEnd(
+                "The end.\nZarguuf defeated all his apprentices and continued on with his Saturday morning."
+            );
             return;
         }
         LevelDepthConfig depthConfig = generalLevelConfig.GetLevelDepthConfiguration(levelNumber - 1);
@@ -143,7 +145,12 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 0f;
         GameMenu menu = GetMenu();
         Debug.Log("Died!");
-        menu.ShowDeath("You have died. Do you wish to restart?");
+        menu.ShowDeath(
+            string.Format(
+                "Zarguuf was defeated {0} floors deep into his cellar.",
+                LevelManager.main.LevelNumber
+            )
+        );
     }
 
     public void Pause()
