@@ -76,7 +76,7 @@ public class MapPopulator : MonoBehaviour
             keyPrefab = Resources.Load<Key>("Key");
         }
         Key key = Instantiate(keyPrefab, transform);
-        key.transform.localScale = mapGenerator.GetScaled(Vector2.one);
+        //key.transform.localScale = mapGenerator.GetScaled(Vector2.one);
         key.transform.position = position;
     }
 

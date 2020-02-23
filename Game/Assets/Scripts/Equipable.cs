@@ -82,6 +82,7 @@ public class Equipable : MonoBehaviour
         readyToPickUp = true;
         if (sprite != null)
         {
+            sprite.localPosition = Vector3.zero;
             sprite.Rotate(Vector3.forward, Random.Range(0, 360));
         }
         transform.rotation = Quaternion.Euler(Vector3.zero);

@@ -24,6 +24,10 @@ public class Boss : MonoBehaviour
 
     float maxTeleports = 3, teleports = 0;
 
+    void Start()
+    {
+    }
+
     public void Initialize(int level)
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();

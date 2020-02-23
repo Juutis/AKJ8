@@ -46,6 +46,9 @@ public class Enemy : MonoBehaviour
 
     float lastHurt = 0.0f;
 
+    [SerializeField]
+    Key key;
+
     enum Routine
     {
         PATROL,
@@ -260,6 +263,13 @@ public class Enemy : MonoBehaviour
 
     public void DropLoot()
     {
+        if (key != null)
+        {
+            key.transform.localPosition = Vector3.zero;
+            key.transform.parent = transform;
+            key.GetComponent<Equipable>().Drop();
+            key.transform.localScale = new Vector3(1, 1, 1);
+        }
         var loot = LootManager.main.GetLoot(gameObject);
         foreach (var go in loot) {
             var eq = go.GetComponent<Equipable>();
