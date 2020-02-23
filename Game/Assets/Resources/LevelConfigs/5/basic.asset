@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: basic
   m_EditorClassIdentifier: 
   MinimumNumberOfRooms: 4
-  widthRange: {x: 23.61771, y: 30.714947}
-  heightRange: {x: 24.634926, y: 33.257435}
+  widthRange: {x: 28.984745, y: 36.08198}
+  heightRange: {x: 29.40137, y: 38.02388}
   Width: 21
   Height: 24
   BigRooms:
