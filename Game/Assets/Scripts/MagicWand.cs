@@ -157,7 +157,7 @@ public class MagicWand : MonoBehaviour
     private static int GetRandomProjectilesPerCast(float level)
     {
         //return Mathf.Clamp((int)Random.Range(-3, 3 + 10*level), 1, 5);
-        return Mathf.Clamp((int)(-3 + 10 * level), 1, 5);
+        return Mathf.Clamp((int)(-1 + 10 * level), 1, 5);
     }
 
     private static float GetRandomFireRate(float level)

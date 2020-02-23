@@ -43,19 +43,11 @@ public class WandInfo : MonoBehaviour
         {
             this.wand = wand;
             specs.text =
-                "Damage: " + wand.options.ProjectileDamage.ToString("0.0") + "\n" + 
-                "Fire rate: " + wand.options.fireRate.ToString("0.0") + " per second\n" +
+                "Damage: " + wand.options.ProjectileDamage.ToString("0.0") + "\n" +
+                "Fire Rate: " + wand.options.fireRate.ToString("0.0") + " per second\n" +
                 "Range: " + (wand.options.ProjectileSpeed * wand.options.ProjectileLifeTime).ToString("0.0") + "\n" +
-
-                // for debugging
-                "\n" +
-                "ProjectileBlastAoE: " + wand.options.ProjectileBlastAoE + "\n" +
-                "ProjectileLifeTime: " + wand.options.ProjectileLifeTime + "\n" +
-                "ProjectileSpeed: " + wand.options.ProjectileSpeed + "\n" +
-                "projectilesPerCast: " + wand.options.projectilesPerCast + "\n" +
-                "ProjectileVarianceFrequency: " + wand.options.ProjectileVarianceFrequency + "\n" +
-                "ProjectileVarianceX: " + wand.options.ProjectileVarianceX + "\n" +
-                "ProjectileVarianceY: " + wand.options.ProjectileVarianceY + "\n";
+                "Blast Radius: " + wand.options.ProjectileBlastAoE.ToString("0.0") +
+                (wand.options.projectilesPerCast > 1 ? "\nShoots " + wand.options.projectilesPerCast + " projectiles" : "");
 
             icon.color = wand.options.color;
         }
