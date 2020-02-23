@@ -22,10 +22,19 @@ public class GeneralLevelConfig : ScriptableObject
     public Sprite DefaultEndRoomSprite;
 
     public Color DefaultEndRoomSpriteColor;
+    public LevelDepthConfiguration baseDepthConfig;
     public List<LevelDepthConfiguration> LevelDepthConfigs;
     public LevelDepthConfig GetLevelDepthConfiguration(int depth)
     {
-        LevelDepthConfiguration depthConfig = LevelDepthConfigs[depth];
+        LevelDepthConfiguration depthConfig;
+        if (depth < 0)
+        {
+            depthConfig = baseDepthConfig;
+        }
+        else
+        {
+            depthConfig = LevelDepthConfigs[depth];
+        }
         return new LevelDepthConfig
         {
             PowerLevel = depthConfig.PowerLevel,
@@ -34,7 +43,7 @@ public class GeneralLevelConfig : ScriptableObject
             StartRoomSprite = depthConfig.OverrideStartRoomSprite != null ? depthConfig.OverrideStartRoomSprite : DefaultStartRoomSprite,
             StartRoomSpriteColor = depthConfig.OverrideStartRoomSpriteColor != Color.clear ? depthConfig.OverrideStartRoomSpriteColor : DefaultStartRoomSpriteColor,
             EndRoomSprite = depthConfig.OverrideEndRoomSprite != null ? depthConfig.OverrideEndRoomSprite : DefaultEndRoomSprite,
-            EndRoomSpriteColor = depthConfig.OverrideEndRoomSpriteColor != Color.clear  ? depthConfig.OverrideEndRoomSpriteColor : DefaultEndRoomSpriteColor,
+            EndRoomSpriteColor = depthConfig.OverrideEndRoomSpriteColor != Color.clear ? depthConfig.OverrideEndRoomSpriteColor : DefaultEndRoomSpriteColor,
             HallwaySpriteColor = depthConfig.HallwaySpriteColor,
             RoomSpriteColor = depthConfig.RoomSpriteColor,
             MeleeCreepNumber = depthConfig.DesiredNumberOfMeleeCreeps,

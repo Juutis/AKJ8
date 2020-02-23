@@ -22,7 +22,8 @@ public class Key : MonoBehaviour
 
     public void PickUp()
     {
+        SoundManager.main.PlaySound(SoundType.PickUpKey);
         coll.enabled = false;
-        exit.Unlock();
+        exit.Unlock(this);
     }
 }

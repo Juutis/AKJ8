@@ -180,12 +180,13 @@ public class Player : MonoBehaviour
     {
         if (magicWand != null)
         {
-            magicWand.transform.parent = transform;
             magicWand.GetComponent<Equipable>().Drop();
+            magicWand.transform.parent = LevelManager.main.MapGenerator.transform;
         }
         magicWand = wand;
         if (magicWand != null)
         {
+            SoundManager.main.PlaySound(SoundType.PickUpWand);
             magicWand.options.damageLayerMask = LayerMask.GetMask("Enemy");
             magicWand.options.ProjectileLayer = LayerMask.NameToLayer("PlayerProjectile");
             magicWand.options.ProjectileTag = "PlayerProjectile";
@@ -200,8 +201,8 @@ public class Player : MonoBehaviour
         if (boots != null)
         {
             boots.Drop();
-            boots.transform.parent = transform;
             boots.GetComponent<Equipable>().Drop();
+            boots.transform.parent = LevelManager.main.MapGenerator.transform;
         }
         boots = newBoots;
         if (boots != null)

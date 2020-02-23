@@ -15,7 +15,7 @@ MonoBehaviour:
   MinimumNumberOfRooms: 4
   widthRange: {x: 29.388336, y: 34.388344}
   heightRange: {x: 29.559032, y: 34.55903}
-  Width: 30
+  Width: 29
   Height: 29
   BigRooms:
   - Width: 14
@@ -27,11 +27,7 @@ MonoBehaviour:
     Height: 16
   SmallRooms:
   - Width: 7
-    Height: 9
+    Height: 7
   BigRoomPlacementAttempts: 5
   MediumRoomPlacementAttempts: 2
   SmallRoomPlacementAttempts: 200
-  HallwaySprite: {fileID: 21300000, guid: 7d447833533d17a4b8b5b19d3373a2bb, type: 3}
-  HallwaySpriteColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
-  RoomSprite: {fileID: 21300000, guid: e853c298f0665654db6c7f42250ef089, type: 3}
-  RoomSpriteColor: {r: 0.5, g: 0.36605313, b: 0.2004717, a: 1}

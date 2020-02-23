@@ -35,37 +35,49 @@ public class MapPopulator : MonoBehaviour
         meleeCreepPrefab = Resources.Load<Meleeer>("MeleeEnemy");
         rangeCreepPrefab = Resources.Load<Ranger>("RangeEnemy");
         keyPrefab = Resources.Load<Key>("Key");
-
         mapGenerator.HideWorldSprite();
-        SpawnCreeps(depthConfig.MeleeCreepNumber, CreepType.Melee);
-        SpawnCreeps(depthConfig.RangedCreepNumber, CreepType.Ranged);
-        CreateStartAndEnd();
-        SpawnKey();
-        Player player = SpawnPlayer();
-        SpawnBoss();
-        SetUpCamera(player);
         mapGenerator.Rooms.ForEach(room => room.HideImage());
         GameObject ui = GameObject.FindGameObjectWithTag("UI");
         //ui.SetActive(true);
+    }
+
+    public void Populate() {
+        SpawnBoss();
+        SpawnCreeps(depthConfig.MeleeCreepNumber, CreepType.Melee);
+        SpawnCreeps(depthConfig.RangedCreepNumber, CreepType.Ranged);
+        CreateStartAndEnd();
+        //SpawnKey();
+        Player player = SpawnPlayer();
+        SetUpCamera(player);
     }
 
     private void SpawnBoss()
     {
         Boss bossPrefab = Resources.Load<Boss>("Boss");
         Boss boss = Instantiate(bossPrefab, transform);
-        MazeNode bossNode = mapGenerator.GetRandomEmptyNodeCloseToCenter(endRoom);
+        List<MazeRoom> rooms = mapGenerator.Rooms.FindAll(room => !room.IsEnd && !room.IsStart);
+        MazeRoom bossRoom = rooms[Random.Range(0, rooms.Count)];
+        bossRoom.HasBoss = true;
+        MazeNode bossNode = mapGenerator.GetRandomEmptyNodeCloseToCenter(bossRoom);
         boss.transform.position = mapGenerator.GetScaled(bossNode.Rect.position);
         boss.Initialize(LevelManager.main.LevelNumber);
     }
 
-    private void SpawnKey()
+    /*private void SpawnKey()
     {
-        Key key = Instantiate(keyPrefab, transform);
         List<MazeRoom> normalRooms = mapGenerator.Rooms.FindAll(room => !room.IsEnd && !room.IsStart);
         MazeRoom keyRoom = normalRooms[Random.Range(0, normalRooms.Count)];
         MazeNode node = mapGenerator.GetRandomEmptyNodeCloseToCenter(keyRoom);
+        SpawnKeyAt(mapGenerator.GetScaled(node.Rect.position));
+    }*/
+
+    public void SpawnKeyAt(Vector3 position) {
+        if (keyPrefab == null) {
+            keyPrefab = Resources.Load<Key>("Key");
+        }
+        Key key = Instantiate(keyPrefab, transform);
         key.transform.localScale = mapGenerator.GetScaled(Vector2.one);
-        key.transform.position = mapGenerator.GetScaled(node.Rect.position);
+        key.transform.position = position;
     }
 
     private void SpawnCreeps(int spawnThisMany, CreepType creepType)
@@ -74,7 +86,7 @@ public class MapPopulator : MonoBehaviour
         {
             return;
         }
-        List<MazeRoom> normalRooms = mapGenerator.Rooms.FindAll(room => !room.IsEnd && !room.IsStart);
+        List<MazeRoom> normalRooms = mapGenerator.Rooms.FindAll(room => !room.IsStart && !room.HasBoss);
         while (normalRooms.Count > 0)
         {
             if (spawnThisMany <= 0)
@@ -126,7 +138,7 @@ public class MapPopulator : MonoBehaviour
         }
     }
 
-    private void SetUpCamera(Player player)
+    public void SetUpCamera(Player player)
     {
         FollowerCamera followerCamera = Camera.main.GetComponent<FollowerCamera>();
         Vector3 position = followerCamera.transform.position;
@@ -138,11 +150,29 @@ public class MapPopulator : MonoBehaviour
 
     private Player SpawnPlayer()
     {
+        return SpawnPlayerAt(startObject.transform.position);
+    }
+
+    public Player SpawnPlayerAt(Vector3 position) {
         playerPrefab = Resources.Load<Player>("Player");
-        Player player = Instantiate(playerPrefab, transform);
+        Player player;
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject == null)  {
+            player = Instantiate(playerPrefab, null);
+        } else {
+            player = playerObject.GetComponent<Player>();
+        }
+//        Player player = Instantiate(playerPrefab, transform);
         player.transform.localScale = mapGenerator.GetScaled(Vector3.one);
-        player.transform.position = startObject.transform.position;
+        player.transform.position = position;
         return player;
+    }
+
+    public void SpawnEndAt(Vector3 position) {
+        endPrefab = Resources.Load<GameObject>("EndNode");
+        endObject = Instantiate(endPrefab, transform);
+        endObject.transform.localScale = mapGenerator.GetScaled(Vector3.one);
+        endObject.transform.position = position;
     }
 
     private void CreateStartAndEnd()
@@ -159,7 +189,6 @@ public class MapPopulator : MonoBehaviour
         startObject.transform.localScale = mapGenerator.GetScaled(Vector3.one);
         startObject.transform.position = mapGenerator.GetScaled(startNode.Rect.position);
 
-        endPrefab = Resources.Load<GameObject>("EndNode");
         endRoom = mapGenerator.GetEndRoom();
         MazeNode endNode = mapGenerator.GetRandomEmptyNodeCloseToCenter(endRoom);
         mapGenerator.GetEmptyRoomNodes(endRoom).ForEach(node =>
@@ -167,9 +196,7 @@ public class MapPopulator : MonoBehaviour
             node.Image.sprite = depthConfig.EndRoomSprite;
             node.Image.color = depthConfig.EndRoomSpriteColor;
         });
-        endObject = Instantiate(endPrefab, transform);
-        endObject.transform.localScale = mapGenerator.GetScaled(Vector3.one);
-        endObject.transform.position = mapGenerator.GetScaled(endNode.Rect.position);
+        SpawnEndAt(mapGenerator.GetScaled(endNode.Rect.position));
     }
 
 }

@@ -64,6 +64,11 @@ public class Projectile : MonoBehaviour
             {
                 player.Hurt(options.ProjectileDamage, transform.position);
             }
+            Dummy dummy = collider.GetComponent<Dummy>();
+            if (dummy != null)
+            {
+                dummy.GetHit(options.ProjectileDamage);
+            }
         }
         /*
         Debug.DrawLine(transform.position, transform.position + Vector3.up * options.ProjectileBlastAoE, Color.white, 1.0f);
