@@ -249,8 +249,12 @@ public class Enemy : MonoBehaviour
         death.Play();
         character.sprite.SetActive(false);
         this.enabled = false;
-        splat.SetActive(true);
-        splat.transform.parent = transform.parent;
+        if (splat != null)
+        {
+            splat.transform.Rotate(Vector3.forward, Random.Range(0.0f, 360f));
+            splat.SetActive(true);
+            splat.transform.parent = transform.parent;
+        }
         Destroy(gameObject, 0.5f);
     }
 
