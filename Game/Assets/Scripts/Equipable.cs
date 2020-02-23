@@ -22,6 +22,8 @@ public class Equipable : MonoBehaviour
     [SerializeField]
     Color colorCloseEnough;
 
+    Collider collider;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,7 @@ public class Equipable : MonoBehaviour
         {
             sprite.Rotate(Vector3.forward, Random.Range(0, 360));
         }
+        collider = GetComponentInChildren<Collider>();
     }
 
     // Update is called once per frame
@@ -66,6 +69,10 @@ public class Equipable : MonoBehaviour
         {
             sprite.localRotation = Quaternion.Euler(Vector3.zero);
         }
+        if (collider != null)
+        {
+            collider.enabled = false;
+        }
     }
 
     public void Drop()
@@ -78,5 +85,10 @@ public class Equipable : MonoBehaviour
             sprite.Rotate(Vector3.forward, Random.Range(0, 360));
         }
         transform.rotation = Quaternion.Euler(Vector3.zero);
+
+        if (collider != null)
+        {
+            collider.enabled = true;
+        }
     }
 }
