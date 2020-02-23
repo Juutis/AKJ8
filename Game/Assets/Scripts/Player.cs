@@ -225,11 +225,12 @@ public class Player : MonoBehaviour
             health -= damage;
             if (health <= 0)
             {
-                Debug.Log("PLAYER DEAD");
+                LevelManager.main.PlayerDie();
             }
             invincible = true;
             lastHurt = Time.time;
             Invoke("ResetInvincibility", 0.5f);
+            HealthBar.main.SetHp(health);
         }
     }
 
@@ -245,5 +246,6 @@ public class Player : MonoBehaviour
         {
             health = maxHealth;
         }
+        HealthBar.main.SetHp(health);
     }
 }
