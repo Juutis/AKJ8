@@ -31,7 +31,7 @@ public class MapGenerator : MonoBehaviour
     private MazeCarver mazeCarver;
 
     private int worldCreateAttempts = 0;
-    private int maxWorldCreateAttempts = 5;
+    private int maxWorldCreateAttempts = 5000000;
 
     private int scale = 2;
 
