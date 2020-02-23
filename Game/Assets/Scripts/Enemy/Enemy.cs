@@ -34,6 +34,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     ParticleSystem death;
 
+    [SerializeField]
+    GameObject splat;
+
     private Routine routine;
     private Vector2 target;
     private Vector2 moveTargetPos;
@@ -246,6 +249,8 @@ public class Enemy : MonoBehaviour
         death.Play();
         character.sprite.SetActive(false);
         this.enabled = false;
+        splat.SetActive(true);
+        splat.transform.parent = transform.parent;
         Destroy(gameObject, 0.5f);
     }
 
