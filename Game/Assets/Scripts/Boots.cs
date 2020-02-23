@@ -80,9 +80,6 @@ public class Boots : MonoBehaviour
             while (dist > 0.1f)
             {
                 var destinationCandidate = teleportee.transform.position + dir * dist;
-
-                Debug.DrawLine(teleportee.transform.position, destinationCandidate, new Color(dist, 0, 0), 2 - dist / diff.magnitude);
-
                 if (NavMesh.SamplePosition(destinationCandidate, out hit, 0.25f, NavMesh.AllAreas))
                 {
                     teleportDestination = destinationCandidate;

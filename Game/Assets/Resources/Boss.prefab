@@ -9593,6 +9593,7 @@ MonoBehaviour:
   desiredRange: 8
   health: 100
   death: {fileID: 2019509925383111823}
+  splat: {fileID: 0}
 --- !u!135 &5767319041802750077
 SphereCollider:
   m_ObjectHideFlags: 0
