@@ -72,6 +72,14 @@ public class GameMenu : MonoBehaviour
         ShowButton(startButton);
     }
 
+    public void ShowEnd(string message) {
+        HideAllButtons();
+        ShowMessage(message);
+        Show();
+        ShowButton(restartButton);
+        ShowButton(exitButton);
+    }
+
     public void ShowPause(string message) {
         HideAllButtons();
         ShowMessage(message);
