@@ -110,8 +110,8 @@ public class MagicWand : MonoBehaviour
     public static MagicWandOptions GetOptions(float powerLevel)
     {
         powerLevel = Mathf.Clamp(powerLevel, 0.0f, 1.0f);
-        powerLevel = powerLevel / 2.0f + 0.5f;
-        var weights = LootUtil.getRandomWeights(6, 0.6f * Random.Range(powerLevel, 3f * powerLevel));
+        powerLevel = powerLevel * 0.9f + (1.0f - 0.9f);
+        var weights = LootUtil.getRandomWeights(6, 4f * Random.Range(powerLevel / 2.0f, powerLevel));
         return new MagicWandOptions()
         {
             color = getRandomColor(),

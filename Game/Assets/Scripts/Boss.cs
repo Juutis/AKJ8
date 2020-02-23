@@ -85,7 +85,7 @@ public class Boss : MonoBehaviour
 
     MagicWandOptions GetWandOptions(int level)
     {
-        var opts = MagicWand.GetOptions(level * 0.1f + 0.2f);
+        var opts = MagicWand.GetOptions(level * 0.1f);
 
         opts.damageLayerMask = LayerMask.GetMask("Player");
         opts.ProjectileLayer = LayerMask.NameToLayer("EnemyProjectile");
