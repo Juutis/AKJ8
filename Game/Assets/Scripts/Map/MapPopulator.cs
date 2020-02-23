@@ -119,6 +119,10 @@ public class MapPopulator : MonoBehaviour
         startPrefab = Resources.Load<GameObject>("StartNode");
         MazeRoom startRoom = mapGenerator.GetStartRoom();
         MazeNode startNode = mapGenerator.GetRandomEmptyNodeCloseToCenter(startRoom);
+        mapGenerator.GetEmptyRoomNodes(startRoom).ForEach(node => {
+            node.Image.sprite = depthConfig.StartRoomSprite;
+            node.Image.color = depthConfig.StartRoomSpriteColor;
+        });
         startObject = Instantiate(startPrefab, transform);
         startObject.transform.localScale = mapGenerator.GetScaled(Vector3.one);
         startObject.transform.position = mapGenerator.GetScaled(startNode.Rect.position);
@@ -126,6 +130,10 @@ public class MapPopulator : MonoBehaviour
         endPrefab = Resources.Load<GameObject>("EndNode");
         MazeRoom endRoom = mapGenerator.GetEndRoom();
         MazeNode endNode = mapGenerator.GetRandomEmptyNodeCloseToCenter(endRoom);
+        mapGenerator.GetEmptyRoomNodes(endRoom).ForEach(node => {
+            node.Image.sprite = depthConfig.EndRoomSprite;
+            node.Image.color = depthConfig.EndRoomSpriteColor;
+        });
         endObject = Instantiate(endPrefab, transform);
         endObject.transform.localScale = mapGenerator.GetScaled(Vector3.one);
         endObject.transform.position = mapGenerator.GetScaled(endNode.Rect.position);

@@ -13,6 +13,15 @@ public class GeneralLevelConfig : ScriptableObject
     [ShowAssetPreview]
     public Sprite DefaultRoomSprite;
 
+    [ShowAssetPreview]
+    public Sprite DefaultStartRoomSprite;
+
+    public Color DefaultStartRoomSpriteColor;
+
+    [ShowAssetPreview]
+    public Sprite DefaultEndRoomSprite;
+
+    public Color DefaultEndRoomSpriteColor;
     public List<LevelDepthConfiguration> LevelDepthConfigs;
     public LevelDepthConfig GetLevelDepthConfiguration(int depth)
     {
@@ -22,6 +31,10 @@ public class GeneralLevelConfig : ScriptableObject
             PowerLevel = depthConfig.PowerLevel,
             HallwaySprite = depthConfig.OverrideHallwaySprite != null ? depthConfig.OverrideHallwaySprite : DefaultHallwaySprite,
             RoomSprite = depthConfig.OverrideRoomSprite != null ? depthConfig.OverrideRoomSprite : DefaultRoomSprite,
+            StartRoomSprite = depthConfig.OverrideStartRoomSprite != null ? depthConfig.OverrideStartRoomSprite : DefaultStartRoomSprite,
+            StartRoomSpriteColor = depthConfig.OverrideStartRoomSpriteColor != Color.clear ? depthConfig.OverrideStartRoomSpriteColor : DefaultStartRoomSpriteColor,
+            EndRoomSprite = depthConfig.OverrideEndRoomSprite != null ? depthConfig.OverrideEndRoomSprite : DefaultEndRoomSprite,
+            EndRoomSpriteColor = depthConfig.OverrideEndRoomSpriteColor != Color.clear  ? depthConfig.OverrideEndRoomSpriteColor : DefaultEndRoomSpriteColor,
             HallwaySpriteColor = depthConfig.HallwaySpriteColor,
             RoomSpriteColor = depthConfig.RoomSpriteColor,
             MeleeCreepNumber = depthConfig.DesiredNumberOfMeleeCreeps,
@@ -37,6 +50,10 @@ public struct LevelDepthConfig
     public float PowerLevel;
     public Sprite HallwaySprite;
     public Sprite RoomSprite;
+    public Sprite StartRoomSprite;
+    public Color StartRoomSpriteColor;
+    public Sprite EndRoomSprite;
+    public Color EndRoomSpriteColor;
     public Color HallwaySpriteColor;
     public Color RoomSpriteColor;
     public int MeleeCreepNumber;
@@ -54,12 +71,20 @@ public class LevelDepthConfiguration
 
     [HeaderAttribute("Map")]
     [ShowAssetPreview]
+    public Sprite OverrideStartRoomSprite;
+    public Color OverrideStartRoomSpriteColor;
+
+    [ShowAssetPreview]
+    public Sprite OverrideEndRoomSprite;
+    public Color OverrideEndRoomSpriteColor;
+    [ShowAssetPreview]
     public Sprite OverrideHallwaySprite;
     public Color HallwaySpriteColor = Color.white;
 
     [ShowAssetPreview]
     public Sprite OverrideRoomSprite;
     public Color RoomSpriteColor = Color.white;
+
 
     [HeaderAttribute("Enemies")]
     public int DesiredNumberOfMeleeCreeps = 0;

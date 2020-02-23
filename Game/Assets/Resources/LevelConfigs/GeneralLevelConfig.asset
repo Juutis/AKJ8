@@ -12,22 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e1a44dc5e8ebd499956949b9dfa3bd, type: 3}
   m_Name: GeneralLevelConfig
   m_EditorClassIdentifier: 
-  DefaultHallwaySprite: {fileID: 21300000, guid: 7d447833533d17a4b8b5b19d3373a2bb,
+  DefaultHallwaySprite: {fileID: 21300000, guid: f5cdd9cb54335a84b98147163b183777,
     type: 3}
   DefaultRoomSprite: {fileID: 21300000, guid: e853c298f0665654db6c7f42250ef089, type: 3}
+  DefaultStartRoomSprite: {fileID: 21300000, guid: 7d447833533d17a4b8b5b19d3373a2bb,
+    type: 3}
+  DefaultStartRoomSpriteColor: {r: 0.8980393, g: 0.7568628, b: 0.627451, a: 1}
+  DefaultEndRoomSprite: {fileID: 21300000, guid: 7d447833533d17a4b8b5b19d3373a2bb,
+    type: 3}
+  DefaultEndRoomSpriteColor: {r: 0.72012585, g: 0.5801887, b: 1, a: 1}
   LevelDepthConfigs:
   - PowerLevel: 0.1
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
     OverrideHallwaySprite: {fileID: 0}
-    HallwaySpriteColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+    HallwaySpriteColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     OverrideRoomSprite: {fileID: 0}
-    RoomSpriteColor: {r: 0.74509805, g: 0.5304602, b: 0.30101964, a: 1}
+    RoomSpriteColor: {r: 0.84800005, g: 0.68071413, b: 0.433328, a: 1}
     DesiredNumberOfMeleeCreeps: 10
     MaxMeleeCreepsPerRoom: 5
     DesiredNumberOfRangedCreeps: 2
     MaxRangedCreepsPerRoom: 2
   - PowerLevel: 0.2
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
     OverrideHallwaySprite: {fileID: 0}
-    HallwaySpriteColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+    HallwaySpriteColor: {r: 0.5294118, g: 0.3679412, b: 0.3679412, a: 1}
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.5294118, g: 0.3752471, b: 0.24035296, a: 1}
     DesiredNumberOfMeleeCreeps: 10

@@ -363,7 +363,7 @@ public class MazeCarver : MonoBehaviour
         node.Image = CreateRectSprite(node.Rect, Color.red, FloorType.Path);
     }
 
-    private void CarveBetween(MazeNode dirNode, MazeNode node, bool drawSprite)
+    private void CarveBetween(MazeNode dirNode, MazeNode node, bool isHallway)
     {
         int dirX = (int)dirNode.Rect.x;
         int dirY = (int)dirNode.Rect.y;
@@ -394,7 +394,9 @@ public class MazeCarver : MonoBehaviour
             betweenNode.Image = CreateRectSprite(betweenNode.Rect, Color.white, floorType);
         }
         betweenNode.IsOpen = true;
-
+        if (!isHallway) {
+            node.IsRoom = true;
+        }
         node.IsOpen = true;
         carvedNodes.Add(node);
         if (node.Image == null) {
