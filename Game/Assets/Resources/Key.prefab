@@ -203,8 +203,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2451348410115449027}
   - component: {fileID: 2451348410115449024}
-  - component: {fileID: 3462127122982774435}
   - component: {fileID: 1282254130513114461}
+  - component: {fileID: -129526145970160875}
   m_Layer: 12
   m_Name: Key
   m_TagString: Untagged
@@ -246,19 +246,6 @@ MonoBehaviour:
   notificationBackground: {fileID: 9054480496466168336}
   colorTooFar: {r: 0.509434, g: 0, b: 0.024673086, a: 1}
   colorCloseEnough: {r: 0, g: 0.50980395, b: 0.005121615, a: 1}
---- !u!65 &3462127122982774435
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2451348410115449026}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1282254130513114461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +258,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9502edc7892eb334eaa4b61611b617bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &-129526145970160875
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2451348410115449026}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9054480495383141788
 GameObject:
   m_ObjectHideFlags: 0
