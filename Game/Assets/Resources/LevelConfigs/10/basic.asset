@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8f25199bc0e194e96109a12d3aba07, type: 3}
+  m_Name: basic
+  m_EditorClassIdentifier: 
+  MinimumNumberOfRooms: 7
+  widthRange: {x: 30.29073, y: 39.10389}
+  heightRange: {x: 31.498606, y: 36.49862}
+  Width: 21
+  Height: 24
+  BigRooms:
+  - Width: 11
+    Height: 9
+  MediumRooms:
+  - Width: 11
+    Height: 7
+  SmallRooms:
+  - Width: 7
+    Height: 7
+  - Width: 9
+    Height: 7
+  - Width: 7
+    Height: 9
+  BigRoomPlacementAttempts: 2
+  MediumRoomPlacementAttempts: 2
+  SmallRoomPlacementAttempts: 200

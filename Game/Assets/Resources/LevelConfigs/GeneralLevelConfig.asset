@@ -47,10 +47,10 @@ MonoBehaviour:
     HallwaySpriteColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.84800005, g: 0.68071413, b: 0.433328, a: 1}
-    DesiredNumberOfMeleeCreeps: 10
-    MaxMeleeCreepsPerRoom: 5
-    DesiredNumberOfRangedCreeps: 2
-    MaxRangedCreepsPerRoom: 2
+    DesiredNumberOfMeleeCreeps: 6
+    MaxMeleeCreepsPerRoom: 10
+    DesiredNumberOfRangedCreeps: 0
+    MaxRangedCreepsPerRoom: 0
   - PowerLevel: 0.2
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -61,6 +61,110 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.5294118, g: 0.3752471, b: 0.24035296, a: 1}
     DesiredNumberOfMeleeCreeps: 10
-    MaxMeleeCreepsPerRoom: 5
-    DesiredNumberOfRangedCreeps: 10
+    MaxMeleeCreepsPerRoom: 15
+    DesiredNumberOfRangedCreeps: 0
     MaxRangedCreepsPerRoom: 2
+  - PowerLevel: 0.3
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.5294118, g: 0.50457513, b: 0.36862746, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.23921566, g: 0.3794026, b: 0.5294118, a: 1}
+    DesiredNumberOfMeleeCreeps: 12
+    MaxMeleeCreepsPerRoom: 15
+    DesiredNumberOfRangedCreeps: 2
+    MaxRangedCreepsPerRoom: 3
+  - PowerLevel: 0.4
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.43052346, g: 0.5294118, b: 0.36862746, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.5294118, g: 0.23921566, b: 0.4710372, a: 1}
+    DesiredNumberOfMeleeCreeps: 15
+    MaxMeleeCreepsPerRoom: 20
+    DesiredNumberOfRangedCreeps: 5
+    MaxRangedCreepsPerRoom: 5
+  - PowerLevel: 0.5
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.4923246, g: 0.5294118, b: 0.36862746, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.3271693, g: 0.23921566, b: 0.5294118, a: 1}
+    DesiredNumberOfMeleeCreeps: 20
+    MaxMeleeCreepsPerRoom: 25
+    DesiredNumberOfRangedCreeps: 10
+    MaxRangedCreepsPerRoom: 15
+  - PowerLevel: 0.6
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.36862746, g: 0.5294118, b: 0.44460425, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.43246597, g: 0.5294118, b: 0.23921566, a: 1}
+    DesiredNumberOfMeleeCreeps: 25
+    MaxMeleeCreepsPerRoom: 30
+    DesiredNumberOfRangedCreeps: 15
+    MaxRangedCreepsPerRoom: 20
+  - PowerLevel: 0.7
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.4665993, g: 0.36862746, b: 0.5294118, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.23994145, g: 0.23921566, b: 0.5294118, a: 1}
+    DesiredNumberOfMeleeCreeps: 30
+    MaxMeleeCreepsPerRoom: 35
+    DesiredNumberOfRangedCreeps: 20
+    MaxRangedCreepsPerRoom: 25
+  - PowerLevel: 0.9
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.36862746, g: 0.5294118, b: 0.4051054, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.23921566, g: 0.5294118, b: 0.50892216, a: 1}
+    DesiredNumberOfMeleeCreeps: 35
+    MaxMeleeCreepsPerRoom: 40
+    DesiredNumberOfRangedCreeps: 25
+    MaxRangedCreepsPerRoom: 30
+  - PowerLevel: 1
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.25768226, g: 0.20745817, b: 0.3962264, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.4245283, g: 0.09411712, b: 0.37008768, a: 1}
+    DesiredNumberOfMeleeCreeps: 40
+    MaxMeleeCreepsPerRoom: 45
+    DesiredNumberOfRangedCreeps: 30
+    MaxRangedCreepsPerRoom: 35
+  - PowerLevel: 1
+    OverrideStartRoomSprite: {fileID: 0}
+    OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideEndRoomSprite: {fileID: 0}
+    OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
+    OverrideHallwaySprite: {fileID: 0}
+    HallwaySpriteColor: {r: 0.6415094, g: 0.18534464, b: 0, a: 1}
+    OverrideRoomSprite: {fileID: 0}
+    RoomSpriteColor: {r: 0.41509432, g: 0.03720184, b: 0.0631356, a: 1}
+    DesiredNumberOfMeleeCreeps: 50
+    MaxMeleeCreepsPerRoom: 60
+    DesiredNumberOfRangedCreeps: 30
+    MaxRangedCreepsPerRoom: 50
