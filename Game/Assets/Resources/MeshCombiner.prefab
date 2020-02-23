@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1195038703422896261}
   - component: {fileID: 1637891458635796832}
   - component: {fileID: -4783002885748946295}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MeshCombiner
   m_TagString: Untagged
   m_Icon: {fileID: 0}

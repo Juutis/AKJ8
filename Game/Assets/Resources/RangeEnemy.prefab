@@ -9588,8 +9588,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  aggroRange: 8
-  desiredRange: 5
+  aggroRange: 15
+  desiredRange: 8
   health: 10
   death: {fileID: 2019509925383111823}
 --- !u!135 &5767319041802750077
@@ -9633,7 +9633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1beb01dfc815e8e48baee6eb65eb233f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 5
+  attackRange: 10
   damage: 10
   attackRate: 1.5
   attackEffect: {fileID: 8026926619807001351}

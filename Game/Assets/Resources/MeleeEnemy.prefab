@@ -9633,7 +9633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c747018a0fc17d54e94fcbb82f2199ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 0.5
+  attackRange: 1.5
   damage: 5
   attackRate: 0.5
   attackEffect: {fileID: 8026926619807001351}

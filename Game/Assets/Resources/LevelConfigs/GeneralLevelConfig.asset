@@ -23,7 +23,7 @@ MonoBehaviour:
     RoomSpriteColor: {r: 0.74509805, g: 0.5304602, b: 0.30101964, a: 1}
     DesiredNumberOfMeleeCreeps: 10
     MaxMeleeCreepsPerRoom: 5
-    DesiredNumberOfRangedCreeps: 0
+    DesiredNumberOfRangedCreeps: 2
     MaxRangedCreepsPerRoom: 2
   - PowerLevel: 0.2
     OverrideHallwaySprite: {fileID: 0}
