@@ -72,7 +72,7 @@ public class Boss : MonoBehaviour
         {
             if (hasLineOfSight && enemy.GetSimpleDistanceToPlayer() < attackRange)
             {
-                wand.Shoot();
+                wand.Shoot(false);
             }
 
             if (enemy.health < maxHealth * (maxTeleports - teleports) / (maxTeleports + 1) && teleports < maxTeleports) {

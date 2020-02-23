@@ -21,6 +21,6 @@ public class Shooter : MonoBehaviour
 
     public void Shoot()
     {
-        magicWand.Shoot();
+        magicWand.Shoot(false);
     }
 }

@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
         {
             if (magicWand != null)
             {
-                magicWand.Shoot();
+                magicWand.Shoot(true);
             }
         }
 

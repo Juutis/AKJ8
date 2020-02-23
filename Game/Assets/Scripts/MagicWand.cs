@@ -19,6 +19,7 @@ public struct MagicWandOptions
     public float ProjectileVarianceX;
     public float ProjectileVarianceY;
     public float ProjectileVarianceFrequency;
+    public SoundType SoundType;
 }
 
 public class MagicWand : MonoBehaviour
@@ -31,7 +32,7 @@ public class MagicWand : MonoBehaviour
 
     [SerializeField]
     WandInfo wandInfo;
-    
+
     public MagicWandOptions options;
 
     private bool readyToShoot = true;
@@ -61,7 +62,7 @@ public class MagicWand : MonoBehaviour
         }
     }
 
-    public void Shoot()
+    public void Shoot(bool isPlayer)
     {
         if (readyToShoot)
         {
@@ -78,11 +79,15 @@ public class MagicWand : MonoBehaviour
             {
                 var direction = Quaternion.Euler(0, 0, dirOffset) * transform.up;
                 ProjectileManager.main.SpawnProjectile(options, position, direction);
+                if (isPlayer)
+                {
+                    SoundManager.main.PlaySound(options.SoundType);
+                }
                 dirOffset += 10;
             }
             readyToShoot = false;
-            cooldown = 1/options.fireRate;
-            Invoke("ResetCooldown", 1/options.fireRate);
+            cooldown = 1 / options.fireRate;
+            Invoke("ResetCooldown", 1 / options.fireRate);
         }
     }
 
@@ -106,7 +111,7 @@ public class MagicWand : MonoBehaviour
     {
         powerLevel = Mathf.Clamp(powerLevel, 0.0f, 1.0f);
         powerLevel = powerLevel / 2.0f + 0.5f;
-        var weights = LootUtil.getRandomWeights(6, 0.6f * Random.Range(powerLevel, 3f* powerLevel));
+        var weights = LootUtil.getRandomWeights(6, 0.6f * Random.Range(powerLevel, 3f * powerLevel));
         return new MagicWandOptions()
         {
             color = getRandomColor(),
@@ -119,8 +124,25 @@ public class MagicWand : MonoBehaviour
             ProjectileLifeTime = GetRandomProjectileLifeTime(weights[2]),
             ProjectileSpeed = GetRandomProjectileSpeed(weights[3]),
             ProjectileBlastAoE = GetRandomProjectileBlastAoE(weights[4]),
-            ProjectileDamage = GetRandomProjectileDamage(weights[5])
+            ProjectileDamage = GetRandomProjectileDamage(weights[5]),
+            SoundType = GetRandomWandSoundType()
         };
+    }
+
+    private static List<SoundType> randomWandsounds = new List<SoundType>() {
+        SoundType.Wand1,
+        SoundType.Wand2,
+        SoundType.Wand3,
+        SoundType.Wand4,
+        SoundType.Wand5,
+        SoundType.Wand6,
+        SoundType.Wand7,
+        SoundType.Wand8
+    };
+
+    private static SoundType GetRandomWandSoundType()
+    {
+        return randomWandsounds[Random.Range(0, randomWandsounds.Count)];
     }
 
     private static Color getRandomColor()
@@ -135,19 +157,19 @@ public class MagicWand : MonoBehaviour
     private static int GetRandomProjectilesPerCast(float level)
     {
         //return Mathf.Clamp((int)Random.Range(-3, 3 + 10*level), 1, 5);
-        return Mathf.Clamp((int)(-3 + 10*level), 1, 5);
+        return Mathf.Clamp((int)(-3 + 10 * level), 1, 5);
     }
 
     private static float GetRandomFireRate(float level)
     {
         //return Random.Range(0.5f, 5 + level * 5);
-        return 0.5f + 5f*level;
+        return 0.5f + 5f * level;
     }
 
     private static float GetRandomProjectileLifeTime(float level)
     {
         //return Random.Range(0.5f, 2 + level * 5);
-        return 1.0f + level*6f;
+        return 1.0f + level * 6f;
     }
 
     private static float GetRandomProjectileSpeed(float level)
