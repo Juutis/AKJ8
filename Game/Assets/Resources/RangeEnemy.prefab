@@ -107,7 +107,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -4861,7 +4861,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -9539,7 +9539,7 @@ Transform:
   m_GameObject: {fileID: 1216912707361642574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 5731287197095626320}
   - {fileID: 3630754204906146690}
@@ -9588,8 +9588,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  aggroRange: 8
-  desiredRange: 5
+  aggroRange: 15
+  desiredRange: 8
   health: 10
   death: {fileID: 2019509925383111823}
 --- !u!135 &5767319041802750077
@@ -9603,7 +9603,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &4079090255725678116
 NavMeshObstacle:
@@ -9633,7 +9633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1beb01dfc815e8e48baee6eb65eb233f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 5
+  attackRange: 10
   damage: 10
   attackRate: 1.5
   attackEffect: {fileID: 8026926619807001351}

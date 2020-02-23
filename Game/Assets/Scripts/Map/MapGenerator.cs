@@ -68,7 +68,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public Vector2 GetScaled(Vector2 coordinate)
+    public Vector3 GetScaled(Vector3 coordinate)
     {
         return coordinate * scale;
     }
@@ -308,7 +308,7 @@ public class MapGenerator : MonoBehaviour
         SpriteRenderer spriteRenderer = Instantiate(spritePrefab, Vector2.zero, Quaternion.identity);
         spriteRenderer.transform.parent = transform;
         spriteRenderer.transform.localScale = GetScaled(new Vector2(rect.width, rect.height));
-        spriteRenderer.transform.position = GetScaled(rect.center) - Vector2.one;
+        spriteRenderer.transform.position = GetScaled(rect.center) - (Vector3)Vector2.one;
         spriteRenderer.gameObject.SetActive(true);
         spriteRenderer.color = color;
         return spriteRenderer;

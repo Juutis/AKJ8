@@ -5,11 +5,13 @@ using UnityEngine;
 public class Key : MonoBehaviour
 {
     LevelExit exit;
+    Collider coll;
 
     // Start is called before the first frame update
     void Start()
     {
         exit = GameObject.FindGameObjectWithTag("LevelExit").GetComponent<LevelExit>();
+        coll = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -20,6 +22,7 @@ public class Key : MonoBehaviour
 
     public void PickUp()
     {
+        coll.enabled = false;
         exit.Unlock();
     }
 }

@@ -110,7 +110,7 @@ public class MapPopulator : MonoBehaviour
     private Player SpawnPlayer() {
         playerPrefab = Resources.Load<Player>("Player");
         Player player = Instantiate(playerPrefab, transform);
-        player.transform.localScale = mapGenerator.GetScaled(Vector2.one);
+        player.transform.localScale = mapGenerator.GetScaled(Vector3.one);
         player.transform.position = startObject.transform.position;
         return player;
     }
@@ -120,14 +120,14 @@ public class MapPopulator : MonoBehaviour
         MazeRoom startRoom = mapGenerator.GetStartRoom();
         MazeNode startNode = mapGenerator.GetRandomEmptyNodeCloseToCenter(startRoom);
         startObject = Instantiate(startPrefab, transform);
-        startObject.transform.localScale = mapGenerator.GetScaled(Vector2.one);
+        startObject.transform.localScale = mapGenerator.GetScaled(Vector3.one);
         startObject.transform.position = mapGenerator.GetScaled(startNode.Rect.position);
 
         endPrefab = Resources.Load<GameObject>("EndNode");
         MazeRoom endRoom = mapGenerator.GetEndRoom();
         MazeNode endNode = mapGenerator.GetRandomEmptyNodeCloseToCenter(endRoom);
         endObject = Instantiate(endPrefab, transform);
-        endObject.transform.localScale = mapGenerator.GetScaled(Vector2.one);
+        endObject.transform.localScale = mapGenerator.GetScaled(Vector3.one);
         endObject.transform.position = mapGenerator.GetScaled(endNode.Rect.position);
     }
 
