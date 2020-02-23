@@ -23,7 +23,8 @@ public class GameMenu : MonoBehaviour
     private Text messageTxt;
     public void StartButtonClick() {
         DisableAll();
-        LevelManager.main.LoadNextLevel();
+        LevelManager.main.StartGameForReal();
+        //LevelManager.main.LoadNextLevel();
     }
     public void ContinueButtonClick() {
         DisableAll();

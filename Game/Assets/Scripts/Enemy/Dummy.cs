@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Dummy : MonoBehaviour
 {
-    int health = 10;
+    int health = 3;
     bool dead = false;
     public void GetHit(float damage){
         health -= (int)damage;

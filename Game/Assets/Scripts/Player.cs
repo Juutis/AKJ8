@@ -54,8 +54,17 @@ public class Player : MonoBehaviour
         }
         origColor = sprite.color;
 
-        cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorScript>();
+        //cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorScript>();
         health = maxHealth;
+        LoadCursor();
+    }
+
+    public void LoadCursor()
+    {
+        GameObject cursorObject = GameObject.FindGameObjectWithTag("Cursor");
+        if (cursorObject != null) {
+            cursor = cursorObject.GetComponent<CursorScript>();
+        }
     }
 
     // Update is called once per frame
@@ -66,7 +75,11 @@ public class Player : MonoBehaviour
         var mousePos = Camera.main.ScreenToWorldPoint(mousePos3d);
         character.SetTarget(mousePos);
 
-        cursor.transform.position = Input.mousePosition;
+        if (cursor != null)
+        {
+
+            cursor.transform.position = Input.mousePosition;
+        }
 
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
@@ -155,11 +168,16 @@ public class Player : MonoBehaviour
                     EquipBoots(boots);
                 }
             }
-            cursor.SetInteract(true, closeEnough, !equipable.blocked);
+            if (cursor != null) {
+                cursor.SetInteract(true, closeEnough, !equipable.blocked);
+            }
         }
         else
         {
-            cursor.SetInteract(false, false, false);
+            if (cursor != null)
+            {
+                cursor.SetInteract(false, false, false);
+            }
         }
 
         if (invincible)

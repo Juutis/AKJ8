@@ -33,6 +33,10 @@ public class LevelManager : MonoBehaviour
     MapPopulator mapPopulator;
     MagicWand wandPrefab;
 
+    GameObject HUD;
+
+    Player player;
+
     void Start()
     {
         FullscreenFade fsPrefab = Resources.Load<FullscreenFade>("FullscreenFade");
@@ -41,8 +45,15 @@ public class LevelManager : MonoBehaviour
         MapGenerator mapGeneratorPrefab = Resources.Load<MapGenerator>("MapGenerator");
         MapGenerator = Instantiate(mapGeneratorPrefab);
         generalLevelConfig = Resources.Load<GeneralLevelConfig>("LevelConfigs/GeneralLevelConfig");
+        HUD = GameObject.FindGameObjectWithTag("Respawn");
+        HUD.SetActive(false);
         LoadBaseLevel();
+        GetMenu().ShowStart("\"Zarguuf! Come down into the cellar. We have prepared a challenge for you!\"");
         //LoadNextLevel();
+    }
+
+    public void StartGameForReal() {
+        fullscreenFade.FadeOut(ReadyWithBase);
     }
 
     public void LoadBaseLevel()
@@ -73,9 +84,9 @@ public class LevelManager : MonoBehaviour
         dummy.transform.position = MapGenerator.GetScaled(new Vector3(13, 13, 0));
 
         mapPopulator.SpawnEndAt(MapGenerator.GetScaled(new Vector3(10, 10, 0)));
-        Player player = mapPopulator.SpawnPlayerAt(MapGenerator.GetScaled(new Vector3(7, 7, 0)));
+        player = mapPopulator.SpawnPlayerAt(MapGenerator.GetScaled(new Vector3(7, 7, 0)));
         mapPopulator.SetUpCamera(player);
-        fullscreenFade.FadeOut(ReadyWithBase);
+        //fullscreenFade.FadeOut(ReadyWithBase);
     }
 
     private void SpawnWandAt(Vector3 position, float powerLevel)
@@ -97,6 +108,9 @@ public class LevelManager : MonoBehaviour
     public void ReadyWithBase()
     {
         loading = false;
+        HUD.SetActive(true);
+        //player.LoadCursor();
+        GetMenu().Hide();
     }
 
     public void LoadNextLevel()

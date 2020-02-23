@@ -42,6 +42,7 @@ public class FullscreenFade : MonoBehaviour
     public void Initialize()
     {
         imgFade = GetComponentInChildren<Image>();
+        imgFade.color = fadeInColor;
     }
 
     public void IntroFadeIn() {
@@ -63,6 +64,7 @@ public class FullscreenFade : MonoBehaviour
     }
 
     public void FadeOut(FadeComplete fadeCompleteCallback) {
+        Debug.Log("Fadeout");
         fadingDuration = fadeOutDuration;
         targetColor = fadeOutColor;
         completeCallback = fadeCompleteCallback;
