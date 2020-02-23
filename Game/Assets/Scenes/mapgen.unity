@@ -370,6 +370,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1770007206, guid: 556cd7ba06e81aa438aabb6246042f06, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2514162460285613105, guid: 556cd7ba06e81aa438aabb6246042f06,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1001
+      objectReference: {fileID: 0}
     - target: {fileID: 2514162460285613106, guid: 556cd7ba06e81aa438aabb6246042f06,
         type: 3}
       propertyPath: m_Name
@@ -478,6 +487,16 @@ PrefabInstance:
     - target: {fileID: 2514162460285613110, guid: 556cd7ba06e81aa438aabb6246042f06,
         type: 3}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767639249590085652, guid: 556cd7ba06e81aa438aabb6246042f06,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8497368359752232563, guid: 556cd7ba06e81aa438aabb6246042f06,
+        type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

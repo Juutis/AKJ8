@@ -48,6 +48,7 @@ public class LevelManager : MonoBehaviour
         HUD = GameObject.FindGameObjectWithTag("Respawn");
         HUD.SetActive(false);
         LoadBaseLevel();
+        player.LoadCursor();
         GetMenu().ShowStart("\"Zarguuf! Come down into the cellar. We have prepared a challenge for you!\"");
         //LoadNextLevel();
     }
