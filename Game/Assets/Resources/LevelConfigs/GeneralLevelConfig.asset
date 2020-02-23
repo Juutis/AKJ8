@@ -47,8 +47,8 @@ MonoBehaviour:
     HallwaySpriteColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.84800005, g: 0.68071413, b: 0.433328, a: 1}
-    DesiredNumberOfMeleeCreeps: 6
-    MaxMeleeCreepsPerRoom: 10
+    DesiredNumberOfMeleeCreeps: 2
+    MaxMeleeCreepsPerRoom: 2
     DesiredNumberOfRangedCreeps: 0
     MaxRangedCreepsPerRoom: 0
   - PowerLevel: 0.2
@@ -61,7 +61,7 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.5294118, g: 0.3752471, b: 0.24035296, a: 1}
     DesiredNumberOfMeleeCreeps: 10
-    MaxMeleeCreepsPerRoom: 15
+    MaxMeleeCreepsPerRoom: 4
     DesiredNumberOfRangedCreeps: 0
     MaxRangedCreepsPerRoom: 2
   - PowerLevel: 0.3
@@ -74,9 +74,9 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.23921566, g: 0.3794026, b: 0.5294118, a: 1}
     DesiredNumberOfMeleeCreeps: 12
-    MaxMeleeCreepsPerRoom: 15
+    MaxMeleeCreepsPerRoom: 5
     DesiredNumberOfRangedCreeps: 2
-    MaxRangedCreepsPerRoom: 3
+    MaxRangedCreepsPerRoom: 1
   - PowerLevel: 0.4
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -87,9 +87,9 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.5294118, g: 0.23921566, b: 0.4710372, a: 1}
     DesiredNumberOfMeleeCreeps: 15
-    MaxMeleeCreepsPerRoom: 20
+    MaxMeleeCreepsPerRoom: 4
     DesiredNumberOfRangedCreeps: 5
-    MaxRangedCreepsPerRoom: 5
+    MaxRangedCreepsPerRoom: 2
   - PowerLevel: 0.5
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -100,9 +100,9 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.3271693, g: 0.23921566, b: 0.5294118, a: 1}
     DesiredNumberOfMeleeCreeps: 20
-    MaxMeleeCreepsPerRoom: 25
+    MaxMeleeCreepsPerRoom: 5
     DesiredNumberOfRangedCreeps: 10
-    MaxRangedCreepsPerRoom: 15
+    MaxRangedCreepsPerRoom: 5
   - PowerLevel: 0.6
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -113,9 +113,9 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.43246597, g: 0.5294118, b: 0.23921566, a: 1}
     DesiredNumberOfMeleeCreeps: 25
-    MaxMeleeCreepsPerRoom: 30
+    MaxMeleeCreepsPerRoom: 5
     DesiredNumberOfRangedCreeps: 15
-    MaxRangedCreepsPerRoom: 20
+    MaxRangedCreepsPerRoom: 3
   - PowerLevel: 0.7
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -126,9 +126,9 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.23994145, g: 0.23921566, b: 0.5294118, a: 1}
     DesiredNumberOfMeleeCreeps: 30
-    MaxMeleeCreepsPerRoom: 35
+    MaxMeleeCreepsPerRoom: 6
     DesiredNumberOfRangedCreeps: 20
-    MaxRangedCreepsPerRoom: 25
+    MaxRangedCreepsPerRoom: 4
   - PowerLevel: 0.9
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -139,9 +139,9 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.23921566, g: 0.5294118, b: 0.50892216, a: 1}
     DesiredNumberOfMeleeCreeps: 35
-    MaxMeleeCreepsPerRoom: 40
+    MaxMeleeCreepsPerRoom: 7
     DesiredNumberOfRangedCreeps: 25
-    MaxRangedCreepsPerRoom: 30
+    MaxRangedCreepsPerRoom: 5
   - PowerLevel: 1
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -152,9 +152,9 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.4245283, g: 0.09411712, b: 0.37008768, a: 1}
     DesiredNumberOfMeleeCreeps: 40
-    MaxMeleeCreepsPerRoom: 45
+    MaxMeleeCreepsPerRoom: 8
     DesiredNumberOfRangedCreeps: 30
-    MaxRangedCreepsPerRoom: 35
+    MaxRangedCreepsPerRoom: 6
   - PowerLevel: 1
     OverrideStartRoomSprite: {fileID: 0}
     OverrideStartRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
@@ -165,6 +165,6 @@ MonoBehaviour:
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.41509432, g: 0.03720184, b: 0.0631356, a: 1}
     DesiredNumberOfMeleeCreeps: 50
-    MaxMeleeCreepsPerRoom: 60
+    MaxMeleeCreepsPerRoom: 10
     DesiredNumberOfRangedCreeps: 30
-    MaxRangedCreepsPerRoom: 50
+    MaxRangedCreepsPerRoom: 8
