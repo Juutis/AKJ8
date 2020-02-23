@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager main;
 
     private FullscreenFade fullscreenFade;
+    private GameMenu gameMenu;
 
     private MapGenerator mapGenerator;
     private GeneralLevelConfig generalLevelConfig;
@@ -24,6 +25,12 @@ public class LevelManager : MonoBehaviour
     private int levelNumber = 1;
 
     public int LevelNumber { get { return levelNumber; } }
+
+    private bool dead = false;
+    private bool paused = false;
+    private bool loading = false;
+    private bool inLevelScreen = false;
+
     void Start()
     {
         FullscreenFade fsPrefab = Resources.Load<FullscreenFade>("FullscreenFade");
@@ -37,6 +44,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadNextLevel()
     {
+        loading = true;
         Camera.main.GetComponent<FollowerCamera>().StopFollowing();
         fullscreenFade.FadeIn(LoadLevel);
     }
@@ -56,6 +64,50 @@ public class LevelManager : MonoBehaviour
         levelNumber += 1;
     }
 
+    public void PlayerDie() {
+        FadeIn(ShowDeathMenu);
+        dead = true;
+    }
+
+    private GameMenu GetMenu() {
+        if (gameMenu == null) {
+            GameMenu gameMenuPrefab = Resources.Load<GameMenu>("GameMenu");
+            gameMenu = Instantiate(gameMenuPrefab);
+        }
+        return gameMenu;
+    }
+
+    public void ShowDeathMenu() {
+        Time.timeScale = 0f;
+        GameMenu menu = GetMenu();
+        Debug.Log("Died!");
+        menu.ShowDeath("You have died. Do you wish to restart?");
+    }
+
+    public void Pause() {
+        if (!loading && !paused && !dead && !inLevelScreen) {
+            paused = true;
+            FadeIn(ShowPauseMenu);
+        } else if (paused) {
+            UnPause();
+        }
+    }
+    public void ShowPauseMenu () {
+        GameMenu menu = GetMenu();
+        menu.ShowPause("Paused.");
+    }
+    public void UnPause () {
+        if (paused) {
+            FadeOut(HidePauseMenu);
+        }
+    }
+
+    public void HidePauseMenu () {
+        paused = false;
+        GameMenu menu = GetMenu();
+        menu.Hide();
+    }
+
     public void AfterLevelIsLoaded()
     {
         fullscreenFade.FadeOut(Unfreeze);
@@ -73,6 +125,7 @@ public class LevelManager : MonoBehaviour
     public void Unfreeze()
     {
         Debug.Log("All ready!");
+        loading = false;
     }
 
     private LevelConfig GetLevelConfig()
@@ -90,6 +143,8 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Pause();
+        }
     }
 }

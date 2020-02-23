@@ -192,7 +192,7 @@ public class Player : MonoBehaviour
             health -= damage;
             if (health <= 0)
             {
-                Debug.Log("PLAYER DEAD");
+                LevelManager.main.PlayerDie();
             }
             invincible = true;
             lastHurt = Time.time;
