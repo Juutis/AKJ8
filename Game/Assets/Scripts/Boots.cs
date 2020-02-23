@@ -168,6 +168,6 @@ public class Boots : MonoBehaviour
     private static float GetTeleportCooldown(float powerLevel)
     {
         //return Random.Range(0.1f, 30.0f - 25.0f * powerLevel);
-        return 30.0f - 29.9f * powerLevel;
+        return 15.0f - 14.9f * powerLevel;
     }
 }

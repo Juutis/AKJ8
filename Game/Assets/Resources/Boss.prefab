@@ -9589,8 +9589,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  aggroRange: 10
-  desiredRange: 8
+  aggroRange: 8
+  desiredRange: 3
   health: 100
   death: {fileID: 2019509925383111823}
   splat: {fileID: 0}

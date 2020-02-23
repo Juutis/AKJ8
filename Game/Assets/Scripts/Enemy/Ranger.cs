@@ -21,12 +21,19 @@ public class Ranger : MonoBehaviour
 
     bool readyToAttack = true;
 
+    bool hasLineOfSight = false;
+
+    int losLayerMask = 0;
+
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         enemy = GetComponent<Enemy>();
+        InvokeRepeating("CheckLineOfSight", 0.1f, 0.1f);
+
+        losLayerMask = LayerMask.GetMask("Player", "Wall");
     }
 
     // Update is called once per frame
@@ -34,11 +41,33 @@ public class Ranger : MonoBehaviour
     {
         if (enemy.isActiveAndEnabled)
         {
-            if (readyToAttack && GetSimpleDistanceToPlayer() < attackRange)
+            if (hasLineOfSight && readyToAttack && GetSimpleDistanceToPlayer() < attackRange)
             {
                 Attack();
             }
 
+        }
+    }
+
+    public void CheckLineOfSight()
+    {
+        if (enemy.GetSimpleDistanceToPlayer() > enemy.aggroRange)
+        {
+            hasLineOfSight = false;
+            return;
+        }
+        RaycastHit hit;
+        var rayDirection = player.transform.position - transform.position;
+        if (Physics.Raycast(transform.position + new Vector3(), rayDirection, out hit, 1000.0f, losLayerMask))
+        {
+            if (hit.transform.gameObject == player.gameObject)
+            {
+                hasLineOfSight = true;
+            }
+            else
+            {
+                hasLineOfSight = false;
+            }
         }
     }
 

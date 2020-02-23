@@ -24,8 +24,35 @@ public class Boss : MonoBehaviour
 
     float maxTeleports = 3, teleports = 0;
 
+    bool hasLineOfSight = false;
+    int losLayerMask = 0;
+
     void Start()
     {
+        InvokeRepeating("CheckLineOfSight", 0.1f, 0.1f);
+        losLayerMask = LayerMask.GetMask("Player", "Wall");
+    }
+    
+    public void CheckLineOfSight()
+    {
+        if (enemy.GetSimpleDistanceToPlayer() > enemy.aggroRange)
+        {
+            hasLineOfSight = false;
+            return;
+        }
+        RaycastHit hit;
+        var rayDirection = player.transform.position - transform.position;
+        if (Physics.Raycast(transform.position + new Vector3(), rayDirection, out hit, 1000.0f, losLayerMask))
+        {
+            if (hit.transform.gameObject == player.gameObject)
+            {
+                hasLineOfSight = true;
+            }
+            else
+            {
+                hasLineOfSight = false;
+            }
+        }
     }
 
     public void Initialize(int level)
