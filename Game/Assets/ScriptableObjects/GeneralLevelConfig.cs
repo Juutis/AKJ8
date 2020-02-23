@@ -19,6 +19,7 @@ public class GeneralLevelConfig : ScriptableObject
         LevelDepthConfiguration depthConfig = LevelDepthConfigs[depth];
         return new LevelDepthConfig
         {
+            PowerLevel = depthConfig.PowerLevel,
             HallwaySprite = depthConfig.OverrideHallwaySprite != null ? depthConfig.OverrideHallwaySprite : DefaultHallwaySprite,
             RoomSprite = depthConfig.OverrideRoomSprite != null ? depthConfig.OverrideRoomSprite : DefaultRoomSprite,
             HallwaySpriteColor = depthConfig.HallwaySpriteColor,
@@ -33,6 +34,7 @@ public class GeneralLevelConfig : ScriptableObject
 
 public struct LevelDepthConfig
 {
+    public float PowerLevel;
     public Sprite HallwaySprite;
     public Sprite RoomSprite;
     public Color HallwaySpriteColor;
@@ -46,6 +48,11 @@ public struct LevelDepthConfig
 [System.Serializable]
 public class LevelDepthConfiguration
 {
+    [HeaderAttribute("Loot")]
+    [Range(0, 1)]
+    public float PowerLevel = 0;
+
+    [HeaderAttribute("Map")]
     [ShowAssetPreview]
     public Sprite OverrideHallwaySprite;
     public Color HallwaySpriteColor = Color.white;
@@ -54,6 +61,7 @@ public class LevelDepthConfiguration
     public Sprite OverrideRoomSprite;
     public Color RoomSpriteColor = Color.white;
 
+    [HeaderAttribute("Enemies")]
     public int DesiredNumberOfMeleeCreeps = 0;
     public int MaxMeleeCreepsPerRoom = 5;
     public int DesiredNumberOfRangedCreeps = 0;

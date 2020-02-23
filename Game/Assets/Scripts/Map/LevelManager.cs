@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
         LevelDepthConfig depthConfig = generalLevelConfig.GetLevelDepthConfiguration(levelNumber - 1);
         LevelConfig config = GetLevelConfig();
         config.Randomize();
+        LootManager.main.SetConfig(depthConfig);
         mapGenerator.Initialize(config, depthConfig);
     }
 

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct LootTable {
+public struct LootTable
+{
     public float WandChance;
     public float HealthPotionChance;
     public float BootsChance;
@@ -41,7 +42,7 @@ public class LootManager : MonoBehaviour
 
     void Start()
     {
-        LoadPrefabs();
+        
     }
 
     public enum EnemyType
@@ -51,14 +52,21 @@ public class LootManager : MonoBehaviour
         BOSS
     }
 
+    LevelDepthConfig depthConfig;
+
+    public void SetConfig(LevelDepthConfig levelDepthConfig)
+    {
+        depthConfig = levelDepthConfig;
+        LoadPrefabs();
+    }
+
     public List<GameObject> GetLoot(GameObject gameObject)
     {
         EnemyType type = DetermineEnemyType(gameObject);
-        float powerLevel = GetPowerLevel();
 
         var lootTable = GetLootTable(type);
 
-        var loot = GetLoot(lootTable, powerLevel);
+        var loot = GetLoot(lootTable);
 
         if (type == EnemyType.BOSS)
         {
@@ -82,12 +90,6 @@ public class LootManager : MonoBehaviour
         return EnemyType.ENEMY_MELEE;
     }
 
-    public float GetPowerLevel()
-    {
-        // somehow figure out this dungeon's power level
-        return 1.0f;
-    }
-
     public LootTable GetLootTable(EnemyType type)
     {
         switch (type)
@@ -103,16 +105,17 @@ public class LootManager : MonoBehaviour
         }
     }
 
-    public List<GameObject> GetLoot(LootTable lootTable, float powerLevel)
+    public List<GameObject> GetLoot(LootTable lootTable)
     {
         var loots = new List<GameObject>();
 
         var random = Random.Range(0.0f, 1.0f);
-        if (random < lootTable.WandChance)
+        if (-1 < lootTable.WandChance)
         {
             GameObject wandGameObject = Instantiate(WandPrefab);
             MagicWand wand = wandGameObject.GetComponent<MagicWand>();
-            wand.SetOptions(MagicWand.GetRandomOptions(powerLevel));
+            wand.SetOptions(MagicWand.GetRandomOptions(depthConfig.PowerLevel));
+            Debug.Log(depthConfig.PowerLevel);
             loots.Add(wandGameObject);
         }
 
