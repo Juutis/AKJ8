@@ -24,6 +24,7 @@ public class Potion : MonoBehaviour
     public void PickUp()
     {
         player.Heal(healthRestored);
+        SoundManager.main.PlaySound(SoundType.Drink);
         Destroy(gameObject);
     }
 }
