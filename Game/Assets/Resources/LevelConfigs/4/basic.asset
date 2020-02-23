@@ -32,6 +32,6 @@ MonoBehaviour:
     Height: 7
   - Width: 7
     Height: 9
-  BigRoomPlacementAttempts: 2
-  MediumRoomPlacementAttempts: 2
+  BigRoomPlacementAttempts: 200
+  MediumRoomPlacementAttempts: 200
   SmallRoomPlacementAttempts: 200

@@ -15,8 +15,8 @@ MonoBehaviour:
   MinimumNumberOfRooms: 5
   widthRange: {x: 34.103886, y: 39.103886}
   heightRange: {x: 34.167816, y: 39.167828}
-  Width: 21
-  Height: 24
+  Width: 36
+  Height: 38
   BigRooms:
   - Width: 11
     Height: 9
@@ -30,6 +30,6 @@ MonoBehaviour:
     Height: 7
   - Width: 7
     Height: 9
-  BigRoomPlacementAttempts: 2
-  MediumRoomPlacementAttempts: 2
+  BigRoomPlacementAttempts: 200
+  MediumRoomPlacementAttempts: 200
   SmallRoomPlacementAttempts: 200
