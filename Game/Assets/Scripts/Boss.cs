@@ -70,7 +70,7 @@ public class Boss : MonoBehaviour
     {
         if (enemy.isActiveAndEnabled)
         {
-            if (enemy.GetSimpleDistanceToPlayer() < attackRange)
+            if (hasLineOfSight &&  enemy.GetSimpleDistanceToPlayer() < attackRange)
             {
                 wand.Shoot();
             }
