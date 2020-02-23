@@ -15,7 +15,7 @@ public struct BootOptions
 
 public class Boots : MonoBehaviour
 {
-    BootOptions options;
+    public BootOptions options;
 
     [SerializeField]
     SpriteRenderer sprite;
@@ -30,6 +30,9 @@ public class Boots : MonoBehaviour
     [SerializeField]
     ParticleSystem trail;
 
+    [SerializeField]
+    BootsInfo bootsInfo;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +44,7 @@ public class Boots : MonoBehaviour
     {
         sprite.color = options.color;
         trail.startColor = options.color;
+        bootsInfo.UpdateUI(this);
     }
 
     // Update is called once per frame
@@ -132,7 +136,7 @@ public class Boots : MonoBehaviour
 
     private static float GetRandomMS(float powerLevel)
     {
-        return Random.Range(-0.5f, 0.5f);
+        return Random.Range(-0.5f, 3.0f);
     }
 
     private static bool GetRandomTeleport(float powerLevel)

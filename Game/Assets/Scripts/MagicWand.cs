@@ -39,6 +39,8 @@ public class MagicWand : MonoBehaviour
     [SerializeField]
     bool randomize = true;
 
+    public float cooldown;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,13 +48,17 @@ public class MagicWand : MonoBehaviour
         {
             SetOptions(GetOptions(0.0f));
         }
-        wandInfo.UpdateUI(options);
+        wandInfo.UpdateUI(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        cooldown -= Time.deltaTime;
+        if (cooldown < 0.01f)
+        {
+            cooldown = 0.0f;
+        }
     }
 
     public void Shoot()
@@ -75,6 +81,7 @@ public class MagicWand : MonoBehaviour
                 dirOffset += 10;
             }
             readyToShoot = false;
+            cooldown = 1/options.fireRate;
             Invoke("ResetCooldown", 1/options.fireRate);
         }
     }

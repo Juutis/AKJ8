@@ -5,10 +5,16 @@ using UnityEngine.UI;
 
 public class WandInfo : MonoBehaviour
 {
-    MagicWandOptions wandOptions;
+    MagicWand wand;
 
     [SerializeField]
-    Text wandSpecs;
+    Text specs;
+
+    [SerializeField]
+    Image icon;
+
+    [SerializeField]
+    Image cooldownOverlay;
 
     // Start is called before the first frame update
     void Start()
@@ -18,25 +24,40 @@ public class WandInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (wand != null)
+        {
+            if (wand.cooldown > 0.01f)
+            {
+                cooldownOverlay.fillAmount = wand.cooldown * wand.options.fireRate;
+            }
+            else
+            {
+                cooldownOverlay.fillAmount = 0.0f;
+            }
+        }
     }
 
-    public void UpdateUI(MagicWandOptions wandOptions)
+    public void UpdateUI(MagicWand wand)
     {
-        if (!this.wandOptions.Equals(wandOptions))
+        if (this.wand != wand)
         {
-            wandSpecs.text = "Fire rate: " + wandOptions.fireRate + "\n" +
-                "Damage: " + wandOptions.ProjectileDamage + "\n" +
-                "Range: " + wandOptions.ProjectileSpeed * wandOptions.ProjectileLifeTime + "\n" +
+            this.wand = wand;
+            specs.text =
+                "Damage: " + wand.options.ProjectileDamage.ToString("0.0") + "\n" + 
+                "Fire rate: " + wand.options.fireRate.ToString("0.0") + " per second\n" +
+                "Range: " + (wand.options.ProjectileSpeed * wand.options.ProjectileLifeTime).ToString("0.0") + "\n" +
 
                 // for debugging
                 "\n" +
-                "ProjectileBlastAoE: " + wandOptions.ProjectileBlastAoE + "\n" +
-                "ProjectileLifeTime: " + wandOptions.ProjectileLifeTime + "\n" +
-                "ProjectileSpeed: " + wandOptions.ProjectileSpeed + "\n" +
-                "projectilesPerCast: " + wandOptions.projectilesPerCast + "\n" +
-                "ProjectileVarianceFrequency: " + wandOptions.ProjectileVarianceFrequency + "\n" +
-                "ProjectileVarianceX: " + wandOptions.ProjectileVarianceX + "\n" +
-                "ProjectileVarianceY: " + wandOptions.ProjectileVarianceY + "\n";
+                "ProjectileBlastAoE: " + wand.options.ProjectileBlastAoE + "\n" +
+                "ProjectileLifeTime: " + wand.options.ProjectileLifeTime + "\n" +
+                "ProjectileSpeed: " + wand.options.ProjectileSpeed + "\n" +
+                "projectilesPerCast: " + wand.options.projectilesPerCast + "\n" +
+                "ProjectileVarianceFrequency: " + wand.options.ProjectileVarianceFrequency + "\n" +
+                "ProjectileVarianceX: " + wand.options.ProjectileVarianceX + "\n" +
+                "ProjectileVarianceY: " + wand.options.ProjectileVarianceY + "\n";
+
+            icon.color = wand.options.color;
         }
     }
 }

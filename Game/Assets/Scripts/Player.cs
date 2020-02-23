@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     Vector2 moveInput;
 
     float moveSpeed = 3.0f;
+    float moveModifier = 1.0f;
 
     int equipableMask;
     Equipable lastHovered;
@@ -209,13 +210,18 @@ public class Player : MonoBehaviour
             boots.transform.parent = sprite.transform;
             boots.transform.localPosition = Vector3.zero;
             boots.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            moveModifier = 1.0f + boots.options.bonusSpeed;
+        }
+        else
+        {
+            moveModifier = 1.0f;
         }
     }
 
     private void FixedUpdate()
     {
         var velocityDir = moveInput.magnitude > 1.0f ? moveInput.normalized : moveInput;
-        rb.velocity = velocityDir * moveSpeed;
+        rb.velocity = velocityDir * moveSpeed * moveModifier;
     }
 
     public void Hurt(float damage, Vector3 fromPosition)

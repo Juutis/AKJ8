@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(WandInfo))]
-public class PlayerWandInfo : MonoBehaviour
+[RequireComponent(typeof(BootsInfo))]
+public class PlayerBootsInfo : MonoBehaviour
 {
     Player player;
-    WandInfo wandInfo;
+    BootsInfo info;
 
     [SerializeField]
     GameObject container;
@@ -14,7 +14,8 @@ public class PlayerWandInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        wandInfo = GetComponent<WandInfo>();
+        info = GetComponent<BootsInfo>();
+
         InvokeRepeating("FindPlayer", 0.5f, 0.5f);
     }
 
@@ -23,10 +24,10 @@ public class PlayerWandInfo : MonoBehaviour
     {
         if (player != null)
         {
-            if (player.magicWand != null)
+            if (player.boots != null)
             {
                 container.SetActive(true);
-                wandInfo.UpdateUI(player.magicWand);
+                info.UpdateUI(player.boots);
             }
             else
             {
