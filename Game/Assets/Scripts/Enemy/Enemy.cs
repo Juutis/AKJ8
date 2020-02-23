@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     float moveSpeed = 1.0f;
 
     [SerializeField]
-    float aggroRange = 20.0f;
+    public float aggroRange = 20.0f;
 
     [SerializeField]
     float desiredRange = 1.0f;

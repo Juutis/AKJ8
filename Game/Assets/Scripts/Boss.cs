@@ -24,8 +24,35 @@ public class Boss : MonoBehaviour
 
     float maxTeleports = 3, teleports = 0;
 
+    bool hasLineOfSight = false;
+    int losLayerMask = 0;
+
     void Start()
     {
+        InvokeRepeating("CheckLineOfSight", 0.1f, 0.1f);
+        losLayerMask = LayerMask.GetMask("Player", "Wall");
+    }
+    
+    public void CheckLineOfSight()
+    {
+        if (enemy.GetSimpleDistanceToPlayer() > enemy.aggroRange)
+        {
+            hasLineOfSight = false;
+            return;
+        }
+        RaycastHit hit;
+        var rayDirection = player.transform.position - transform.position;
+        if (Physics.Raycast(transform.position + new Vector3(), rayDirection, out hit, 1000.0f, losLayerMask))
+        {
+            if (hit.transform.gameObject == player.gameObject)
+            {
+                hasLineOfSight = true;
+            }
+            else
+            {
+                hasLineOfSight = false;
+            }
+        }
     }
 
     public void Initialize(int level)
@@ -43,7 +70,7 @@ public class Boss : MonoBehaviour
     {
         if (enemy.isActiveAndEnabled)
         {
-            if (enemy.GetSimpleDistanceToPlayer() < attackRange)
+            if (hasLineOfSight && enemy.GetSimpleDistanceToPlayer() < attackRange)
             {
                 wand.Shoot();
             }
@@ -58,7 +85,7 @@ public class Boss : MonoBehaviour
 
     MagicWandOptions GetWandOptions(int level)
     {
-        var opts = MagicWand.GetOptions(level * 0.1f);
+        var opts = MagicWand.GetOptions(level * 0.1f + 0.2f);
 
         opts.damageLayerMask = LayerMask.GetMask("Player");
         opts.ProjectileLayer = LayerMask.NameToLayer("EnemyProjectile");
