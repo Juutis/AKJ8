@@ -63,17 +63,14 @@ public class Boss : MonoBehaviour
 
     void Teleport()
     {
-        NavMeshPath path = new NavMeshPath();
+        NavMeshHit hit;
         while(true)
         {
             var target = transform.position + new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f));
-            if (NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path)) 
+            if (NavMesh.SamplePosition(target, out hit, 0.25f, NavMesh.AllAreas))
             {
-                if (path.status == NavMeshPathStatus.PathComplete)
-                {
-                    transform.position = target;
-                    break;
-                }
+                transform.position = target;
+                break;
             }
         }
     }

@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     Character character;
     public MagicWand magicWand;
+    public Boots boots;
     Rigidbody rb;
     private SpriteRenderer sprite;
 
@@ -76,6 +77,14 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (Input.GetButtonDown("Teleport"))
+        {
+            if (boots != null)
+            {
+                boots.Teleport(mousePos);
+            }
+        }
+
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         var hits = Physics.RaycastAll(ray, 100, equipableMask);
@@ -138,6 +147,12 @@ public class Player : MonoBehaviour
                 {
                     potion.PickUp();
                 }
+
+                Boots boots = equipable.GetComponent<Boots>();
+                if (boots != null)
+                {
+                    EquipBoots(boots);
+                }
             }
             cursor.SetInteract(true);
         }
@@ -173,9 +188,27 @@ public class Player : MonoBehaviour
             magicWand.options.damageLayerMask = LayerMask.GetMask("Enemy");
             magicWand.options.ProjectileLayer = LayerMask.NameToLayer("PlayerProjectile");
             magicWand.options.ProjectileTag = "PlayerProjectile";
-            magicWand.transform.parent = character.sprite.transform;
+            magicWand.transform.parent = sprite.transform;
             magicWand.transform.localPosition = new Vector3(0, 0.2f, 0);
             magicWand.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        }
+    }
+
+    public void EquipBoots(Boots newBoots)
+    {
+        if (boots != null)
+        {
+            boots.Drop();
+            boots.transform.parent = transform;
+            boots.GetComponent<Equipable>().Drop();
+        }
+        boots = newBoots;
+        if (boots != null)
+        {
+            boots.Equip(gameObject);
+            boots.transform.parent = sprite.transform;
+            boots.transform.localPosition = Vector3.zero;
+            boots.transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
     }
 
