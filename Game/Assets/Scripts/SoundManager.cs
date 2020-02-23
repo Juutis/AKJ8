@@ -8,7 +8,8 @@ public enum SoundType
     None,
     Drink,
     OpenHatch,
-    PickUpKey
+    PickUpKey,
+    PickUpWand
 }
 
 public class SoundManager : MonoBehaviour

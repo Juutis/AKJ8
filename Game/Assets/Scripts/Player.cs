@@ -179,13 +179,13 @@ public class Player : MonoBehaviour
     {
         if (magicWand != null)
         {
-            Debug.Log(LevelManager.main.MapGenerator.transform);
             magicWand.GetComponent<Equipable>().Drop();
             magicWand.transform.parent = LevelManager.main.MapGenerator.transform;
         }
         magicWand = wand;
         if (magicWand != null)
         {
+            SoundManager.main.PlaySound(SoundType.PickUpWand);
             magicWand.options.damageLayerMask = LayerMask.GetMask("Enemy");
             magicWand.options.ProjectileLayer = LayerMask.NameToLayer("PlayerProjectile");
             magicWand.options.ProjectileTag = "PlayerProjectile";
