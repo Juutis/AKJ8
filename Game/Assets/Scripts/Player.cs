@@ -197,6 +197,7 @@ public class Player : MonoBehaviour
             invincible = true;
             lastHurt = Time.time;
             Invoke("ResetInvincibility", 0.5f);
+            HealthBar.main.SetHp(health);
         }
     }
 
@@ -212,5 +213,6 @@ public class Player : MonoBehaviour
         {
             health = maxHealth;
         }
+        HealthBar.main.SetHp(health);
     }
 }
