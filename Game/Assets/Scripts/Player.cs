@@ -155,11 +155,11 @@ public class Player : MonoBehaviour
                     EquipBoots(boots);
                 }
             }
-            cursor.SetInteract(true);
+            cursor.SetInteract(true, closeEnough, !equipable.blocked);
         }
         else
         {
-            cursor.SetInteract(false);
+            cursor.SetInteract(false, false, false);
         }
 
         if (invincible)

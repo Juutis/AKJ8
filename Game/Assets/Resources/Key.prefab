@@ -400,10 +400,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'A peculiar key.
-
-
-    Press <E> to pick up.'
+  m_Text: A peculiar key.
 --- !u!1 &9054480496466168366
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,6 @@ public class Dummy : MonoBehaviour
     bool dead = false;
     public void GetHit(float damage){
         health -= (int)damage;
-        Debug.Log(string.Format("Take {0} damage! Health: {1}", damage, health));
         if (health <= 0) {
             health = 0;
             Die();

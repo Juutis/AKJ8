@@ -115,14 +115,16 @@ public class LootManager : MonoBehaviour
             GameObject wandGameObject = Instantiate(WandPrefab);
             MagicWand wand = wandGameObject.GetComponent<MagicWand>();
             wand.SetOptions(MagicWand.GetOptions(depthConfig.PowerLevel));
-            Debug.Log(depthConfig.PowerLevel);
             loots.Add(wandGameObject);
         }
 
         random = Random.Range(0.0f, 1.0f);
         if (random < lootTable.BootsChance)
         {
-            // TODO
+            GameObject bootsGameObject = Instantiate(BootsPrefab);
+            Boots boots = bootsGameObject.GetComponent<Boots>();
+            boots.SetOptions(Boots.GetOptions(depthConfig.PowerLevel));
+            loots.Add(bootsGameObject);
         }
 
         random = Random.Range(0.0f, 1.0f);
@@ -138,11 +140,13 @@ public class LootManager : MonoBehaviour
 
     GameObject WandPrefab;
     GameObject PotionPrefab;
+    GameObject BootsPrefab;
 
     private void LoadPrefabs()
     {
         WandPrefab = (GameObject)Resources.Load("MagicWand");
         PotionPrefab = (GameObject)Resources.Load("Potion");
+        BootsPrefab = (GameObject)Resources.Load("Boots");
     }
 
 }

@@ -35,7 +35,7 @@ public class LevelExit : MonoBehaviour
         }
         else
         {
-            infoText.text = "This hatch leads to the next level of the cellar.\n\nPress<E> to go deeper.";
+            infoText.text = "This hatch leads to the next level of the cellar.";
             spriteLocked.SetActive(false);
             spriteOpen.SetActive(true);
         }
@@ -59,6 +59,6 @@ public class LevelExit : MonoBehaviour
         keyThatUnlockedMe = key;
         locked = false;
         eq.blocked = false;
-        infoText.text = "This hatch leads to the next level of the cellar.\n\nPress<E> to go deeper.";
+        infoText.text = "This hatch leads to the next level of the cellar.";
     }
 }

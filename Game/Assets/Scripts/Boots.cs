@@ -36,7 +36,11 @@ public class Boots : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        options = GetOptions(1.0f);
+    }
+
+    public void SetOptions(BootOptions options)
+    {
+        this.options = options;
         UpdateComponents();
     }
 
@@ -136,21 +140,21 @@ public class Boots : MonoBehaviour
 
     private static float GetRandomMS(float powerLevel)
     {
-        return Random.Range(-0.5f, 3.0f);
+        return Random.Range(-1.0f, powerLevel * 3.0f);
     }
 
     private static bool GetRandomTeleport(float powerLevel)
     {
-        return Random.Range(0.5f, 0.5f) > 0;
+        return Random.Range(-1.0f, 5.0f * powerLevel) > 0;
     }
 
     private static float GetRandomTeleportDistance(float powerLevel)
     {
-        return Random.Range(0.5f, 10.0f);
+        return Random.Range(1.0f + 2*powerLevel, 2.0f + 8.0f * powerLevel);
     }
 
     private static float GetTeleportCooldown(float powerLevel)
     {
-        return Random.Range(0.1f, 3.0f);
+        return Random.Range(0.1f, 30.0f - 25.0f * powerLevel);
     }
 }
