@@ -96,7 +96,6 @@ public class LevelManager : MonoBehaviour
 
     public void ReadyWithBase()
     {
-        Debug.Log("base");
         loading = false;
     }
 

@@ -119,14 +119,24 @@ public class Boots : MonoBehaviour
     public static BootOptions GetOptions(float powerLevel)
     {
         powerLevel = Mathf.Clamp(powerLevel, 0.0f, 1.0f);
-        return new BootOptions()
+        powerLevel = powerLevel / 2.0f + 0.5f;
+        var weights = LootUtil.getRandomWeights(4, 0.4f * Random.Range(powerLevel, 3f * powerLevel));
+        var options = new BootOptions()
         {
             color = getRandomColor(),
-            bonusSpeed = GetRandomMS(powerLevel),
-            hasTeleport = GetRandomTeleport(powerLevel),
-            teleportDistance = GetRandomTeleportDistance(powerLevel),
-            teleportCooldown = GetTeleportCooldown(powerLevel)
+
+            bonusSpeed = GetRandomMS(weights[0]),
+            hasTeleport = GetRandomTeleport(weights[1]),
+            teleportDistance = GetRandomTeleportDistance(weights[2]),
+            teleportCooldown = GetTeleportCooldown(weights[3])
         };
+
+        if (options.bonusSpeed < 0)
+        {
+            options.hasTeleport = true;
+        }
+
+        return options;
     }
 
     private static Color getRandomColor()
@@ -140,21 +150,24 @@ public class Boots : MonoBehaviour
 
     private static float GetRandomMS(float powerLevel)
     {
-        return Random.Range(-1.0f, powerLevel * 3.0f);
+        //return Random.Range(-1.0f, powerLevel * 3.0f);
+        return -0.3f + powerLevel * 2.5f;
     }
 
     private static bool GetRandomTeleport(float powerLevel)
     {
-        return Random.Range(-1.0f, 5.0f * powerLevel) > 0;
+        return powerLevel > 0.3f;
     }
 
     private static float GetRandomTeleportDistance(float powerLevel)
     {
-        return Random.Range(1.0f + 2*powerLevel, 2.0f + 8.0f * powerLevel);
+        //return Random.Range(1.0f + 2 * powerLevel, 2.0f + 8.0f * powerLevel);
+        return 1.0f + 8.0f * powerLevel;
     }
 
     private static float GetTeleportCooldown(float powerLevel)
     {
-        return Random.Range(0.1f, 30.0f - 25.0f * powerLevel);
+        //return Random.Range(0.1f, 30.0f - 25.0f * powerLevel);
+        return 30.0f - 29.9f * powerLevel;
     }
 }

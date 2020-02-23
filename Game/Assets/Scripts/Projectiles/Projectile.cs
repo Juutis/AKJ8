@@ -115,6 +115,9 @@ public class Projectile : MonoBehaviour
         explosion.transform.localScale = new Vector3(6 * options.ProjectileBlastAoE, 6 * options.ProjectileBlastAoE, 1.0f);
         lifeTimer = 0.0f;
         trail.Play();
+
+        dir = direction.normalized;
+        perpendicular = Vector2.Perpendicular(dir);
     }
 
     void Update()
@@ -126,13 +129,18 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    Vector2 dir;
+    Vector2 perpendicular;
+
     void FixedUpdate()
     {
         if (flying)
         {
-            var variance = Mathf.Sin((Time.time - startTime) * options.ProjectileVarianceFrequency);
-            var dir = direction.normalized;
-            var perpendicular = Vector2.Perpendicular(dir);
+            float variance = 0.0f;
+            if (options.ProjectileVarianceFrequency > 1.0f || options.ProjectileVarianceFrequency < -0.1f)
+            {
+                variance = Mathf.Sin((Time.time - startTime) * options.ProjectileVarianceFrequency);
+            }
             rb.velocity = options.ProjectileSpeed * (dir + dir * variance * options.ProjectileVarianceY + perpendicular * variance * options.ProjectileVarianceX);
         }
         else

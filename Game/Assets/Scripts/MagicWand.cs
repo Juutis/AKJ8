@@ -102,9 +102,11 @@ public class MagicWand : MonoBehaviour
         spriteRenderer.color = options.color;
     }
 
-    public static MagicWandOptions GetOptions(float level)
+    public static MagicWandOptions GetOptions(float powerLevel)
     {
-        level = Mathf.Clamp(level, 0.0f, 1.0f);
+        powerLevel = Mathf.Clamp(powerLevel, 0.0f, 1.0f);
+        powerLevel = powerLevel / 2.0f + 0.5f;
+        var weights = LootUtil.getRandomWeights(6, 0.6f * Random.Range(powerLevel, 3f* powerLevel));
         return new MagicWandOptions()
         {
             color = getRandomColor(),
@@ -112,12 +114,12 @@ public class MagicWand : MonoBehaviour
             ProjectileVarianceY = GetRandomProjectileVariance(),
             ProjectileVarianceFrequency = GetRandomProjectileVarianceFrequency(),
 
-            projectilesPerCast = GetRandomProjectilesPerCast(level),
-            fireRate = GetRandomFireRate(level),
-            ProjectileLifeTime = GetRandomProjectileLifeTime(level),
-            ProjectileSpeed = GetRandomProjectileSpeed(level),
-            ProjectileBlastAoE = GetRandomProjectileBlastAoE(level),
-            ProjectileDamage = GetRandomProjectileDamage(level)
+            projectilesPerCast = GetRandomProjectilesPerCast(weights[0]),
+            fireRate = GetRandomFireRate(weights[1]),
+            ProjectileLifeTime = GetRandomProjectileLifeTime(weights[2]),
+            ProjectileSpeed = GetRandomProjectileSpeed(weights[3]),
+            ProjectileBlastAoE = GetRandomProjectileBlastAoE(weights[4]),
+            ProjectileDamage = GetRandomProjectileDamage(weights[5])
         };
     }
 
@@ -132,32 +134,38 @@ public class MagicWand : MonoBehaviour
 
     private static int GetRandomProjectilesPerCast(float level)
     {
-        return Mathf.Clamp((int)Random.Range(-3, 3 + 10*level), 1, 5);
+        //return Mathf.Clamp((int)Random.Range(-3, 3 + 10*level), 1, 5);
+        return Mathf.Clamp((int)(-3 + 10*level), 1, 5);
     }
 
     private static float GetRandomFireRate(float level)
     {
-        return Random.Range(0.5f, 5 + level * 5);
+        //return Random.Range(0.5f, 5 + level * 5);
+        return 0.5f + 5f*level;
     }
 
     private static float GetRandomProjectileLifeTime(float level)
     {
-        return Random.Range(0.5f, 2 + level * 5);
+        //return Random.Range(0.5f, 2 + level * 5);
+        return 1.0f + level*6f;
     }
 
     private static float GetRandomProjectileSpeed(float level)
     {
-        return Random.Range(3.0f, 5 + level * 5);
+        //return Random.Range(3.0f, 5 + level * 5);
+        return 3.0f + level * 7f;
     }
 
     private static float GetRandomProjectileBlastAoE(float level)
     {
-        return Random.Range(0.1f, 0.1f + level * 1.5f);
+        //return Random.Range(0.1f, 0.1f + level * 1.5f);
+        return 0.1f + level * 1.4f;
     }
 
     private static float GetRandomProjectileDamage(float level)
     {
-        return Random.Range(1.0f, 3.0f + level * 12.0f);
+        //return Random.Range(1.0f, 3.0f + level * 12.0f);
+        return 1.0f + level * 14.0f;
     }
 
     private static float GetRandomProjectileVariance()
@@ -167,6 +175,8 @@ public class MagicWand : MonoBehaviour
 
     private static float GetRandomProjectileVarianceFrequency()
     {
-        return Random.Range(-10.0f, 10.0f);
+        var value = Random.Range(-10.0f, 10.0f);
+        if (value < 5.0f && value > -5.0f) value = 0.0f;
+        return value;
     }
 }
