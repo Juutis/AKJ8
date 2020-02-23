@@ -20,12 +20,14 @@ public class Player : MonoBehaviour
     float UseRange = 0.5f;
 
     [SerializeField]
-    float health = 100.0f;
+    public float maxHealth = 100.0f;
 
     bool invincible = false, wasInvincible = false;
     float lastHurt = 0.0f;
 
     Color origColor;
+
+    float health;
 
 
     [SerializeField]
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour
         origColor = sprite.color;
 
         cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorScript>();
+        health = maxHealth;
     }
 
     // Update is called once per frame
@@ -129,6 +132,12 @@ public class Player : MonoBehaviour
                     key.transform.rotation = keyParent.rotation;
                     key.transform.parent = keyParent;
                 }
+
+                Potion potion = equipable.GetComponent<Potion>();
+                if (potion != null)
+                {
+                    potion.PickUp();
+                }
             }
             cursor.SetInteract(true);
         }
@@ -140,7 +149,7 @@ public class Player : MonoBehaviour
         if (invincible)
         {
             var color = Color.red;
-            color.a = 0.75f + 0.25f * Mathf.Cos((Time.time - lastHurt)*5.0f);
+            color.a = 0.75f + 0.25f * Mathf.Cos((Time.time - lastHurt) * 5.0f);
             sprite.color = color;
         }
 
@@ -194,5 +203,14 @@ public class Player : MonoBehaviour
     public void ResetInvincibility()
     {
         invincible = false;
+    }
+
+    public void Heal(float amount)
+    {
+        health += amount;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
 }
