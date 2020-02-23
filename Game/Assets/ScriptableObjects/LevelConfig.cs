@@ -10,11 +10,11 @@ public class LevelConfig : ScriptableObject
     [Range(1, 10)]
     public int MinimumNumberOfRooms = 3;
 
-    [MinMaxSlider(20f, 50f)]
+    [MinMaxSlider(5f, 50f)]
     [SerializeField]
     private Vector2 widthRange = new Vector2(20f, 25f);
 
-    [MinMaxSlider(20f, 50f)]
+    [MinMaxSlider(5f, 50f)]
     [SerializeField]
     private Vector2 heightRange = new Vector2(20f, 25f);
 
@@ -41,9 +41,9 @@ public class LevelConfig : ScriptableObject
 [System.Serializable]
 public class RoomType
 {
-    [Range(7, 35)]
+    [Range(3, 35)]
     public int Width = 9;
 
-    [Range(7, 35)]
+    [Range(3, 35)]
     public int Height = 9;
 }

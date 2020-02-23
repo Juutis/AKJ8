@@ -31,7 +31,7 @@ public class MapGenerator : MonoBehaviour
     private MazeCarver mazeCarver;
 
     private int worldCreateAttempts = 0;
-    private int maxWorldCreateAttempts = 5000000;
+    private int maxWorldCreateAttempts = 50000;
 
     private int scale = 2;
 
@@ -157,7 +157,6 @@ public class MapGenerator : MonoBehaviour
 
     public void CreateWorld()
     {
-        RemoveOldWorld();
         if (worldCreateAttempts >= maxWorldCreateAttempts)
         {
             Debug.Log(string.Format(
@@ -167,6 +166,7 @@ public class MapGenerator : MonoBehaviour
             ));
             return;
         }
+        RemoveOldWorld();
         worldCreateAttempts += 1;
         worldSprite = CreateRoomSprite(world, Color.gray);
 
@@ -259,7 +259,10 @@ public class MapGenerator : MonoBehaviour
                         (x == roomXMax - 1 && y == roomY) ||
                         (x == roomXMax - 1 && y == roomYMax - 1)
                     );
-
+                    /*if (isCorner)
+                    {
+                        Debug.Log(string.Format("{0}, {1} is corner!", x, y));
+                    }*/
                     mazeCarver.AddWallNode(x, y, isCorner, room, GetWallPosition(x, y, roomY, roomYMax, roomX, roomXMax));
                 }
                 else

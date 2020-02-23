@@ -234,7 +234,7 @@ public class MazeCarver : MonoBehaviour
                         node.IsOpen = false;
                         node.IsWall = true;
                         node.Image.color = Color.red;
-                        Debug.Log("Removed");
+                        //Debug.Log("Removed");
                     }
                 }
             }
@@ -317,6 +317,9 @@ public class MazeCarver : MonoBehaviour
             for (int x = -1; x <= config.Width; x += 1)
             {
                 MazeNode node = GetOrCreateNode(x, y);
+                if (node != null && (node.IsRoom || node.IsBetween)) {
+                    continue;
+                }
                 GameObject wall = Instantiate(wallPrefab, MeshCombiner.transform);
 
                 if (node == null)
@@ -417,6 +420,10 @@ public class MazeCarver : MonoBehaviour
         betweenNode.IsOpen = true;
         if (!isHallway)
         {
+            betweenNode.IsRoom = true;
+            betweenNode.IsWall = false;
+            betweenNode.Image.sprite = depthConfig.RoomSprite;
+            betweenNode.Image.color = depthConfig.RoomSpriteColor;
             node.IsRoom = true;
         }
         node.IsOpen = true;
@@ -441,9 +448,11 @@ public class MazeCarver : MonoBehaviour
         List<MazeNode> cleanNeighbors = neighbors.FindAll(neighbor => !neighbor.IsOpen && !neighbor.IsWall && !neighbor.IsRoom);
         if (cleanNeighbors.Count == 0)
         {
-            List<MazeNode> walls = neighbors.FindAll(neighbor => neighbor.IsWall && !neighbor.IsCornerWall);
+            List<MazeNode> walls = neighbors.FindAll(neighbor => neighbor.IsWall);
+            //Debug.Log(string.Format("No walls without corners near {0}, {1}", node.Rect.x, node.Rect.y));
             if (!CreateDoors(node, walls))
             {
+                //Debug.Log("Create doors didnt work!");
             }
             carvedNodes.Remove(node);
         }
@@ -463,6 +472,7 @@ public class MazeCarver : MonoBehaviour
 
     private bool CreateDoors(MazeNode dirNode, List<MazeNode> nodes)
     {
+        //Debug.Log(string.Format("Trying to create doors next to {0}, {1}", dirNode.Rect.x, dirNode.Rect.y));
         bool someDoorsWereCreated = false;
         while (nodes.Count > 0)
         {
@@ -582,6 +592,7 @@ public class MazeNode
     public bool HasACreep = false;
 
     public bool IsOpen = false;
+    public bool IsBetween = false;
 
     public bool IsWall = false;
 

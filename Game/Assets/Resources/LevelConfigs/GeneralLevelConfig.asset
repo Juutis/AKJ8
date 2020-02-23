@@ -57,7 +57,7 @@ MonoBehaviour:
     OverrideEndRoomSprite: {fileID: 0}
     OverrideEndRoomSpriteColor: {r: 0, g: 0, b: 0, a: 0}
     OverrideHallwaySprite: {fileID: 0}
-    HallwaySpriteColor: {r: 0.5294118, g: 0.3679412, b: 0.3679412, a: 1}
+    HallwaySpriteColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
     OverrideRoomSprite: {fileID: 0}
     RoomSpriteColor: {r: 0.5294118, g: 0.3752471, b: 0.24035296, a: 1}
     DesiredNumberOfMeleeCreeps: 10

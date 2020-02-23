@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: tall
   m_EditorClassIdentifier: 
   MinimumNumberOfRooms: 4
-  widthRange: {x: 29.388336, y: 34.388344}
-  heightRange: {x: 29.559032, y: 34.55903}
-  Width: 29
-  Height: 29
+  widthRange: {x: 19.660429, y: 20.192764}
+  heightRange: {x: 19.622124, y: 20.008556}
+  Width: 33
+  Height: 30
   BigRooms:
-  - Width: 14
+  - Width: 5
     Height: 7
-  - Width: 7
-    Height: 13
+  - Width: 5
+    Height: 9
   MediumRooms:
   - Width: 7
-    Height: 16
-  SmallRooms:
-  - Width: 7
     Height: 7
+  SmallRooms:
+  - Width: 5
+    Height: 5
   BigRoomPlacementAttempts: 200
   MediumRoomPlacementAttempts: 200
   SmallRoomPlacementAttempts: 200
