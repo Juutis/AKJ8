@@ -114,7 +114,7 @@ public class LootManager : MonoBehaviour
         {
             GameObject wandGameObject = Instantiate(WandPrefab);
             MagicWand wand = wandGameObject.GetComponent<MagicWand>();
-            wand.SetOptions(MagicWand.GetRandomOptions(depthConfig.PowerLevel));
+            wand.SetOptions(MagicWand.GetOptions(depthConfig.PowerLevel));
             Debug.Log(depthConfig.PowerLevel);
             loots.Add(wandGameObject);
         }

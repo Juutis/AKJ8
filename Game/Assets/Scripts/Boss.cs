@@ -24,11 +24,11 @@ public class Boss : MonoBehaviour
 
     float maxTeleports = 3, teleports = 0;
 
-    void Start()
+    public void Initialize(int level)
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         enemy = GetComponent<Enemy>();
-        wand.SetOptions(GetWandOptions());
+        wand.SetOptions(GetWandOptions(level));
         maxHealth = enemy.health;
     }
 
@@ -50,9 +50,9 @@ public class Boss : MonoBehaviour
         }
     }
 
-    MagicWandOptions GetWandOptions()
+    MagicWandOptions GetWandOptions(int level)
     {
-        var opts = MagicWand.GetRandomOptions(0.2f);
+        var opts = MagicWand.GetOptions(level * 0.1f);
 
         opts.damageLayerMask = LayerMask.GetMask("Player");
         opts.ProjectileLayer = LayerMask.NameToLayer("EnemyProjectile");

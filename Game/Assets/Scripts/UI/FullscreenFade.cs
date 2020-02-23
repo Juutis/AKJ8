@@ -74,17 +74,19 @@ public class FullscreenFade : MonoBehaviour
         originalColor = imgFade.color;
         isFading = true;
         fadingTimer = 0f;
+        Time.timeScale = 0f;
     }
 
     void Update()
     {
         if (isFading) {
-            fadingTimer += Time.deltaTime / fadingDuration;
+            fadingTimer += Time.unscaledDeltaTime / fadingDuration;
             imgFade.color =  Color.Lerp(originalColor, targetColor, fadingTimer);
             if (fadingTimer >= 1) {
                 imgFade.color = targetColor;
                 fadingTimer = 0f;
                 isFading = false;
+                Time.timeScale = 1f;
                 completeCallback();
             }
         }

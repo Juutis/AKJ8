@@ -44,7 +44,7 @@ public class MagicWand : MonoBehaviour
     {
         if (randomize)
         {
-            SetOptions(GetRandomOptions(0.0f));
+            SetOptions(GetOptions(0.0f));
         }
         wandInfo.UpdateUI(options);
     }
@@ -95,7 +95,7 @@ public class MagicWand : MonoBehaviour
         spriteRenderer.color = options.color;
     }
 
-    public static MagicWandOptions GetRandomOptions(float level)
+    public static MagicWandOptions GetOptions(float level)
     {
         level = Mathf.Clamp(level, 0.0f, 1.0f);
         return new MagicWandOptions()

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    void Awake() {
+    void Awake()
+    {
         DontDestroyOnLoad(gameObject);
-        if (GameObject.FindGameObjectsWithTag("LevelManager").Length > 1) {
+        if (GameObject.FindGameObjectsWithTag("LevelManager").Length > 1)
+        {
             Destroy(gameObject);
         }
         main = this;
@@ -20,6 +22,8 @@ public class LevelManager : MonoBehaviour
     private GeneralLevelConfig generalLevelConfig;
     [SerializeField]
     private int levelNumber = 1;
+
+    public int LevelNumber { get { return levelNumber; } }
     void Start()
     {
         FullscreenFade fsPrefab = Resources.Load<FullscreenFade>("FullscreenFade");
@@ -31,14 +35,17 @@ public class LevelManager : MonoBehaviour
         LoadNextLevel();
     }
 
-    public void LoadNextLevel() {
+    public void LoadNextLevel()
+    {
         Camera.main.GetComponent<FollowerCamera>().StopFollowing();
         fullscreenFade.FadeIn(LoadLevel);
     }
 
-    public void LoadLevel() {
+    public void LoadLevel()
+    {
         LevelConfig config = GetLevelConfig();
-        if (config == null) {
+        if (config == null)
+        {
             Debug.Log("The End!");
             return;
         }
@@ -49,26 +56,32 @@ public class LevelManager : MonoBehaviour
         levelNumber += 1;
     }
 
-    public void AfterLevelIsLoaded() {
+    public void AfterLevelIsLoaded()
+    {
         fullscreenFade.FadeOut(Unfreeze);
     }
 
-    public void FadeOut(FadeComplete callback) {
+    public void FadeOut(FadeComplete callback)
+    {
         fullscreenFade.FadeOut(callback);
     }
 
-    public void FadeIn(FadeComplete callback) {
+    public void FadeIn(FadeComplete callback)
+    {
         fullscreenFade.FadeIn(callback);
     }
-    public void Unfreeze() {
+    public void Unfreeze()
+    {
         Debug.Log("All ready!");
     }
 
-    private LevelConfig GetLevelConfig() {
+    private LevelConfig GetLevelConfig()
+    {
         List<LevelConfig> configs = new List<LevelConfig>(
             Resources.LoadAll<LevelConfig>(string.Format("LevelConfigs/{0}", levelNumber))
         );
-        if (configs.Count == 0) {
+        if (configs.Count == 0)
+        {
             return null;
         }
         return configs[Random.Range(0, configs.Count)];
@@ -77,6 +90,6 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
