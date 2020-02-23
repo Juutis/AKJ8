@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         var mousePos3d = Input.mousePosition;
-        mousePos3d.z = Camera.main.transform.position.z;
+        mousePos3d.z = Mathf.Abs(Camera.main.transform.position.z);
         var mousePos = Camera.main.ScreenToWorldPoint(mousePos3d);
         character.SetTarget(mousePos);
 
