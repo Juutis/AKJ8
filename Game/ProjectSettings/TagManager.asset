@@ -12,6 +12,7 @@ TagManager:
   - LevelManager
   - EnemyProjectile
   - UICamera
+  - Cursor
   layers:
   - Default
   - TransparentFX

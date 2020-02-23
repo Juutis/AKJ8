@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     Transform keyParent;
 
+    CursorScript cursor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,8 @@ public class Player : MonoBehaviour
             }
         }
         origColor = sprite.color;
+
+        cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorScript>();
     }
 
     // Update is called once per frame
@@ -56,6 +60,8 @@ public class Player : MonoBehaviour
         mousePos3d.z = Mathf.Abs(Camera.main.transform.position.z);
         var mousePos = Camera.main.ScreenToWorldPoint(mousePos3d);
         character.SetTarget(mousePos);
+
+        cursor.transform.position = Input.mousePosition;
 
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
@@ -124,6 +130,11 @@ public class Player : MonoBehaviour
                     key.transform.parent = keyParent;
                 }
             }
+            cursor.SetInteract(true);
+        }
+        else
+        {
+            cursor.SetInteract(false);
         }
 
         if (invincible)
