@@ -70,7 +70,7 @@ public class Boss : MonoBehaviour
     {
         if (enemy.isActiveAndEnabled)
         {
-            if (hasLineOfSight &&  enemy.GetSimpleDistanceToPlayer() < attackRange)
+            if (hasLineOfSight && enemy.GetSimpleDistanceToPlayer() < attackRange)
             {
                 wand.Shoot();
             }
@@ -85,7 +85,7 @@ public class Boss : MonoBehaviour
 
     MagicWandOptions GetWandOptions(int level)
     {
-        var opts = MagicWand.GetOptions(level * 0.1f);
+        var opts = MagicWand.GetOptions(level * 0.1f + 0.2f);
 
         opts.damageLayerMask = LayerMask.GetMask("Player");
         opts.ProjectileLayer = LayerMask.NameToLayer("EnemyProjectile");
