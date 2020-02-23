@@ -179,8 +179,9 @@ public class Player : MonoBehaviour
     {
         if (magicWand != null)
         {
-            magicWand.transform.parent = transform;
+            Debug.Log(LevelManager.main.MapGenerator.transform);
             magicWand.GetComponent<Equipable>().Drop();
+            magicWand.transform.parent = LevelManager.main.MapGenerator.transform;
         }
         magicWand = wand;
         if (magicWand != null)
@@ -199,8 +200,8 @@ public class Player : MonoBehaviour
         if (boots != null)
         {
             boots.Drop();
-            boots.transform.parent = transform;
             boots.GetComponent<Equipable>().Drop();
+            boots.transform.parent = LevelManager.main.MapGenerator.transform;
         }
         boots = newBoots;
         if (boots != null)

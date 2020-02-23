@@ -83,6 +83,22 @@ public class MazeCarver : MonoBehaviour
         worldRect = world;
     }
 
+    public void FillWithHallway()
+    {
+        for (int y = 0; y < config.Height; y += 1)
+        {
+            for (int x = 0; x < config.Width; x += 1)
+            {
+                MazeNode node = GetOrCreateNode(x, y);
+                if (!node.IsRoom && !node.IsWall)
+                {
+                    node.IsOpen = true;
+                    node.Image = CreateRectSprite(node.Rect, Color.yellow, FloorType.Path);
+                }
+            }
+        }
+    }
+
     public List<MazeNode> GetAllNodes()
     {
         return nodes.SelectMany(T => T).ToList();
@@ -102,6 +118,7 @@ public class MazeCarver : MonoBehaviour
         node.Room = room;
         node.WallPosition = wallPosition;
         node.Image = CreateRectSprite(node.Rect, Color.white, FloorType.Room);
+        node.Room.NumberOfNodes += 1;
     }
 
     public void AddOpenNode(int x, int y, MazeRoom room)
@@ -111,6 +128,7 @@ public class MazeCarver : MonoBehaviour
         node.Image = CreateRectSprite(node.Rect, Color.yellow, FloorType.Room);
         node.IsRoom = true;
         node.Room = room;
+        node.Room.NumberOfNodes += 1;
     }
 
     public void StartCarving()
@@ -209,8 +227,10 @@ public class MazeCarver : MonoBehaviour
             for (int x = 0; x <= config.Width; x += 1)
             {
                 MazeNode node = GetOrCreateNode(x, y);
-                if (node != null && node.Room != null) {
-                    if (!node.Room.HasAtLeastOneDoor) {
+                if (node != null && node.Room != null)
+                {
+                    if (!node.Room.HasAtLeastOneDoor)
+                    {
                         node.IsOpen = false;
                         node.IsWall = true;
                         node.Image.color = Color.red;
@@ -238,7 +258,7 @@ public class MazeCarver : MonoBehaviour
         }
         return Instantiate(navMeshPlanePrefab, parent);
     }
-    private void RemoveFalseWalls()
+    public void RemoveFalseWalls()
     {
         for (int y = 0; y <= config.Height; y += 1)
         {
@@ -260,7 +280,7 @@ public class MazeCarver : MonoBehaviour
             }
         }
     }
-    private void CreateNavMeshes()
+    public void CreateNavMeshes()
     {
         NavMeshBaker = CreateNavMeshBaker();
         for (int y = -1; y <= config.Height; y += 1)
@@ -285,7 +305,7 @@ public class MazeCarver : MonoBehaviour
         NavMeshBaker.Bake();
     }
 
-    private void Create3DWalls()
+    public void Create3DWalls()
     {
         if (meshCombinerPrefab == null)
         {
@@ -390,16 +410,19 @@ public class MazeCarver : MonoBehaviour
         }
         MazeNode betweenNode = GetOrCreateNode(newX, newY);
         FloorType floorType = (node.IsWall || node.IsRoom) ? FloorType.Room : FloorType.Path;
-        if (betweenNode.Image == null) {
+        if (betweenNode.Image == null)
+        {
             betweenNode.Image = CreateRectSprite(betweenNode.Rect, Color.white, floorType);
         }
         betweenNode.IsOpen = true;
-        if (!isHallway) {
+        if (!isHallway)
+        {
             node.IsRoom = true;
         }
         node.IsOpen = true;
         carvedNodes.Add(node);
-        if (node.Image == null) {
+        if (node.Image == null)
+        {
             node.Image = CreateRectSprite(node.Rect, Color.white, floorType);
         }
     }

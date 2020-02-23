@@ -7,7 +7,7 @@ using NaughtyAttributes;
 [CreateAssetMenu(fileName = "LevelConfig", menuName = "New LevelConfig")]
 public class LevelConfig : ScriptableObject
 {
-    [Range(3, 10)]
+    [Range(1, 10)]
     public int MinimumNumberOfRooms = 3;
 
     [MinMaxSlider(20f, 50f)]

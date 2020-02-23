@@ -39,7 +39,7 @@ public class MapGenerator : MonoBehaviour
 
     private LevelDepthConfig depthConfig;
     private GenerationComplete completeCallback;
-    private MapPopulator mapPopulator;
+    public MapPopulator MapPopulator;
 
     public void Initialize(LevelConfig levelConfig, LevelDepthConfig levelDepthConfig, GenerationComplete callback)
     {
@@ -48,7 +48,14 @@ public class MapGenerator : MonoBehaviour
         config = levelConfig;
         mapPopulatorPrefab = Resources.Load<MapPopulator>("MapPopulator");
         world = new Rect(0, 0, config.Width, config.Height);
-        CreateWorld();
+        rooms = new List<MazeRoom>();
+        Debug.Log("Creating world with size: " + config.Width + ", " + config.Height);
+    }
+
+    public MapPopulator InitializeMapPopulator() {
+        MapPopulator = Instantiate(mapPopulatorPrefab);
+        MapPopulator.Initialize(this, depthConfig);
+        return MapPopulator;
     }
 
     public void MazeCarverFinished()
@@ -62,8 +69,8 @@ public class MapGenerator : MonoBehaviour
         else
         {
             SelectStartAndEndRooms(roomsWithDoors);
-            mapPopulator = Instantiate(mapPopulatorPrefab);
-            mapPopulator.Initialize(this, depthConfig);
+            InitializeMapPopulator();
+            MapPopulator.Populate();
             completeCallback();
         }
     }
@@ -138,8 +145,8 @@ public class MapGenerator : MonoBehaviour
             }
             Destroy(mazeCarver.gameObject);
         }
-        if (mapPopulator != null) {
-            Destroy(mapPopulator.gameObject);
+        if (MapPopulator != null) {
+            Destroy(MapPopulator.gameObject);
         }
         rooms = new List<MazeRoom>();
         if (worldSprite != null)
@@ -148,7 +155,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void CreateWorld()
+    public void CreateWorld()
     {
         RemoveOldWorld();
         if (worldCreateAttempts >= maxWorldCreateAttempts)
@@ -177,8 +184,10 @@ public class MapGenerator : MonoBehaviour
 
     private void SelectStartAndEndRooms(List<MazeRoom> roomsWithDoors)
     {
-        int startRoomIndex = Random.Range(0, roomsWithDoors.Count);
-        MazeRoom startRoom = roomsWithDoors[startRoomIndex];
+        /*int startRoomIndex = Random.Range(0, roomsWithDoors.Count);
+        MazeRoom startRoom = roomsWithDoors[startRoomIndex];*/
+        MazeRoom startRoom = roomsWithDoors.OrderBy(room => room.NumberOfNodes).First();
+        int startRoomIndex = roomsWithDoors.FindIndex(room => room.Equals(startRoom));
         startRoom.IsStart = true;
         startRoom.Image.color = Color.green;
         roomsWithDoors.RemoveAt(startRoomIndex);
@@ -211,7 +220,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void PlaceRoom(MazeRoom roomWithPadding)
+    public void PlaceRoom(MazeRoom roomWithPadding)
     {
         Rect actualRoom = new Rect(
             roomWithPadding.Rect.x + 1,
@@ -250,6 +259,7 @@ public class MapGenerator : MonoBehaviour
                         (x == roomXMax - 1 && y == roomY) ||
                         (x == roomXMax - 1 && y == roomYMax - 1)
                     );
+
                     mazeCarver.AddWallNode(x, y, isCorner, room, GetWallPosition(x, y, roomY, roomYMax, roomX, roomXMax));
                 }
                 else
@@ -288,15 +298,15 @@ public class MapGenerator : MonoBehaviour
         }*/
     }
 
-    private MazeCarver InitializeCarver()
+    public MazeCarver InitializeCarver()
     {
         if (mazeCarverPrefab == null)
         {
             mazeCarverPrefab = Resources.Load<MazeCarver>("MazeCarver");
         }
-        MazeCarver carver = Instantiate(mazeCarverPrefab, Vector2.zero, Quaternion.identity);
-        carver.Initialize(world, this, config, depthConfig);
-        return carver;
+        mazeCarver = Instantiate(mazeCarverPrefab, Vector2.zero, Quaternion.identity);
+        mazeCarver.Initialize(world, this, config, depthConfig);
+        return mazeCarver;
     }
 
     private SpriteRenderer CreateRoomSprite(Rect rect, Color color)
@@ -351,8 +361,11 @@ public class MazeRoom
     private int numberOfDoors = 0;
     private int maxDoors = 3;
 
+    public bool HasBoss = false;
     public int NumberOfMeleeCreeps = 0;
     public int NumberOfRangedCreeps = 0;
+
+    public int NumberOfNodes = 0;
 
     public bool HasAtLeastOneDoor { get { return numberOfDoors > 0; } }
 

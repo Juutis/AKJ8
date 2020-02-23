@@ -6,7 +6,9 @@ using System.Collections.Generic;
 public enum SoundType
 {
     None,
-    Drink
+    Drink,
+    OpenHatch,
+    PickUpKey
 }
 
 public class SoundManager : MonoBehaviour

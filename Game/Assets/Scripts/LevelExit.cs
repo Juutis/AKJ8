@@ -19,6 +19,8 @@ public class LevelExit : MonoBehaviour
 
     Equipable eq;
 
+    Key keyThatUnlockedMe;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,11 +49,14 @@ public class LevelExit : MonoBehaviour
 
     public void Exit()
     {
+        Destroy(keyThatUnlockedMe.gameObject);
+        SoundManager.main.PlaySound(SoundType.OpenHatch);
         LevelManager.main.LoadNextLevel();
     }
 
-    public void Unlock()
+    public void Unlock(Key key)
     {
+        keyThatUnlockedMe = key;
         locked = false;
         eq.blocked = false;
         infoText.text = "This hatch leads to the next level of the cellar.\n\nPress<E> to go deeper.";
