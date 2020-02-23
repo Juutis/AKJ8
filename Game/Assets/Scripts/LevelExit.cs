@@ -47,7 +47,7 @@ public class LevelExit : MonoBehaviour
 
     public void Exit()
     {
-        Debug.Log("Level completed!");
+        LevelManager.main.LoadNextLevel();
     }
 
     public void Unlock()

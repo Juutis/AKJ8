@@ -14,6 +14,8 @@ public enum OrthogonalDirection
     West
 }
 
+public delegate void GenerationComplete();
+
 public class MapGenerator : MonoBehaviour
 {
 
@@ -36,9 +38,12 @@ public class MapGenerator : MonoBehaviour
     private LevelConfig config;
 
     private LevelDepthConfig depthConfig;
+    private GenerationComplete completeCallback;
+    private MapPopulator mapPopulator;
 
-    public void Initialize(LevelConfig levelConfig, LevelDepthConfig levelDepthConfig)
+    public void Initialize(LevelConfig levelConfig, LevelDepthConfig levelDepthConfig, GenerationComplete callback)
     {
+        completeCallback = callback;
         depthConfig = levelDepthConfig;
         config = levelConfig;
         mapPopulatorPrefab = Resources.Load<MapPopulator>("MapPopulator");
@@ -57,8 +62,9 @@ public class MapGenerator : MonoBehaviour
         else
         {
             SelectStartAndEndRooms(roomsWithDoors);
-            MapPopulator mapPopulator = Instantiate(mapPopulatorPrefab);
+            mapPopulator = Instantiate(mapPopulatorPrefab);
             mapPopulator.Initialize(this, depthConfig);
+            completeCallback();
         }
     }
 
@@ -88,7 +94,7 @@ public class MapGenerator : MonoBehaviour
     {
         List<MazeNode> emptyNodes = GetEmptyRoomNodes(room);
         int randomIndex = Random.Range(0, emptyNodes.Count);
-        Debug.Log(string.Format("Randomly getting node #{0} from {1} with {2} nodes.", randomIndex, room, emptyNodes.Count));
+
         return emptyNodes[randomIndex];
     }
 
@@ -103,7 +109,7 @@ public class MapGenerator : MonoBehaviour
             max -= emptyNodes.Count / 2;
         }
         int randomIndex = Random.Range(min, max);
-        Debug.Log(string.Format("Randomly getting node #{0} from {1} with {2} nodes.", randomIndex, room, emptyNodes.Count));
+
         return emptyNodes[randomIndex];
     }
 
@@ -131,6 +137,9 @@ public class MapGenerator : MonoBehaviour
                 Destroy(mazeCarver.NavMeshBaker.gameObject);
             }
             Destroy(mazeCarver.gameObject);
+        }
+        if (mapPopulator != null) {
+            Destroy(mapPopulator.gameObject);
         }
         rooms = new List<MazeRoom>();
         if (worldSprite != null)

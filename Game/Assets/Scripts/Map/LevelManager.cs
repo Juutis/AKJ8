@@ -14,25 +14,63 @@ public class LevelManager : MonoBehaviour
 
     public static LevelManager main;
 
-    private MapGenerator mapGeneratorPrefab;
+    private FullscreenFade fullscreenFade;
+
+    private MapGenerator mapGenerator;
+    private GeneralLevelConfig generalLevelConfig;
     [SerializeField]
     private int levelNumber = 1;
     void Start()
     {
-        mapGeneratorPrefab = Resources.Load<MapGenerator>("MapGenerator");
-        MapGenerator mapGenerator = Instantiate(mapGeneratorPrefab);
-        GeneralLevelConfig generalLevelConfig = Resources.Load<GeneralLevelConfig>("LevelConfigs/GeneralLevelConfig");
-        LevelDepthConfig depthConfig = generalLevelConfig.GetLevelDepthConfiguration(levelNumber - 1);
+        FullscreenFade fsPrefab = Resources.Load<FullscreenFade>("FullscreenFade");
+        fullscreenFade = Instantiate(fsPrefab, transform);
+        fullscreenFade.Initialize();
+        MapGenerator mapGeneratorPrefab = Resources.Load<MapGenerator>("MapGenerator");
+        mapGenerator = Instantiate(mapGeneratorPrefab);
+        generalLevelConfig = Resources.Load<GeneralLevelConfig>("LevelConfigs/GeneralLevelConfig");
+        LoadNextLevel();
+    }
+
+    public void LoadNextLevel() {
+        Camera.main.GetComponent<FollowerCamera>().StopFollowing();
+        fullscreenFade.FadeIn(LoadLevel);
+    }
+
+    public void LoadLevel() {
         LevelConfig config = GetLevelConfig();
+        if (config == null) {
+            Debug.Log("The End!");
+            return;
+        }
+        LevelDepthConfig depthConfig = generalLevelConfig.GetLevelDepthConfiguration(levelNumber - 1);
         config.Randomize();
         LootManager.main.SetConfig(depthConfig);
-        mapGenerator.Initialize(config, depthConfig);
+        mapGenerator.Initialize(config, depthConfig, AfterLevelIsLoaded);
+        levelNumber += 1;
+    }
+
+    public void AfterLevelIsLoaded() {
+        fullscreenFade.FadeOut(Unfreeze);
+    }
+
+    public void FadeOut(FadeComplete callback) {
+        fullscreenFade.FadeOut(callback);
+    }
+
+    public void FadeIn(FadeComplete callback) {
+        fullscreenFade.FadeIn(callback);
+    }
+    public void Unfreeze() {
+        Debug.Log("All ready!");
     }
 
     private LevelConfig GetLevelConfig() {
         List<LevelConfig> configs = new List<LevelConfig>(
             Resources.LoadAll<LevelConfig>(string.Format("LevelConfigs/{0}", levelNumber))
         );
+        if (configs.Count == 0) {
+            return null;
+        }
         return configs[Random.Range(0, configs.Count)];
     }
 

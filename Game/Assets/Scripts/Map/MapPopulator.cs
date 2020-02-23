@@ -36,8 +36,8 @@ public class MapPopulator : MonoBehaviour
         SpawnCreeps(depthConfig.RangedCreepNumber, CreepType.Ranged);
         CreateStartAndEnd();
         SpawnKey();
-        SpawnPlayer();
-        SetUpCamera();
+        Player player = SpawnPlayer();
+        SetUpCamera(player);
         mapGenerator.Rooms.ForEach(room => room.HideImage());
         GameObject ui = GameObject.FindGameObjectWithTag("UI");
         //ui.SetActive(true);
@@ -53,7 +53,6 @@ public class MapPopulator : MonoBehaviour
     }
 
     private void SpawnCreeps(int spawnThisMany, CreepType creepType) {
-        Debug.Log(string.Format("Spawning {0} creeps of type: {1}", spawnThisMany, creepType));
         if (spawnThisMany <= 0) {
             return;
         }
@@ -97,19 +96,23 @@ public class MapPopulator : MonoBehaviour
             rangeCreep.transform.position = position;
             node.Room.NumberOfRangedCreeps += 1;
         }
-        //Debug.Log(string.Format("Spawned a creep of type: {0} at {1}, {2}", creepType, position.x, position.y));
     }
 
-    private void SetUpCamera() {
+    private void SetUpCamera(Player player) {
         FollowerCamera followerCamera = Camera.main.GetComponent<FollowerCamera>();
+        Vector3 position = followerCamera.transform.position;
+        position.x = player.transform.position.x;
+        position.y = player.transform.position.y;
+        followerCamera.transform.position = position;
         followerCamera.StartFollowing();
     }
 
-    private void SpawnPlayer() {
+    private Player SpawnPlayer() {
         playerPrefab = Resources.Load<Player>("Player");
         Player player = Instantiate(playerPrefab, transform);
         player.transform.localScale = mapGenerator.GetScaled(Vector2.one);
         player.transform.position = startObject.transform.position;
+        return player;
     }
 
     private void CreateStartAndEnd() {
@@ -126,7 +129,6 @@ public class MapPopulator : MonoBehaviour
         endObject = Instantiate(endPrefab, transform);
         endObject.transform.localScale = mapGenerator.GetScaled(Vector2.one);
         endObject.transform.position = mapGenerator.GetScaled(endNode.Rect.position);
-        Debug.Log(string.Format("Spawned levelEnd at {0}, {1}", endNode.Rect.position.x, endNode.Rect.position.y));
     }
 
 }

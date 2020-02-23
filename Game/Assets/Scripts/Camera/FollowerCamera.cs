@@ -31,6 +31,10 @@ public class FollowerCamera : MonoBehaviour
         }
     }
 
+    public void StopFollowing() {
+        canFollow = false;
+    }
+
     private void FindTarget() {
         target = GameObject.FindGameObjectWithTag(targetTag).transform;
     }
