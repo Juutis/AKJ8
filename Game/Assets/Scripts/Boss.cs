@@ -33,6 +33,8 @@ public class Boss : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         enemy = GetComponent<Enemy>();
         wand.SetOptions(GetWandOptions(level));
+        enemy.health = 25 + 10 * level;
+
         maxHealth = enemy.health;
     }
 
