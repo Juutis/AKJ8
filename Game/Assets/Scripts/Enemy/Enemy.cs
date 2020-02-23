@@ -256,7 +256,7 @@ public class Enemy : MonoBehaviour
             var eq = go.GetComponent<Equipable>();
             go.transform.parent = transform;
             eq.Drop();
-            go.transform.position = transform.position;
+            go.transform.position = transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
         }
     }
 }

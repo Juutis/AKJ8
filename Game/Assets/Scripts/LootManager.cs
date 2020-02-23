@@ -110,7 +110,7 @@ public class LootManager : MonoBehaviour
         var loots = new List<GameObject>();
 
         var random = Random.Range(0.0f, 1.0f);
-        if (-1 < lootTable.WandChance)
+        if (random < lootTable.WandChance)
         {
             GameObject wandGameObject = Instantiate(WandPrefab);
             MagicWand wand = wandGameObject.GetComponent<MagicWand>();
@@ -119,15 +119,30 @@ public class LootManager : MonoBehaviour
             loots.Add(wandGameObject);
         }
 
+        random = Random.Range(0.0f, 1.0f);
+        if (random < lootTable.BootsChance)
+        {
+            // TODO
+        }
+
+        random = Random.Range(0.0f, 1.0f);
+        if (random < lootTable.HealthPotionChance)
+        {
+            GameObject potionGameObject = Instantiate(PotionPrefab);
+            loots.Add(potionGameObject);
+        }
+
         return loots;
     }
 
 
     GameObject WandPrefab;
+    GameObject PotionPrefab;
 
     private void LoadPrefabs()
     {
         WandPrefab = (GameObject)Resources.Load("MagicWand");
+        PotionPrefab = (GameObject)Resources.Load("Potion");
     }
 
 }
