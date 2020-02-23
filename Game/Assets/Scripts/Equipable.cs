@@ -71,7 +71,7 @@ public class Equipable : MonoBehaviour
     public void Drop()
     {
         transform.localPosition = Vector3.zero;
-        transform.parent = null;
+        transform.parent = transform.parent.parent;
         readyToPickUp = true;
         if (sprite != null)
         {

@@ -144,6 +144,7 @@ public class Player : MonoBehaviour
     {
         if (magicWand != null)
         {
+            magicWand.transform.parent = transform;
             magicWand.GetComponent<Equipable>().Drop();
         }
         magicWand = wand;
